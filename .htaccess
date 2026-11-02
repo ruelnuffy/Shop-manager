@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Prevent direct access to sensitive configuration files
+    RewriteRule ^(\.env|\.git|composer\.(json|lock)|package(-lock)?\.json|phpunit\.xml) - [F,L,NC]
+
+    # Rewrite all traffic to public/ unless already targeting public/
+    RewriteCond %{REQUEST_URI} !/public/ [NC]
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
