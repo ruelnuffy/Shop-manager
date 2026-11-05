@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Staff;
+use App\Models\Tenant;
 use App\Models\User;
+use App\Services\CurrentTenant;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,6 +13,13 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        $tenantId = app(CurrentTenant::class)->get()?->id
+            ?? Tenant::first()?->id;
+
+        if ($tenantId && function_exists('setPermissionsTeamId') && getPermissionsTeamId() === null) {
+            setPermissionsTeamId($tenantId);
+        }
+
         // 1. Admin
         $admin = User::updateOrCreate(
             ['email' => 'admin@jessiclassiq.com'],
@@ -71,6 +80,19 @@ class UserSeeder extends Seeder
 
         // Neutral demo accounts for local/testing only
         if (app()->environment(['local', 'testing'])) {
+            $superAdmin = User::updateOrCreate(
+                ['email' => 'superadmin@shopmanager.test'],
+                [
+                    'name' => 'ShopManager Super Admin',
+                    'password' => Hash::make('password123'),
+                    'role' => 'super_admin',
+                    'phone' => '+2348000000000',
+                    'address' => 'Platform Control Center',
+                    'city' => 'Lagos',
+                    'email_verified_at' => now(),
+                ]
+            );
+
             $platformAdmin = User::updateOrCreate(
                 ['email' => 'admin@shopmanager.test'],
                 [

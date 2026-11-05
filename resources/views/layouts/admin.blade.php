@@ -124,6 +124,16 @@
 
             <!-- Navigation Links -->
             <nav class="space-y-5 text-xs font-medium">
+                @if (Auth::user()?->isSuperAdmin())
+                    <a href="{{ route('super-admin.dashboard') }}" class="flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-indigo-900/60 to-violet-900/60 border border-indigo-500/40 text-white font-bold text-xs transition">
+                        <span class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+                            <span>Super Admin Cockpit</span>
+                        </span>
+                        <span>&nearr;</span>
+                    </a>
+                @endif
+
                 <!-- Group: Operations -->
                 <div class="space-y-1">
                     <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3">Operations</span>
@@ -253,6 +263,16 @@
 
             <!-- Grouped Navigation Links -->
             <nav class="space-y-5 text-xs font-medium">
+                @if (Auth::user()?->isSuperAdmin())
+                    <a href="{{ route('super-admin.dashboard') }}" class="flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-indigo-950 via-slate-900 to-slate-900 border border-indigo-500/40 text-white font-bold text-xs hover:border-indigo-400 transition shadow-sm">
+                        <span class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-rose-400 animate-pulse"></span>
+                            <span class="text-rose-200">Super Admin Cockpit</span>
+                        </span>
+                        <span class="text-indigo-400 font-mono">&nearr;</span>
+                    </a>
+                @endif
+
                 <!-- Group 1: Operations -->
                 <div class="space-y-1">
                     <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 block mb-1">

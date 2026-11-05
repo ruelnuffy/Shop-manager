@@ -55,6 +55,12 @@
                     <!-- Auth Actions -->
                     <div class="flex items-center gap-3">
                         @auth
+                            @if (Auth::user()->isSuperAdmin())
+                                <a href="{{ route('super-admin.dashboard') }}" class="px-3.5 py-2 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 hover:text-white hover:bg-rose-500/25 text-xs font-bold transition flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></span>
+                                    <span>Super Admin</span>
+                                </a>
+                            @endif
                             <a href="{{ route('dashboard') }}" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold uppercase tracking-wider transition shadow-md shadow-indigo-600/20">
                                 Dashboard &rarr;
                             </a>

@@ -5,6 +5,7 @@ use App\Http\Controllers\CpanelDeployController;
 use App\Http\Controllers\PaystackWebhookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Store;
+use App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\WalletController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\EnsureUserIsAdminOrStaff;
@@ -130,6 +131,22 @@ Route::prefix('admin')
             Route::post('/payroll/retry/{salaryPayment}', [Admin\PayrollController::class, 'retry'])->name('payroll.retry');
             Route::post('/payroll/verify/{salaryPayment}', [Admin\PayrollController::class, 'verifyStatus'])->name('payroll.verify');
         });
+    });
+
+// Platform Super Admin Control Plane
+Route::prefix('super-admin')
+    ->name('super-admin.')
+    ->middleware(['auth', 'super_admin'])
+    ->group(function () {
+        Route::get('/', [SuperAdmin\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/tenants', [SuperAdmin\TenantController::class, 'index'])->name('tenants.index');
+        Route::get('/tenants/create', [SuperAdmin\TenantController::class, 'create'])->name('tenants.create');
+        Route::post('/tenants', [SuperAdmin\TenantController::class, 'store'])->name('tenants.store');
+        Route::get('/tenants/{tenant}', [SuperAdmin\TenantController::class, 'show'])->name('tenants.show');
+        Route::get('/tenants/{tenant}/edit', [SuperAdmin\TenantController::class, 'edit'])->name('tenants.edit');
+        Route::put('/tenants/{tenant}', [SuperAdmin\TenantController::class, 'update'])->name('tenants.update');
+        Route::post('/tenants/{tenant}/toggle-status', [SuperAdmin\TenantController::class, 'toggleStatus'])->name('tenants.toggle-status');
+        Route::post('/tenants/{tenant}/enter', [SuperAdmin\TenantController::class, 'enter'])->name('tenants.enter');
     });
 
 require __DIR__.'/auth.php';

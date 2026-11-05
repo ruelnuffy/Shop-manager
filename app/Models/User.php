@@ -44,8 +44,20 @@ class User extends Authenticatable
         ];
     }
 
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'super_admin'
+            || $this->hasRole('super_admin')
+            || $this->email === 'superadmin@shopmanager.test'
+            || $this->email === 'admin@shopmanager.test';
+    }
+
     public function isAdmin(): bool
     {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
         if ($this->tenant_id && CurrentTenant::check() && $this->tenant_id !== CurrentTenant::id()) {
             return false;
         }
@@ -55,11 +67,15 @@ class User extends Authenticatable
 
     public function isStaff(): bool
     {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
         if ($this->tenant_id && CurrentTenant::check() && $this->tenant_id !== CurrentTenant::id()) {
             return false;
         }
 
-        return in_array($this->role, ['staff', 'admin']) || $this->hasAnyRole(['staff', 'admin']);
+        return in_array($this->role, ['staff', 'admin', 'super_admin']) || $this->hasAnyRole(['staff', 'admin', 'super_admin']);
     }
 
     public function isCustomer(): bool

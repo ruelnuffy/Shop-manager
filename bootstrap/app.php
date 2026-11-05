@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureUserIsSuperAdmin;
 use App\Http\Middleware\ResolveTenant;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -40,6 +41,10 @@ return Application::configure(basePath: dirname(__DIR__))
             StartSession::class,
             ResolveTenant::class,
         );
+
+        $middleware->alias([
+            'super_admin' => EnsureUserIsSuperAdmin::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

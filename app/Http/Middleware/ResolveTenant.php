@@ -28,7 +28,9 @@ class ResolveTenant
             $explicitPlatform = $request->header('X-Platform') === 'true'
                 || $request->header('X-Tenant') === 'none'
                 || $request->query('platform') === '1'
-                || $request->query('tenant') === 'none';
+                || $request->query('tenant') === 'none'
+                || $request->is('super-admin')
+                || $request->is('super-admin/*');
 
             if ($explicitPlatform) {
                 if ($request->hasSession()) {

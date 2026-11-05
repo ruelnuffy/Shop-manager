@@ -38,6 +38,9 @@ class RoleAndPermissionSeeder extends Seeder
         $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $adminRole->syncPermissions(Permission::all());
 
+        $superAdminRole = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
+        $superAdminRole->syncPermissions(Permission::all());
+
         $staffRole = Role::firstOrCreate(['name' => 'staff', 'guard_name' => 'web']);
         $staffRole->syncPermissions([
             'manage inventory',
