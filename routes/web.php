@@ -147,6 +147,8 @@ Route::prefix('super-admin')
         Route::put('/tenants/{tenant}', [SuperAdmin\TenantController::class, 'update'])->name('tenants.update');
         Route::post('/tenants/{tenant}/toggle-status', [SuperAdmin\TenantController::class, 'toggleStatus'])->name('tenants.toggle-status');
         Route::post('/tenants/{tenant}/enter', [SuperAdmin\TenantController::class, 'enter'])->name('tenants.enter');
+        Route::get('/export-report', [SuperAdmin\DashboardController::class, 'exportAuditReport'])->name('export-report');
+        Route::post('/clear-cache', [SuperAdmin\DashboardController::class, 'clearCache'])->name('clear-cache');
     });
 
 require __DIR__.'/auth.php';

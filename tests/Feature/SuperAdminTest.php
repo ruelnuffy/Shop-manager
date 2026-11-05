@@ -187,4 +187,23 @@ class SuperAdminTest extends TestCase
         $response->assertRedirect('/admin?tenant='.$tenant->slug);
         $this->assertEquals($tenant->id, session('active_tenant_id'));
     }
+
+    public function test_super_admin_can_export_audit_report_csv(): void
+    {
+        $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();
+
+        $response = $this->actingAs($superAdmin)->get(route('super-admin.export-report'));
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+        $this->assertStringContainsString('Tenant ID', $response->getContent());
+        $this->assertStringContainsString('jessis-classiq-store', $response->getContent());
+    }
+
+    public function test_super_admin_can_purge_cache(): void
+    {
+        $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();
+
+        $response = $this->actingAs($superAdmin)->post(route('super-admin.clear-cache'));
+        $response->assertSessionHas('status');
+    }
 }
