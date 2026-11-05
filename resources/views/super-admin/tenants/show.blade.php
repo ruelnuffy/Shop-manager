@@ -1,27 +1,24 @@
 <x-super-admin-layout>
     <!-- Header with Back Link & Title -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div class="space-y-1">
             <div class="flex items-center gap-2">
-                <a href="{{ route('super-admin.tenants.index') }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1 transition">
+                <a href="{{ route('super-admin.tenants.index') }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 transition">
                     &larr; Back to Stores Directory
                 </a>
-                <span class="text-slate-300">&bull;</span>
-                <span class="text-xs font-mono text-slate-400">Tenant ID #{{ $tenant->id }}</span>
             </div>
             <div class="flex items-center gap-3 flex-wrap">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">{{ $tenant->name }}</h1>
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider {{ $tenant->status === 'active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200' }}">
-                    <span class="w-1.5 h-1.5 rounded-full {{ $tenant->status === 'active' ? 'bg-emerald-500' : 'bg-rose-500' }}"></span>
+                <h1 class="text-2xl font-bold text-slate-900">{{ $tenant->name }}</h1>
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase {{ $tenant->status === 'active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200' }}">
                     {{ ucfirst($tenant->status) }}
                 </span>
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200">
-                    {{ ucfirst($tenant->plan) }} Plan
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase bg-indigo-50 text-indigo-700 border border-indigo-200">
+                    {{ ucfirst($tenant->plan) }}
                 </span>
             </div>
             <p class="text-xs text-slate-500">
-                Slug: <code class="text-slate-800 font-mono font-semibold">{{ $tenant->slug }}</code> &bull; 
-                Domain: <code class="text-slate-800 font-mono font-semibold">{{ $tenant->domain ?? ($tenant->subdomain ? $tenant->subdomain . '.' . config('app.url_base', 'shopmanager.test') : 'Not set') }}</code>
+                Slug: <code class="text-slate-800">{{ $tenant->slug }}</code> &bull; 
+                Domain: <code class="text-slate-800">{{ $tenant->domain ?? ($tenant->subdomain ? $tenant->subdomain . '.' . config('app.url_base', 'shopmanager.test') : 'Not set') }}</code>
             </p>
         </div>
 

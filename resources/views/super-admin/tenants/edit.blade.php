@@ -1,12 +1,11 @@
 <x-super-admin-layout>
     <!-- Header -->
-    <div class="flex items-center justify-between pb-6 border-b border-slate-200">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-200">
         <div>
-            <a href="{{ route('super-admin.tenants.show', $tenant) }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold transition flex items-center gap-1 mb-1">
-                &larr; Back to {{ $tenant->name }} Details
+            <a href="{{ route('super-admin.tenants.show', $tenant) }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 mb-1">
+                &larr; Back to {{ $tenant->name }}
             </a>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Edit Store Settings</h1>
-            <p class="text-xs text-slate-500 mt-1">Configure domain routing, plan tier, status, and feature flags for <span class="text-slate-900 font-semibold">{{ $tenant->name }}</span>.</p>
+            <h1 class="text-2xl font-bold text-slate-900">Edit Store Settings</h1>
         </div>
     </div>
 

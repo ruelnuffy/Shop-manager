@@ -1,12 +1,11 @@
 <x-super-admin-layout>
     <!-- Header -->
-    <div class="flex items-center justify-between pb-6 border-b border-slate-200">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-200">
         <div>
-            <a href="{{ route('super-admin.tenants.index') }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold transition flex items-center gap-1 mb-1">
-                &larr; Back to Stores Directory
+            <a href="{{ route('super-admin.tenants.index') }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 mb-1">
+                &larr; Back to Stores
             </a>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Provision New Tenant Store</h1>
-            <p class="text-xs text-slate-500 mt-1">Spin up an isolated retail workspace, configure feature flags, and create the merchant owner account.</p>
+            <h1 class="text-2xl font-bold text-slate-900">Provision New Tenant Store</h1>
         </div>
     </div>
 

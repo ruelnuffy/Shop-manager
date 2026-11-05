@@ -1,25 +1,15 @@
 <x-super-admin-layout>
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
-            <div class="flex items-center gap-2">
-                <span class="text-xs font-mono uppercase tracking-wider text-indigo-600 font-bold">Store Directory</span>
-                <span class="text-slate-300">&bull;</span>
-                <span class="text-xs text-slate-500 font-medium">Multi-Tenant Workspaces</span>
-            </div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
-                Tenant Stores Directory
-            </h1>
-            <p class="text-xs text-slate-500 mt-1">Manage isolated tenant workspaces, feature entitlements, and operational status.</p>
+            <h1 class="text-2xl font-bold text-slate-900">Tenant Stores Directory</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Manage stores and subscriptions</p>
         </div>
 
         <a
             href="{{ route('super-admin.tenants.create') }}"
-            class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider transition shadow-sm flex items-center gap-2 shrink-0"
+            class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold transition shadow-xs flex items-center gap-1.5 shrink-0"
         >
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
-            </svg>
             <span>+ Provision Store</span>
         </a>
     </div>
