@@ -48,6 +48,21 @@ class SuperAdminTest extends TestCase
         $response->assertStatus(403);
     }
 
+    public function test_super_admin_can_login_via_credentials_and_access_dashboard_with_session(): void
+    {
+        $loginResponse = $this->post('/login', [
+            'email' => 'superadmin@shopmanager.test',
+            'password' => 'password123',
+        ]);
+
+        $this->assertAuthenticated();
+        $loginResponse->assertRedirect('/super-admin');
+
+        $dashboardResponse = $this->get('/super-admin');
+        $dashboardResponse->assertStatus(200);
+        $dashboardResponse->assertSee('Super Admin Cockpit');
+    }
+
     public function test_super_admin_can_access_dashboard_and_view_metrics(): void
     {
         $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();

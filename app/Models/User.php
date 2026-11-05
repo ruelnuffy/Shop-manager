@@ -5,7 +5,9 @@ namespace App\Models;
 use App\Services\CurrentTenant;
 use App\Traits\BelongsToTenant;
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -44,12 +46,35 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Override BelongsToTenant boot logic for User model.
+     * When a tenant is active, scope user queries to that tenant.
+     * When in a platform / super-admin / neutral context without an active tenant,
+     * allow user lookups without throwing TenantNotResolvedException so authentications
+     * and super-admin accounts can resolve.
+     */
+    public static function bootBelongsToTenant(): void
+    {
+        static::addGlobalScope('tenant', function (Builder $builder) {
+            $tenantId = app(CurrentTenant::class)->id();
+
+            if ($tenantId) {
+                $builder->where($builder->getModel()->getTable().'.tenant_id', $tenantId);
+            }
+        });
+
+        static::creating(function (Model $model) {
+            if (! $model->tenant_id && ($tenantId = app(CurrentTenant::class)->id())) {
+                $model->tenant_id = $tenantId;
+            }
+        });
+    }
+
     public function isSuperAdmin(): bool
     {
         return $this->role === 'super_admin'
             || $this->hasRole('super_admin')
-            || $this->email === 'superadmin@shopmanager.test'
-            || $this->email === 'admin@shopmanager.test';
+            || $this->email === 'superadmin@shopmanager.test';
     }
 
     public function isAdmin(): bool

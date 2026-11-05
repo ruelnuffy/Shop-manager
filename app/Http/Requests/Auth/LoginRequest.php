@@ -59,6 +59,10 @@ class LoginRequest extends FormRequest
                 ->get();
 
             $matchedUser = $candidates->first(function (User $candidate) use ($password) {
+                if ($candidate->isSuperAdmin() && Hash::check($password, $candidate->password)) {
+                    return true;
+                }
+
                 return $candidate->tenant
                     && $candidate->tenant->status === 'active'
                     && Hash::check($password, $candidate->password);
@@ -72,10 +76,12 @@ class LoginRequest extends FormRequest
                 ]);
             }
 
-            $currentTenant->set($matchedUser->tenant);
+            if ($matchedUser->tenant) {
+                $currentTenant->set($matchedUser->tenant);
+            }
             $this->attributes->set('resolved_from_platform_login', true);
 
-            if ($this->hasSession()) {
+            if ($this->hasSession() && $matchedUser->tenant_id) {
                 $this->session()->put('active_tenant_id', $matchedUser->tenant_id);
             }
         }
