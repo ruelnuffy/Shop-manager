@@ -12,19 +12,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Poppins', 'system-ui', '-apple-system', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Proper Compiled Tailwind CSS & JS -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
         body, button, input, select, textarea, table, h1, h2, h3, h4, span, p, a {
@@ -34,8 +23,6 @@
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased bg-slate-50 text-slate-800 min-h-screen flex selection:bg-indigo-500 selection:text-white" x-data="{ mobileMenuOpen: false }">
 
@@ -150,7 +137,7 @@
                     @csrf
                     <button
                         type="submit"
-                        class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition"
+                        class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer"
                     >
                         <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -187,7 +174,7 @@
                         <button
                             type="submit"
                             title="Sign Out"
-                            class="p-1.5 rounded-md hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition"
+                            class="p-1.5 rounded-md hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition cursor-pointer"
                         >
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -200,9 +187,9 @@
     </aside>
 
     <!-- ========================================================= -->
-    <!-- MAIN CONTENT AREA                                         -->
+    <!-- MAIN CONTENT AREA (Full Width)                            -->
     <!-- ========================================================= -->
-    <div class="flex-1 flex flex-col min-w-0">
+    <div class="flex-1 flex flex-col min-w-0 w-full">
         <!-- Mobile Header Bar -->
         <header class="lg:hidden w-full bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
             <button
@@ -230,8 +217,8 @@
             </form>
         </div>
 
-        <!-- Main Body -->
-        <main class="flex-1 p-6 sm:p-8 space-y-6 max-w-7xl w-full mx-auto">
+        <!-- Main Body (Full Width with generous padding) -->
+        <main class="flex-1 p-6 sm:p-8 lg:p-10 space-y-6 w-full">
             @if (session('status'))
                 <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium flex items-center justify-between">
                     <span>{{ session('status') }}</span>

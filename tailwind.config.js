@@ -12,8 +12,9 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['"Plus Jakarta Sans"', 'Inter', ...defaultTheme.fontFamily.sans],
-                display: ['Syne', '"Plus Jakarta Sans"', 'sans-serif'],
+                sans: ['Poppins', '"Plus Jakarta Sans"', 'Inter', ...defaultTheme.fontFamily.sans],
+                poppins: ['Poppins', ...defaultTheme.fontFamily.sans],
+                display: ['Poppins', 'Syne', '"Plus Jakarta Sans"', 'sans-serif'],
                 serif: ['"Playfair Display"', 'Georgia', 'serif'],
             },
             letterSpacing: {
