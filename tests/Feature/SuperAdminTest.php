@@ -6,6 +6,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class SuperAdminTest extends TestCase
@@ -205,5 +206,86 @@ class SuperAdminTest extends TestCase
 
         $response = $this->actingAs($superAdmin)->post(route('super-admin.clear-cache'));
         $response->assertSessionHas('status');
+    }
+
+    public function test_super_admin_can_add_additional_admin_to_tenant(): void
+    {
+        $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();
+        $tenant = Tenant::first();
+
+        $response = $this->actingAs($superAdmin)->post(route('super-admin.tenants.admins.store', $tenant), [
+            'name' => 'Secondary Store Manager',
+            'email' => 'co-owner@store.test',
+            'password' => 'secretPassword123!',
+            'password_confirmation' => 'secretPassword123!',
+        ]);
+
+        $response->assertSessionHas('status');
+        $newAdmin = User::withoutTenancy()->where('email', 'co-owner@store.test')->first();
+        $this->assertNotNull($newAdmin);
+        $this->assertEquals($tenant->id, $newAdmin->tenant_id);
+        $this->assertEquals('admin', $newAdmin->role);
+    }
+
+    public function test_super_admin_can_reset_tenant_admin_password(): void
+    {
+        $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();
+        $tenant = Tenant::first();
+        $admin = User::withoutTenancy()->where('tenant_id', $tenant->id)->where('role', 'admin')->first();
+        $this->assertNotNull($admin);
+
+        $response = $this->actingAs($superAdmin)->post(route('super-admin.tenants.admins.reset-password', [$tenant, $admin]), [
+            'password' => 'newSecretPassword456!',
+            'password_confirmation' => 'newSecretPassword456!',
+        ]);
+
+        $response->assertSessionHas('status');
+        $admin->refresh();
+        $this->assertTrue(Hash::check('newSecretPassword456!', $admin->password));
+    }
+
+    public function test_super_admin_cannot_delete_the_sole_admin_of_a_store(): void
+    {
+        $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();
+        $tenant = Tenant::first();
+        $admin = User::withoutTenancy()->where('tenant_id', $tenant->id)->where('role', 'admin')->first();
+        $this->assertNotNull($admin);
+
+        // Ensure only 1 admin exists
+        User::withoutTenancy()->where('tenant_id', $tenant->id)->where('role', 'admin')->where('id', '!=', $admin->id)->delete();
+
+        $response = $this->actingAs($superAdmin)->delete(route('super-admin.tenants.admins.destroy', [$tenant, $admin]));
+        $response->assertSessionHasErrors('admin_error');
+        $this->assertDatabaseHas('users', ['id' => $admin->id]);
+    }
+
+    public function test_super_admin_can_remove_an_admin_if_multiple_exist(): void
+    {
+        $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();
+        $tenant = Tenant::first();
+
+        // Create a second admin
+        $secondAdmin = User::create([
+            'tenant_id' => $tenant->id,
+            'name' => 'Admin To Remove',
+            'email' => 'toremove@store.test',
+            'password' => Hash::make('password123'),
+            'role' => 'admin',
+        ]);
+
+        $response = $this->actingAs($superAdmin)->delete(route('super-admin.tenants.admins.destroy', [$tenant, $secondAdmin]));
+        $response->assertSessionHas('status');
+        $this->assertDatabaseMissing('users', ['id' => $secondAdmin->id]);
+    }
+
+    public function test_super_admin_can_filter_tenant_analytics_by_period(): void
+    {
+        $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();
+        $tenant = Tenant::first();
+
+        $response = $this->actingAs($superAdmin)->get(route('super-admin.tenants.show', [$tenant, 'period' => '7_days']));
+        $response->assertStatus(200);
+        $response->assertSee('Store Sales &amp; Performance Reports', false);
+        $response->assertSee('Period Revenue');
     }
 }

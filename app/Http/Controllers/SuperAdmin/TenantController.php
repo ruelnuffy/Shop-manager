@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Tenant;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -121,9 +122,9 @@ class TenantController extends Controller
     }
 
     /**
-     * Display detailed metrics and configuration for a single tenant.
+     * Display detailed metrics, sales reports, analytics, and administrator accounts for a single tenant.
      */
-    public function show(Tenant $tenant): View
+    public function show(Tenant $tenant, Request $request): View
     {
         $tenant->loadCount([
             'products' => fn ($q) => $q->withoutTenancy(),
@@ -133,24 +134,131 @@ class TenantController extends Controller
             'ocrImportBatches' => fn ($q) => $q->withoutTenancy(),
         ]);
 
-        $tenantRevenue = Order::withoutTenancy()
+        $period = $request->input('period', 'all');
+
+        $ordersQuery = Order::withoutTenancy()->where('tenant_id', $tenant->id);
+        if ($period === 'today') {
+            $ordersQuery->whereDate('created_at', Carbon::today());
+        } elseif ($period === '7_days') {
+            $ordersQuery->where('created_at', '>=', Carbon::now()->subDays(7));
+        } elseif ($period === '30_days') {
+            $ordersQuery->where('created_at', '>=', Carbon::now()->subDays(30));
+        } elseif ($period === 'this_month') {
+            $ordersQuery->whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year);
+        }
+
+        $allTimeRevenue = (float) Order::withoutTenancy()
             ->where('tenant_id', $tenant->id)
             ->where('payment_status', 'paid')
             ->sum('total_amount');
 
+        $periodRevenue = (float) (clone $ordersQuery)->where('payment_status', 'paid')->sum('total_amount');
+        $periodPaidCount = (clone $ordersQuery)->where('payment_status', 'paid')->count();
+        $periodTotalOrders = (clone $ordersQuery)->count();
+        $periodAov = $periodPaidCount > 0 ? ($periodRevenue / $periodPaidCount) : 0.0;
+
+        $orderStatusCounts = [
+            'paid' => (clone $ordersQuery)->where('payment_status', 'paid')->count(),
+            'pending' => (clone $ordersQuery)->where('payment_status', 'pending')->count(),
+            'failed' => (clone $ordersQuery)->where('payment_status', 'failed')->count(),
+        ];
+
+        // Maintain compatibility with existing blade references
+        $tenantRevenue = $allTimeRevenue;
+
         $tenantAdmins = User::withoutTenancy()
             ->where('tenant_id', $tenant->id)
             ->where('role', 'admin')
+            ->latest()
             ->get();
 
         $recentOrders = Order::withoutTenancy()
             ->where('tenant_id', $tenant->id)
             ->with(['user' => fn ($q) => $q->withoutTenancy()])
             ->latest()
-            ->take(8)
+            ->take(10)
             ->get();
 
-        return view('super-admin.tenants.show', compact('tenant', 'tenantRevenue', 'tenantAdmins', 'recentOrders'));
+        return view('super-admin.tenants.show', compact(
+            'tenant',
+            'tenantRevenue',
+            'allTimeRevenue',
+            'period',
+            'periodRevenue',
+            'periodPaidCount',
+            'periodTotalOrders',
+            'periodAov',
+            'orderStatusCounts',
+            'tenantAdmins',
+            'recentOrders'
+        ));
+    }
+
+    /**
+     * Create an additional store administrator account for the tenant.
+     */
+    public function storeAdmin(Request $request, Tenant $tenant): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        User::create([
+            'tenant_id' => $tenant->id,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
+
+        return back()->with('status', "Admin account [{$validated['email']}] added successfully to {$tenant->name}.");
+    }
+
+    /**
+     * Reset the password of a store administrator.
+     */
+    public function resetAdminPassword(Request $request, Tenant $tenant, User $user): RedirectResponse
+    {
+        if ($user->tenant_id !== $tenant->id) {
+            abort(404);
+        }
+
+        $validated = $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return back()->with('status', "Password for admin [{$user->email}] has been reset successfully.");
+    }
+
+    /**
+     * Remove an administrator from the tenant store.
+     */
+    public function destroyAdmin(Tenant $tenant, User $user): RedirectResponse
+    {
+        if ($user->tenant_id !== $tenant->id) {
+            abort(404);
+        }
+
+        $adminCount = User::withoutTenancy()
+            ->where('tenant_id', $tenant->id)
+            ->where('role', 'admin')
+            ->count();
+
+        if ($adminCount <= 1) {
+            return back()->withErrors(['admin_error' => 'Cannot remove the sole administrator of this store. Each store must maintain at least one admin account.']);
+        }
+
+        $email = $user->email;
+        $user->delete();
+
+        return back()->with('status', "Admin account [{$email}] was removed from {$tenant->name}.");
     }
 
     /**

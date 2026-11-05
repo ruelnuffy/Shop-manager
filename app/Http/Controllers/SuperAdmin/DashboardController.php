@@ -11,6 +11,7 @@ use App\Models\Staff;
 use App\Models\Tenant;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -21,18 +22,31 @@ class DashboardController extends Controller
     /**
      * Display the Platform Super Admin overview dashboard.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
+        $period = $request->input('period', 'all');
+
         $tenantsCount = Tenant::count();
         $activeTenantsCount = Tenant::where('status', 'active')->count();
         $suspendedTenantsCount = Tenant::where('status', 'suspended')->count();
 
-        $totalGmv = (float) Order::withoutTenancy()
+        $ordersQuery = Order::withoutTenancy();
+        if ($period === 'today') {
+            $ordersQuery->whereDate('created_at', Carbon::today());
+        } elseif ($period === '7_days') {
+            $ordersQuery->where('created_at', '>=', Carbon::now()->subDays(7));
+        } elseif ($period === '30_days') {
+            $ordersQuery->where('created_at', '>=', Carbon::now()->subDays(30));
+        } elseif ($period === 'this_month') {
+            $ordersQuery->whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year);
+        }
+
+        $totalGmv = (float) (clone $ordersQuery)
             ->where('payment_status', 'paid')
             ->sum('total_amount');
 
-        $totalOrdersCount = Order::withoutTenancy()->count();
-        $paidOrdersCount = Order::withoutTenancy()->where('payment_status', 'paid')->count();
+        $totalOrdersCount = (clone $ordersQuery)->count();
+        $paidOrdersCount = (clone $ordersQuery)->where('payment_status', 'paid')->count();
         $averageOrderValue = $paidOrdersCount > 0 ? ($totalGmv / $paidOrdersCount) : 0.0;
 
         $totalProductsCount = Product::withoutTenancy()->count();
@@ -169,7 +183,8 @@ class DashboardController extends Controller
             'topTenants',
             'recentTenants',
             'recentOrders',
-            'systemTelemetry'
+            'systemTelemetry',
+            'period'
         ));
     }
 
