@@ -14,23 +14,23 @@
     @endphp
 
     <div class="max-w-6xl mx-auto space-y-8">
-        <!-- Quick Register & Offline Banner (TopAgentX reference style) -->
-        <div x-data="{ bannerOpen: true }" x-show="bannerOpen" class="rounded-2xl bg-gradient-to-r from-slate-900 via-slate-850 to-emerald-950 text-white p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-lg shadow-slate-950/5">
+        <!-- Quick Register & Offline Banner (Borderless with Soft Shadow) -->
+        <div x-data="{ bannerOpen: true }" x-show="bannerOpen" class="rounded-2xl bg-gradient-to-r from-slate-900 via-slate-850 to-emerald-950 text-white p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl shadow-slate-950/10">
             <div class="flex items-center gap-3.5">
-                <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-400/20 text-emerald-400 flex items-center justify-center shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 shadow-xs">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
                         <span class="font-bold text-xs sm:text-sm text-white">Use {{ $storeName }} on this device</span>
-                        <span class="px-2 py-0.5 rounded-full bg-emerald-400/20 border border-emerald-400/30 text-[10px] font-bold text-emerald-300 uppercase tracking-wider">Fast &amp; Offline</span>
+                        <span class="px-2 py-0.5 rounded-full bg-emerald-400/25 text-[10px] font-bold text-emerald-300 uppercase tracking-wider">Fast &amp; Offline</span>
                     </div>
                     <p class="text-xs text-slate-300 font-light mt-0.5">Instant barcode cashier checkout, offline sales sync, and walk-in receipts.</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2.5 shrink-0 self-start md:self-center">
-                <a href="{{ route('admin.sales.create') }}" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition shadow-sm flex items-center gap-1.5">
+                <a href="{{ route('admin.sales.create') }}" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition shadow-md shadow-emerald-500/20 flex items-center gap-1.5">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                     <span>Open Register</span>
                 </a>
@@ -47,13 +47,13 @@
                 </h2>
 
                 <div class="flex items-center gap-2">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold text-xs border border-emerald-200/60 shadow-2xs">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold text-xs shadow-sm shadow-emerald-950/5">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span>Atelier Overview &bull; Live</span>
                     </span>
 
                     @if ($currentTenant && $currentTenant->hasFeature('storefront'))
-                        <a href="{{ route('home') }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 hover:border-slate-300 text-slate-700 text-xs font-semibold shadow-2xs transition">
+                        <a href="{{ route('home') }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-slate-700 text-xs font-semibold shadow-md shadow-slate-900/5 hover:shadow-lg transition">
                             <span>View Storefront</span>
                             <span class="text-slate-400">&nearr;</span>
                         </a>
@@ -62,13 +62,13 @@
             </div>
         </div>
 
-        <!-- Sticky Notes Workspace Grid (Playful, Tactile, Seamless) -->
+        <!-- Sticky Notes Workspace Grid (Completely Borderless with Soft Shadows) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
 
             <!-- Sticky Note 1: Yellow - Make a Sale (POS) -->
-            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#fef9c3] border border-amber-200/80 shadow-md shadow-amber-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                <!-- Frosted tape at top center -->
-                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[-1deg] pointer-events-none"></div>
+            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#fef9c3] shadow-lg shadow-amber-900/5 hover:shadow-2xl hover:shadow-amber-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                <!-- Frosted tape at top center (borderless) -->
+                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[-1deg] pointer-events-none"></div>
                 <!-- Folded dog-ear corner effect on bottom-right -->
                 <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-amber-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
 
@@ -94,9 +94,9 @@
             </div>
 
             <!-- Sticky Note 2: Mint Green - Orders -->
-            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#dcfce7] border border-emerald-200/80 shadow-md shadow-emerald-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                <!-- Frosted tape at top center -->
-                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[1deg] pointer-events-none"></div>
+            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#dcfce7] shadow-lg shadow-emerald-900/5 hover:shadow-2xl hover:shadow-emerald-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                <!-- Frosted tape at top center (borderless) -->
+                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[1deg] pointer-events-none"></div>
                 <!-- Folded dog-ear corner -->
                 <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-emerald-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
 
@@ -125,9 +125,9 @@
             </div>
 
             <!-- Sticky Note 3: Pastel Pink - Products -->
-            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#ffe4e6] border border-rose-200/80 shadow-md shadow-rose-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                <!-- Frosted tape at top center -->
-                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[-0.5deg] pointer-events-none"></div>
+            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#ffe4e6] shadow-lg shadow-rose-900/5 hover:shadow-2xl hover:shadow-rose-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                <!-- Frosted tape at top center (borderless) -->
+                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[-0.5deg] pointer-events-none"></div>
                 <!-- Folded dog-ear corner -->
                 <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-rose-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
 
@@ -153,9 +153,9 @@
             </div>
 
             <!-- Sticky Note 4: Pastel Purple - Inventory Valuation & Health -->
-            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#f3e8ff] border border-purple-200/80 shadow-md shadow-purple-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                <!-- Frosted tape at top center -->
-                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[0.8deg] pointer-events-none"></div>
+            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#f3e8ff] shadow-lg shadow-purple-900/5 hover:shadow-2xl hover:shadow-purple-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                <!-- Frosted tape at top center (borderless) -->
+                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[0.8deg] pointer-events-none"></div>
                 <!-- Folded dog-ear corner -->
                 <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-purple-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
 
@@ -189,9 +189,9 @@
             </div>
 
             <!-- Sticky Note 5: Pastel Peach / Orange - Sales Reports -->
-            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#ffedd5] border border-orange-200/80 shadow-md shadow-orange-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                <!-- Frosted tape at top center -->
-                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[-1deg] pointer-events-none"></div>
+            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#ffedd5] shadow-lg shadow-orange-900/5 hover:shadow-2xl hover:shadow-orange-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                <!-- Frosted tape at top center (borderless) -->
+                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[-1deg] pointer-events-none"></div>
                 <!-- Folded dog-ear corner -->
                 <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-orange-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
 
@@ -220,9 +220,9 @@
             </div>
 
             <!-- Sticky Note 6: Pastel Sky Blue - Scan Paper Daybook -->
-            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#e0f2fe] border border-sky-200/80 shadow-md shadow-sky-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                <!-- Frosted tape at top center -->
-                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[0.5deg] pointer-events-none"></div>
+            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#e0f2fe] shadow-lg shadow-sky-900/5 hover:shadow-2xl hover:shadow-sky-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                <!-- Frosted tape at top center (borderless) -->
+                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[0.5deg] pointer-events-none"></div>
                 <!-- Folded dog-ear corner -->
                 <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-sky-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
 
@@ -246,9 +246,9 @@
 
             <!-- Sticky Note 7: Pastel Lime - Staff & Payroll (Admin Only) -->
             @if(Auth::user()->isAdmin())
-                <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#ecfccb] border border-lime-200/80 shadow-md shadow-lime-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                    <!-- Frosted tape at top center -->
-                    <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[-0.8deg] pointer-events-none"></div>
+                <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#ecfccb] shadow-lg shadow-lime-900/5 hover:shadow-2xl hover:shadow-lime-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                    <!-- Frosted tape at top center (borderless) -->
+                    <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[-0.8deg] pointer-events-none"></div>
                     <!-- Folded dog-ear corner -->
                     <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-lime-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
 
@@ -276,11 +276,11 @@
 
         </div>
 
-        <!-- Gentle Low Stock Notice (If Any Items Need Restock) -->
+        <!-- Gentle Low Stock Notice (If Any Items Need Restock - Borderless with Soft Shadow) -->
         @if ($lowStockVariants->count() > 0)
-            <div class="bg-amber-50/80 border border-amber-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+            <div class="bg-amber-50/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg shadow-amber-950/5">
                 <div class="flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 text-sm">⚠️</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 text-sm shadow-xs">⚠️</span>
                     <div>
                         <div class="font-bold text-sm text-slate-900">
                             {{ $lowStockVariants->count() }} {{ Str::plural('item', $lowStockVariants->count()) }} running low on stock
@@ -296,15 +296,15 @@
                     </div>
                 </div>
 
-                <a href="{{ route('admin.stock.index') }}" class="px-4 py-2 rounded-xl bg-white border border-amber-300 text-amber-900 hover:bg-amber-100 text-xs font-bold transition shrink-0 self-start sm:self-center">
+                <a href="{{ route('admin.stock.index') }}" class="px-4 py-2 rounded-xl bg-white text-amber-900 hover:bg-amber-100 text-xs font-bold transition shadow-md shadow-amber-950/5 shrink-0 self-start sm:self-center">
                     Review Stock &rarr;
                 </a>
             </div>
         @endif
 
-        <!-- Recent Activity Feed (Clean & Simple) -->
-        <div class="bg-white rounded-2xl p-5 sm:p-7 border border-slate-200/80 shadow-xs space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <!-- Recent Customer Purchases (Borderless with Soft Shadow) -->
+        <div class="bg-white rounded-2xl p-5 sm:p-7 shadow-xl shadow-slate-900/5 space-y-4">
+            <div class="flex items-center justify-between pb-3">
                 <div>
                     <h3 class="font-bold text-base text-slate-900">Recent Customer Purchases</h3>
                     <p class="text-xs text-slate-400 mt-0.5">Latest sales made at the counter and online</p>
@@ -315,7 +315,7 @@
             </div>
 
             @if ($recentOrders->count() > 0)
-                <div class="divide-y divide-slate-100">
+                <div class="divide-y divide-slate-100/80">
                     @foreach ($recentOrders as $order)
                         <div class="py-3.5 first:pt-0 last:pb-0 flex items-center justify-between gap-4 text-xs">
                             <div class="min-w-0 flex-1">
@@ -333,7 +333,7 @@
 
                             <div class="flex items-center gap-3 shrink-0">
                                 <span class="font-bold text-sm text-slate-900">₦{{ number_format($order->total_amount, 0) }}</span>
-                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $order->payment_status === 'paid' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' : 'bg-amber-50 text-amber-800 border border-amber-200/60' }}">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $order->payment_status === 'paid' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800' }}">
                                     {{ $order->status }}
                                 </span>
                             </div>
@@ -342,7 +342,7 @@
                 </div>
             @else
                 <div class="text-center py-10">
-                    <div class="w-12 h-12 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center mx-auto mb-2 text-base">🛍️</div>
+                    <div class="w-12 h-12 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center mx-auto mb-2 text-base shadow-xs">🛍️</div>
                     <div class="text-sm font-semibold text-slate-700">No orders recorded yet</div>
                     <p class="text-xs text-slate-400 mt-1">When transactions occur, they will display here in real time.</p>
                 </div>
