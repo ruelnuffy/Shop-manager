@@ -14,6 +14,30 @@
     @endphp
 
     <div class="max-w-6xl mx-auto space-y-8">
+        <!-- Quick Register & Offline Banner (TopAgentX reference style) -->
+        <div x-data="{ bannerOpen: true }" x-show="bannerOpen" class="rounded-2xl bg-gradient-to-r from-slate-900 via-slate-850 to-emerald-950 text-white p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-lg shadow-slate-950/5">
+            <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-400/20 text-emerald-400 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-xs sm:text-sm text-white">Use {{ $storeName }} on this device</span>
+                        <span class="px-2 py-0.5 rounded-full bg-emerald-400/20 border border-emerald-400/30 text-[10px] font-bold text-emerald-300 uppercase tracking-wider">Fast &amp; Offline</span>
+                    </div>
+                    <p class="text-xs text-slate-300 font-light mt-0.5">Instant barcode cashier checkout, offline sales sync, and walk-in receipts.</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2.5 shrink-0 self-start md:self-center">
+                <a href="{{ route('admin.sales.create') }}" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition shadow-sm flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    <span>Open Register</span>
+                </a>
+                <button type="button" @click="bannerOpen = false" class="text-slate-400 hover:text-white p-1 text-lg font-bold leading-none cursor-pointer" title="Dismiss">&times;</button>
+            </div>
+        </div>
+
         <!-- Welcome Greeting -->
         <div class="pt-2">
             <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Welcome back</span>
