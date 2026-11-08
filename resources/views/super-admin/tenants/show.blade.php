@@ -60,34 +60,6 @@
         </div>
     </div>
 
-    <!-- Store Metrics Grid (Airy White Cards) -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-        <div class="p-4.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-1">
-            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">All-Time GMV</div>
-            <div class="text-xl font-bold text-emerald-600 font-mono">₦{{ number_format($allTimeRevenue, 2) }}</div>
-        </div>
-        <div class="p-4.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-1">
-            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Orders</div>
-            <div class="text-xl font-bold text-slate-900 font-mono">{{ number_format($tenant->orders_count) }}</div>
-        </div>
-        <div class="p-4.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-1">
-            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Catalog SKUs</div>
-            <div class="text-xl font-bold text-slate-900 font-mono">{{ number_format($tenant->products_count) }}</div>
-        </div>
-        <div class="p-4.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-1">
-            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Staff Members</div>
-            <div class="text-xl font-bold text-slate-900 font-mono">{{ number_format($tenant->staff_count) }}</div>
-        </div>
-        <div class="p-4.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-1">
-            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Retail Outlets</div>
-            <div class="text-xl font-bold text-slate-900 font-mono">{{ number_format($tenant->shop_locations_count) }}</div>
-        </div>
-        <div class="p-4.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-1">
-            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">OCR Ledgers</div>
-            <div class="text-xl font-bold text-slate-900 font-mono">{{ number_format($tenant->ocr_import_batches_count) }}</div>
-        </div>
-    </div>
-
     <!-- Sales & Reports Period Filter Bar -->
     <div class="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -116,38 +88,99 @@
         </div>
     </div>
 
-    <!-- Period Analytics Summary Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-1">
-            <div class="text-[11px] font-medium text-slate-500">Period Revenue (Paid)</div>
-            <div class="text-2xl font-bold text-emerald-600 font-mono">₦{{ number_format($periodRevenue, 2) }}</div>
-            <div class="text-xs text-slate-400">{{ number_format($periodPaidCount) }} successful settlements</div>
+    <!-- Unified High-Impact KPI Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Card 1: Revenue -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-xs flex flex-col justify-between hover:border-slate-300 transition group">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate-500">Period Revenue</span>
+                <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+                    ₦{{ number_format($periodRevenue, 2) }}
+                </div>
+                <div class="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
+                    <span class="text-emerald-600 font-semibold">{{ number_format($periodPaidCount) }} paid</span>
+                    <span>&bull;</span>
+                    <span>All-Time: ₦{{ number_format($allTimeRevenue, 0) }}</span>
+                </div>
+            </div>
         </div>
 
-        <div class="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-1">
-            <div class="text-[11px] font-medium text-slate-500">Period Order Attempts</div>
-            <div class="text-2xl font-bold text-slate-900 font-mono">{{ number_format($periodTotalOrders) }}</div>
-            <div class="text-xs text-slate-400">Total transaction traffic</div>
+        <!-- Card 2: Orders -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-xs flex flex-col justify-between hover:border-slate-300 transition group">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate-500">Store Orders</span>
+                <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+                    {{ number_format($periodTotalOrders) }}
+                </div>
+                <div class="text-xs text-slate-500 mt-1 flex items-center gap-1.5 flex-wrap">
+                    <span class="text-emerald-600 font-semibold">{{ $orderStatusCounts['paid'] }} Paid</span>
+                    @if ($orderStatusCounts['pending'] > 0)
+                        <span>&bull;</span>
+                        <span class="text-amber-600 font-medium">{{ $orderStatusCounts['pending'] }} Pending</span>
+                    @endif
+                    @if ($orderStatusCounts['failed'] > 0)
+                        <span>&bull;</span>
+                        <span class="text-rose-600 font-medium">{{ $orderStatusCounts['failed'] }} Failed</span>
+                    @endif
+                </div>
+            </div>
         </div>
 
-        <div class="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-1">
-            <div class="text-[11px] font-medium text-slate-500">Average Order Value (AOV)</div>
-            <div class="text-2xl font-bold text-indigo-600 font-mono">₦{{ number_format($periodAov, 2) }}</div>
-            <div class="text-xs text-slate-400">Per paid transaction</div>
+        <!-- Card 3: AOV -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-xs flex flex-col justify-between hover:border-slate-300 transition group">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate-500">Average Order Value</span>
+                <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+                    ₦{{ number_format($periodAov, 2) }}
+                </div>
+                <div class="text-xs text-slate-500 mt-1">
+                    Per successful customer transaction
+                </div>
+            </div>
         </div>
 
-        <div class="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-2">
-            <div class="text-[11px] font-medium text-slate-500">Payment Breakdown</div>
-            <div class="flex items-center gap-2 text-xs">
-                <span class="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                    {{ $orderStatusCounts['paid'] }} Paid
-                </span>
-                <span class="inline-flex items-center gap-1 font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">
-                    {{ $orderStatusCounts['pending'] }} Pending
-                </span>
-                <span class="inline-flex items-center gap-1 font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded">
-                    {{ $orderStatusCounts['failed'] }} Failed
-                </span>
+        <!-- Card 4: Catalog & Store Size -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-xs flex flex-col justify-between hover:border-slate-300 transition group">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate-500">Catalog &amp; Operations</span>
+                <div class="w-9 h-9 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+                    {{ number_format($tenant->products_count) }} <span class="text-sm font-semibold text-slate-400">SKUs</span>
+                </div>
+                <div class="text-xs text-slate-500 mt-1 flex items-center gap-1.5 flex-wrap">
+                    <span>{{ number_format($tenant->staff_count) }} Staff</span>
+                    <span>&bull;</span>
+                    <span>{{ number_format($tenant->shop_locations_count) }} Outlets</span>
+                    <span>&bull;</span>
+                    <span>{{ number_format($tenant->ocr_import_batches_count) }} OCR</span>
+                </div>
             </div>
         </div>
     </div>
