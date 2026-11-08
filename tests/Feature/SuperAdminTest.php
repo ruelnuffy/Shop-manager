@@ -288,4 +288,77 @@ class SuperAdminTest extends TestCase
         $response->assertSee('Store Sales &amp; Performance Reports', false);
         $response->assertSee('Period Revenue');
     }
+
+    public function test_super_admin_can_provision_store_with_full_brand_identity_and_colors(): void
+    {
+        $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();
+
+        $response = $this->actingAs($superAdmin)->post('/super-admin/tenants', [
+            'name' => 'Zenith Luxe Enterprises',
+            'slug' => 'zenith-luxe',
+            'subdomain' => 'zenith',
+            'plan' => 'pro',
+            'status' => 'active',
+            'admin_name' => 'Zenith Owner',
+            'admin_email' => 'admin@zenithluxe.com',
+            'admin_password' => 'secretPassword123!',
+            'brand_name' => 'Zenith Luxe',
+            'tagline' => 'Handcrafted Haute Couture & Accessories',
+            'logo_url' => 'https://cdn.example.com/zenith-logo.png',
+            'primary_color' => '#059669',
+            'secondary_color' => '#064e3b',
+            'accent_color' => '#d1fae5',
+            'invoice_header' => 'Zenith Luxe Flagship Boutique',
+            'currency' => 'NGN',
+            'currency_symbol' => '₦',
+            'features' => [
+                'storefront' => '1',
+            ],
+        ]);
+
+        $tenant = Tenant::where('slug', 'zenith-luxe')->first();
+        $this->assertNotNull($tenant);
+        $this->assertEquals('Zenith Luxe Enterprises', $tenant->name);
+        $this->assertEquals('Zenith Luxe', $tenant->setting('branding.name'));
+        $this->assertEquals('Handcrafted Haute Couture & Accessories', $tenant->setting('branding.tagline'));
+        $this->assertEquals('https://cdn.example.com/zenith-logo.png', $tenant->setting('branding.logo_url'));
+        $this->assertEquals('#059669', $tenant->setting('branding.palette.primary'));
+        $this->assertEquals('#064e3b', $tenant->setting('branding.palette.secondary'));
+        $this->assertEquals('#d1fae5', $tenant->setting('branding.palette.accent'));
+        $this->assertEquals('Zenith Luxe Flagship Boutique', $tenant->setting('branding.invoice_header'));
+
+        $response->assertRedirect(route('super-admin.tenants.show', $tenant));
+    }
+
+    public function test_super_admin_can_update_store_branding_and_palette(): void
+    {
+        $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();
+        $tenant = Tenant::first();
+
+        $response = $this->actingAs($superAdmin)->put(route('super-admin.tenants.update', $tenant), [
+            'name' => 'Jessi ClassiQ Global',
+            'slug' => $tenant->slug,
+            'subdomain' => 'jessiglobal',
+            'plan' => 'enterprise',
+            'status' => 'active',
+            'brand_name' => 'ClassiQ World',
+            'tagline' => 'The Pinnacle of African Elegance',
+            'primary_color' => '#e06383',
+            'secondary_color' => '#1a1a1a',
+            'accent_color' => '#fbe6eb',
+            'invoice_header' => 'ClassiQ World Maison',
+            'currency' => 'USD',
+            'currency_symbol' => '$',
+        ]);
+
+        $response->assertRedirect(route('super-admin.tenants.show', $tenant));
+
+        $tenant->refresh();
+        $this->assertEquals('ClassiQ World', $tenant->setting('branding.name'));
+        $this->assertEquals('The Pinnacle of African Elegance', $tenant->setting('branding.tagline'));
+        $this->assertEquals('#e06383', $tenant->setting('branding.palette.primary'));
+        $this->assertEquals('ClassiQ World Maison', $tenant->setting('branding.invoice_header'));
+        $this->assertEquals('USD', $tenant->setting('currency'));
+        $this->assertEquals('$', $tenant->setting('currency_symbol'));
+    }
 }

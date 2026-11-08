@@ -6,8 +6,14 @@
         @php
             $currentTenant = app(\App\Services\CurrentTenant::class)->get();
             $brandName = $currentTenant ? $currentTenant->setting('branding.name', $currentTenant->name) : "Jessi's ClassiQ Store";
+            $brandTagline = $currentTenant ? $currentTenant->setting('branding.tagline', 'Curated Boutique & Ready-to-Wear') : 'Curated Boutique & Ready-to-Wear';
+            $primaryColor = $currentTenant ? $currentTenant->setting('branding.palette.primary', '#c5a880') : '#c5a880';
+            $secondaryColor = $currentTenant ? $currentTenant->setting('branding.palette.secondary', '#1a1a1a') : '#1a1a1a';
+            $accentColor = $currentTenant ? $currentTenant->setting('branding.palette.accent', '#e8d8c8') : '#e8d8c8';
+            $logoUrl = $currentTenant ? $currentTenant->setting('branding.logo_url') : null;
+            $resolvedLogo = $logoUrl ? ((str_starts_with($logoUrl, 'http://') || str_starts_with($logoUrl, 'https://')) ? $logoUrl : asset($logoUrl)) : asset('images/logo.png');
         @endphp
-        <title>{{ $brandName }} &mdash; Luxury Boutique</title>
+        <title>{{ $brandName }} &mdash; {{ $brandTagline }}</title>
 
         <!-- Modern Luxury Google Fonts: Syne, Plus Jakarta Sans, Playfair Display -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,10 +21,27 @@
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+        <link rel="icon" type="image/png" href="{{ $resolvedLogo }}">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <style>
+            :root {
+                --brand-primary: {{ $primaryColor }};
+                --brand-secondary: {{ $secondaryColor }};
+                --brand-accent: {{ $accentColor }};
+            }
+            .text-brand-pink, a:hover.hover\:text-brand-pink, .hover\:text-brand-pink:hover {
+                color: var(--brand-primary) !important;
+            }
+            .bg-brand-pink, a:hover.hover\:bg-brand-pink, button:hover.hover\:bg-brand-pink, .hover\:bg-brand-pink:hover {
+                background-color: var(--brand-primary) !important;
+            }
+            .border-brand-pink, .hover\:border-brand-pink\/50:hover {
+                border-color: var(--brand-primary) !important;
+            }
+        </style>
     </head>
     <body class="font-sans antialiased bg-[#fbfbfb] text-brand-charcoal selection:bg-brand-pink-100 selection:text-brand-pink-900 min-h-screen flex flex-col relative pb-20">
 
@@ -119,8 +142,8 @@
 
                     <!-- Statement Oversized Title -->
                     <h1 class="font-display font-extrabold text-4xl sm:text-6xl md:text-8xl lg:text-[104px] tracking-tight text-brand-charcoal leading-[1.05] sm:leading-[0.9] select-none hover:tracking-tighter transition-all duration-700">
-                        <span class="block text-xs sm:text-xl md:text-2xl font-bold uppercase tracking-[0.25em] text-brand-charcoal/40 mb-1 sm:mb-3">Jessi's</span>
-                        ClassiQ <span class="text-brand-pink">Store</span>
+                        <span class="block text-xs sm:text-xl md:text-2xl font-bold uppercase tracking-[0.25em] text-brand-charcoal/40 mb-1 sm:mb-3">{{ $brandTagline }}</span>
+                        {{ $brandName }}
                     </h1>
 
                     <!-- Creator / Boutique Byline -->

@@ -77,6 +77,16 @@ class TenantController extends Controller
             'admin_name' => 'required|string|max:255',
             'admin_email' => 'required|email|max:255|unique:users,email',
             'admin_password' => 'required|string|min:8',
+            'brand_name' => 'nullable|string|max:255',
+            'tagline' => 'nullable|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:3072',
+            'logo_url' => 'nullable|string|max:500',
+            'primary_color' => ['nullable', 'string', 'regex:/^#([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/'],
+            'secondary_color' => ['nullable', 'string', 'regex:/^#([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/'],
+            'accent_color' => ['nullable', 'string', 'regex:/^#([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/'],
+            'invoice_header' => 'nullable|string|max:255',
+            'currency' => 'nullable|string|max:10',
+            'currency_symbol' => 'nullable|string|max:5',
         ]);
 
         $slug = Str::slug($validated['slug']);
@@ -89,6 +99,17 @@ class TenantController extends Controller
             'custom_domain' => ! empty($request->input('features.custom_domain')),
         ];
 
+        $logoUrl = null;
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('logos', 'public');
+            $logoUrl = 'storage/'.$path;
+        } elseif ($request->filled('logo_url')) {
+            $logoUrl = $request->input('logo_url');
+        }
+
+        $brandDisplayName = $request->input('brand_name') ?: $validated['name'];
+        $brandTagline = $request->input('tagline') ?: ('Curated Boutique & Ready-to-Wear • Powered by '.config('app.platform_name', 'ShopManager'));
+
         $tenant = Tenant::create([
             'name' => $validated['name'],
             'slug' => $slug,
@@ -97,12 +118,19 @@ class TenantController extends Controller
             'plan' => $validated['plan'],
             'status' => $validated['status'],
             'settings' => [
-                'currency' => 'NGN',
-                'currency_symbol' => '₦',
+                'currency' => $request->input('currency', 'NGN'),
+                'currency_symbol' => $request->input('currency_symbol', '₦'),
                 'features' => $features,
                 'branding' => [
-                    'name' => $validated['name'],
-                    'tagline' => 'Powered by '.config('app.platform_name', 'ShopManager'),
+                    'name' => $brandDisplayName,
+                    'tagline' => $brandTagline,
+                    'logo_url' => $logoUrl,
+                    'palette' => [
+                        'primary' => $request->input('primary_color', '#c5a880') ?: '#c5a880',
+                        'secondary' => $request->input('secondary_color', '#1a1a1a') ?: '#1a1a1a',
+                        'accent' => $request->input('accent_color', '#e8d8c8') ?: '#e8d8c8',
+                    ],
+                    'invoice_header' => $request->input('invoice_header') ?: ($brandDisplayName.' — Official Store'),
                 ],
             ],
         ]);
@@ -282,7 +310,16 @@ class TenantController extends Controller
             'plan' => 'required|string|in:starter,pro,enterprise,standard',
             'status' => 'required|string|in:active,suspended',
             'features' => 'nullable|array',
+            'brand_name' => 'nullable|string|max:255',
             'tagline' => 'nullable|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:3072',
+            'logo_url' => 'nullable|string|max:500',
+            'primary_color' => ['nullable', 'string', 'regex:/^#([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/'],
+            'secondary_color' => ['nullable', 'string', 'regex:/^#([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/'],
+            'accent_color' => ['nullable', 'string', 'regex:/^#([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/'],
+            'invoice_header' => 'nullable|string|max:255',
+            'currency' => 'nullable|string|max:10',
+            'currency_symbol' => 'nullable|string|max:5',
         ]);
 
         $settings = $tenant->settings ?? [];
@@ -293,10 +330,38 @@ class TenantController extends Controller
             'custom_domain' => ! empty($request->input('features.custom_domain')),
         ];
 
-        if (isset($validated['tagline'])) {
-            data_set($settings, 'branding.tagline', $validated['tagline']);
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('logos', 'public');
+            data_set($settings, 'branding.logo_url', 'storage/'.$path);
+        } elseif ($request->filled('logo_url')) {
+            data_set($settings, 'branding.logo_url', $request->input('logo_url'));
         }
-        data_set($settings, 'branding.name', $validated['name']);
+
+        $brandDisplayName = $request->input('brand_name') ?: $validated['name'];
+        data_set($settings, 'branding.name', $brandDisplayName);
+
+        if ($request->has('tagline')) {
+            data_set($settings, 'branding.tagline', $request->input('tagline'));
+        }
+
+        if ($request->filled('primary_color')) {
+            data_set($settings, 'branding.palette.primary', $request->input('primary_color'));
+        }
+        if ($request->filled('secondary_color')) {
+            data_set($settings, 'branding.palette.secondary', $request->input('secondary_color'));
+        }
+        if ($request->filled('accent_color')) {
+            data_set($settings, 'branding.palette.accent', $request->input('accent_color'));
+        }
+        if ($request->has('invoice_header')) {
+            data_set($settings, 'branding.invoice_header', $request->input('invoice_header'));
+        }
+        if ($request->filled('currency')) {
+            data_set($settings, 'currency', $request->input('currency'));
+        }
+        if ($request->filled('currency_symbol')) {
+            data_set($settings, 'currency_symbol', $request->input('currency_symbol'));
+        }
 
         $tenant->update([
             'name' => $validated['name'],

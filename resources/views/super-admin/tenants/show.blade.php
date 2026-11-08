@@ -155,51 +155,118 @@
     <!-- Details, Admins & Orders Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Col 1: Store Configuration & Features -->
-        <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-5">
-            <div>
-                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">Features &amp; Subscriptions</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Enabled capabilities for this retail domain.</p>
-            </div>
-
-            <div class="space-y-2.5">
-                @php
-                    $features = [
-                        'storefront' => 'Public Online Storefront',
-                        'payroll' => 'Staff Payroll & Auto-Disbursements',
-                        'ocr' => 'OCR Ledger Ingestion & Scanning',
-                        'custom_domain' => 'Custom Domain Routing',
-                    ];
-                @endphp
-                @foreach ($features as $key => $label)
-                    @php $hasFeature = $tenant->hasFeature($key); @endphp
-                    <div class="flex items-center justify-between p-3 rounded-xl {{ $hasFeature ? 'bg-indigo-50/60 border border-indigo-200/60' : 'bg-slate-50 border border-slate-200 text-slate-400' }}">
-                        <span class="text-xs font-semibold {{ $hasFeature ? 'text-slate-900' : 'text-slate-400 line-through' }}">{{ $label }}</span>
-                        @if ($hasFeature)
-                            <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                                </svg>
-                                Enabled
-                            </span>
-                        @else
-                            <span class="text-[10px] font-bold text-slate-400 uppercase">Disabled</span>
-                        @endif
+        <div class="space-y-6">
+            <!-- Brand & Storefront Identity Card -->
+            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <div>
+                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">Brand &amp; Storefront</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Visual theme, logo &amp; color identity.</p>
                     </div>
-                @endforeach
+                    <a href="{{ route('super-admin.tenants.edit', $tenant) }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold transition">
+                        Edit &rarr;
+                    </a>
+                </div>
+
+                @php
+                    $brandLogo = $tenant->setting('branding.logo_url');
+                    $resolvedBrandLogo = $brandLogo ? ((str_starts_with($brandLogo, 'http://') || str_starts_with($brandLogo, 'https://')) ? $brandLogo : asset($brandLogo)) : null;
+                    $pColor = $tenant->setting('branding.palette.primary', '#c5a880');
+                    $sColor = $tenant->setting('branding.palette.secondary', '#1a1a1a');
+                    $aColor = $tenant->setting('branding.palette.accent', '#e8d8c8');
+                @endphp
+
+                <!-- Brand Header Preview -->
+                <div class="flex items-center gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                    @if ($resolvedBrandLogo)
+                        <img src="{{ $resolvedBrandLogo }}" class="h-10 w-auto max-w-[90px] object-contain drop-shadow-2xs rounded" alt="Store Logo" />
+                    @else
+                        <div class="w-10 h-10 rounded-xl text-white font-bold flex items-center justify-center text-sm shadow-2xs" style="background-color: {{ $pColor }}">
+                            {{ strtoupper(substr($tenant->setting('branding.name', $tenant->name), 0, 2)) }}
+                        </div>
+                    @endif
+                    <div class="min-w-0">
+                        <div class="text-xs font-bold text-slate-900 truncate">{{ $tenant->setting('branding.name', $tenant->name) }}</div>
+                        <div class="text-[11px] text-slate-500 truncate">{{ $tenant->setting('branding.tagline', 'Curated Boutique') }}</div>
+                    </div>
+                </div>
+
+                <!-- Palette Swatches -->
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Color Palette</span>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div class="p-2 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                            <div class="w-6 h-6 rounded-full mx-auto border border-black/10 shadow-2xs" style="background-color: {{ $pColor }}"></div>
+                            <span class="text-[10px] font-mono font-semibold text-slate-700 block">{{ $pColor }}</span>
+                            <span class="text-[9px] text-slate-400 block">Primary</span>
+                        </div>
+                        <div class="p-2 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                            <div class="w-6 h-6 rounded-full mx-auto border border-black/10 shadow-2xs" style="background-color: {{ $sColor }}"></div>
+                            <span class="text-[10px] font-mono font-semibold text-slate-700 block">{{ $sColor }}</span>
+                            <span class="text-[9px] text-slate-400 block">Dark</span>
+                        </div>
+                        <div class="p-2 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                            <div class="w-6 h-6 rounded-full mx-auto border border-black/10 shadow-2xs" style="background-color: {{ $aColor }}"></div>
+                            <span class="text-[10px] font-mono font-semibold text-slate-700 block">{{ $aColor }}</span>
+                            <span class="text-[9px] text-slate-400 block">Accent</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Receipt Header -->
+                <div class="pt-2 border-t border-slate-100 space-y-1 text-xs">
+                    <span class="text-slate-400 block text-[11px]">Invoice Header:</span>
+                    <span class="text-slate-800 font-medium block truncate">{{ $tenant->setting('branding.invoice_header', 'Official Store') }}</span>
+                </div>
             </div>
 
-            <div class="pt-4 border-t border-slate-100 space-y-2 text-xs">
-                <div class="flex justify-between">
-                    <span class="text-slate-400">Created:</span>
-                    <span class="text-slate-700 font-mono font-medium">{{ $tenant->created_at->format('M d, Y') }}</span>
+            <!-- Features & Subscriptions Card -->
+            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-5">
+                <div>
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">Features &amp; Subscriptions</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Enabled capabilities for this retail domain.</p>
                 </div>
-                <div class="flex justify-between">
-                    <span class="text-slate-400">Last Modified:</span>
-                    <span class="text-slate-700 font-mono font-medium">{{ $tenant->updated_at->diffForHumans() }}</span>
+
+                <div class="space-y-2.5">
+                    @php
+                        $features = [
+                            'storefront' => 'Public Online Storefront',
+                            'payroll' => 'Staff Payroll & Auto-Disbursements',
+                            'ocr' => 'OCR Ledger Ingestion & Scanning',
+                            'custom_domain' => 'Custom Domain Routing',
+                        ];
+                    @endphp
+                    @foreach ($features as $key => $label)
+                        @php $hasFeature = $tenant->hasFeature($key); @endphp
+                        <div class="flex items-center justify-between p-3 rounded-xl {{ $hasFeature ? 'bg-indigo-50/60 border border-indigo-200/60' : 'bg-slate-50 border border-slate-200 text-slate-400' }}">
+                            <span class="text-xs font-semibold {{ $hasFeature ? 'text-slate-900' : 'text-slate-400 line-through' }}">{{ $label }}</span>
+                            @if ($hasFeature)
+                                <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Enabled
+                                </span>
+                            @else
+                                <span class="text-[10px] font-bold text-slate-400 uppercase">Disabled</span>
+                            @endif
+                        </div>
+                    @endforeach
                 </div>
-                <div class="flex justify-between">
-                    <span class="text-slate-400">Currency:</span>
-                    <span class="text-slate-700 font-mono font-medium">{{ data_get($tenant->settings, 'currency', 'NGN') }} ({{ data_get($tenant->settings, 'currency_symbol', '₦') }})</span>
+
+                <div class="pt-4 border-t border-slate-100 space-y-2 text-xs">
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Created:</span>
+                        <span class="text-slate-700 font-mono font-medium">{{ $tenant->created_at->format('M d, Y') }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Last Modified:</span>
+                        <span class="text-slate-700 font-mono font-medium">{{ $tenant->updated_at->diffForHumans() }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Currency:</span>
+                        <span class="text-slate-700 font-mono font-medium">{{ data_get($tenant->settings, 'currency', 'NGN') }} ({{ data_get($tenant->settings, 'currency_symbol', '₦') }})</span>
+                    </div>
                 </div>
             </div>
         </div>
