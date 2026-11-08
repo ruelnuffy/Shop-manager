@@ -11,6 +11,7 @@ use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\EnsureUserIsAdminOrStaff;
 use App\Models\Product;
 use App\Models\ShopLocation;
+use App\Models\Tenant;
 use App\Models\User;
 use App\Services\CurrentTenant;
 use Illuminate\Support\Facades\Auth;
@@ -71,6 +72,22 @@ Route::middleware('auth')->group(function () {
 Route::get('/dashboard', function () {
     /** @var User $user */
     $user = Auth::user();
+
+    // 1. If super admin, redirect to platform super admin cockpit
+    if ($user?->isSuperAdmin()) {
+        return redirect()->route('super-admin.dashboard');
+    }
+
+    // 2. Ensure active tenant is bound in context for this user
+    if (! app(CurrentTenant::class)->check()) {
+        $tenantId = $user?->tenant_id ?? session('active_tenant_id');
+        $tenant = $tenantId ? Tenant::find($tenantId) : Tenant::first();
+        if ($tenant) {
+            app(CurrentTenant::class)->set($tenant);
+            session(['active_tenant_id' => $tenant->id]);
+        }
+    }
+
     $orders = $user->orders()->with('items')->latest()->get();
     $curatedProducts = Product::with(['category', 'variants'])
         ->latest()

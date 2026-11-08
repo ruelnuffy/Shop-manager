@@ -77,6 +77,15 @@ class SuperAdminTest extends TestCase
         $response->assertSee('Tenant Stores');
     }
 
+    public function test_super_admin_visiting_member_dashboard_is_redirected_to_super_admin(): void
+    {
+        $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();
+        $this->assertNotNull($superAdmin);
+
+        $response = $this->actingAs($superAdmin)->get('/dashboard');
+        $response->assertRedirect(route('super-admin.dashboard'));
+    }
+
     public function test_super_admin_can_view_tenants_directory(): void
     {
         $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();

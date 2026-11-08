@@ -3,9 +3,11 @@
 namespace App\Http\Middleware;
 
 use App\Models\Tenant;
+use App\Models\User;
 use App\Services\CurrentTenant;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class ResolveTenant
@@ -197,6 +199,20 @@ class ResolveTenant
                 $tenant = Tenant::find($sessionTenantId);
                 if ($tenant) {
                     return $tenant;
+                }
+            }
+
+            // Check if authenticated user in session has a tenant binding
+            $userId = $request->session()->get(Auth::getName());
+            if ($userId) {
+                $user = User::withoutTenancy()->find($userId);
+                if ($user && ! $user->isSuperAdmin() && $user->tenant_id) {
+                    $tenant = Tenant::find($user->tenant_id);
+                    if ($tenant) {
+                        $request->session()->put('active_tenant_id', $tenant->id);
+
+                        return $tenant;
+                    }
                 }
             }
         }
