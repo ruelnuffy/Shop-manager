@@ -1,24 +1,10 @@
 <x-admin-layout>
     <x-slot name="header">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-                <h1 class="font-display font-extrabold text-2xl text-slate-900 tracking-tight">
-                    Atelier Overview
-                </h1>
-                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">
-                    Welcome back, {{ Auth::user()->name }}. Here is how your store is doing today.
-                </p>
-            </div>
-
-            <div class="flex items-center gap-2.5">
-                <a href="{{ route('admin.sales.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider transition shadow-sm hover:shadow">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                    <span>Record Sale</span>
-                </a>
-                <a href="{{ route('admin.products.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs uppercase tracking-wider transition shadow-xs">
-                    <span>+ Add Product</span>
-                </a>
-            </div>
+        <div class="flex items-center gap-2">
+            <h1 class="font-display font-extrabold text-lg text-slate-900 tracking-tight">
+                Atelier Overview
+            </h1>
+            <span class="text-xs text-slate-400 font-medium hidden sm:inline">&bull; Daily Workspace</span>
         </div>
     </x-slot>
 
@@ -27,121 +13,257 @@
         $storeName = $currentTenant ? $currentTenant->setting('branding.name', $currentTenant->name) : config('app.platform_name', 'ShopManager');
     @endphp
 
-    <div class="space-y-6 sm:space-y-8">
-        <!-- 4 Key Numbers (Simple, Clear, Big) -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-            <!-- Today's Revenue -->
-            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:border-slate-300 transition">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-semibold text-slate-500">Today's Revenue</span>
-                    <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs font-bold">₦</span>
-                </div>
-                <div class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 tracking-tight">
-                    ₦{{ number_format($todayRevenue, 0) }}
-                </div>
-                <div class="mt-1 text-[11px] text-slate-400">
-                    Online &amp; in-store sales
-                </div>
-            </div>
+    <div class="max-w-6xl mx-auto space-y-8">
+        <!-- Welcome Greeting -->
+        <div class="pt-2">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Welcome back</span>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight">
+                    {{ $storeName }}
+                </h2>
 
-            <!-- Orders to Fulfill -->
-            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:border-slate-300 transition">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-semibold text-slate-500">Orders to Pack</span>
-                    <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+                <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold text-xs border border-emerald-200/60 shadow-2xs">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Atelier Overview &bull; Live</span>
                     </span>
-                </div>
-                <div class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 tracking-tight">
-                    {{ $pendingOrdersCount }}
-                </div>
-                <div class="mt-1 text-[11px] text-slate-400">
-                    {{ $pendingOrdersCount === 1 ? '1 order pending fulfillment' : ($pendingOrdersCount > 0 ? $pendingOrdersCount . ' orders pending' : 'All orders fulfilled') }}
-                </div>
-            </div>
 
-            <!-- This Month -->
-            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:border-slate-300 transition">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-semibold text-slate-500">This Month</span>
-                    <span class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                    </span>
-                </div>
-                <div class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 tracking-tight">
-                    ₦{{ number_format($monthRevenue, 0) }}
-                </div>
-                <div class="mt-1 text-[11px] text-slate-400">
-                    {{ now()->format('F Y') }} sales
-                </div>
-            </div>
-
-            <!-- Inventory Valuation -->
-            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:border-slate-300 transition">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-semibold text-slate-500">Inventory Valuation</span>
-                    <span class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
-                    </span>
-                </div>
-                <div class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 tracking-tight">
-                    ₦{{ number_format($totalInventoryValuation, 0) }}
-                </div>
-                <div class="mt-1 text-[11px] text-slate-400">
-                    Stock value in store
+                    @if ($currentTenant && $currentTenant->hasFeature('storefront'))
+                        <a href="{{ route('home') }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 hover:border-slate-300 text-slate-700 text-xs font-semibold shadow-2xs transition">
+                            <span>View Storefront</span>
+                            <span class="text-slate-400">&nearr;</span>
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
 
-        <!-- 4 Quick Actions (Friendly & Direct) -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-            <a href="{{ route('admin.sales.create') }}" class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 hover:border-emerald-500 hover:shadow-sm transition group">
-                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:bg-emerald-600 group-hover:text-white transition">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
-                </div>
-                <div class="font-bold text-sm text-slate-900">Make Sale (POS)</div>
-                <div class="text-xs text-slate-500 mt-0.5">Sell to a walk-in customer</div>
-            </a>
+        <!-- Sticky Notes Workspace Grid (Playful, Tactile, Seamless) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
 
-            <a href="{{ route('admin.products.create') }}" class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 hover:border-indigo-500 hover:shadow-sm transition group">
-                <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-3 group-hover:bg-indigo-600 group-hover:text-white transition">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                </div>
-                <div class="font-bold text-sm text-slate-900">Add Product</div>
-                <div class="text-xs text-slate-500 mt-0.5">Add items, sizes &amp; prices</div>
-            </a>
+            <!-- Sticky Note 1: Yellow - Make a Sale (POS) -->
+            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#fef9c3] border border-amber-200/80 shadow-md shadow-amber-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                <!-- Frosted tape at top center -->
+                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[-1deg] pointer-events-none"></div>
+                <!-- Folded dog-ear corner effect on bottom-right -->
+                <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-amber-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
 
-            <a href="{{ route('admin.orders.index') }}" class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 hover:border-blue-500 hover:shadow-sm transition group">
-                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+                <div>
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-800/70">Walk-In Register</span>
+                    <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Make a Sale</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                            <span><strong>Today's Revenue:</strong> ₦{{ number_format($todayRevenue, 0) }}</span>
+                        </div>
+                        <div class="text-slate-600 pl-3.5 text-[11px]">Barcode scan, cash, &amp; card checkout</div>
+                        <div class="text-slate-600 pl-3.5 text-[11px]">Instant receipt generation</div>
+                    </div>
                 </div>
-                <div class="font-bold text-sm text-slate-900">Orders</div>
-                <div class="text-xs text-slate-500 mt-0.5">See all customer orders</div>
-            </a>
 
-            <a href="{{ route('admin.stock.index') }}" class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 hover:border-amber-500 hover:shadow-sm transition group">
-                <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3 group-hover:bg-amber-600 group-hover:text-white transition">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                <div class="pt-5">
+                    <a href="{{ route('admin.sales.create') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-amber-950 group-hover:text-black group-hover:underline">
+                        <span>Open register</span>
+                        <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                    </a>
                 </div>
-                <div class="font-bold text-sm text-slate-900">Inventory Stock</div>
-                <div class="text-xs text-slate-500 mt-0.5">Update item quantities</div>
-            </a>
+            </div>
+
+            <!-- Sticky Note 2: Mint Green - Orders -->
+            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#dcfce7] border border-emerald-200/80 shadow-md shadow-emerald-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                <!-- Frosted tape at top center -->
+                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[1deg] pointer-events-none"></div>
+                <!-- Folded dog-ear corner -->
+                <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-emerald-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+
+                <div>
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800/70">Fulfillment &amp; Shipping</span>
+                    <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Orders</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                            <span><strong>{{ $pendingOrdersCount }}</strong> pending to pack</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <span><strong>{{ $processingOrdersCount }}</strong> out in delivery</span>
+                        </div>
+                        <div class="text-slate-600 pl-3.5 text-[11px]">{{ $totalOrdersCount }} all-time customer orders</div>
+                    </div>
+                </div>
+
+                <div class="pt-5">
+                    <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-950 group-hover:text-black group-hover:underline">
+                        <span>Open orders</span>
+                        <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sticky Note 3: Pastel Pink - Products -->
+            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#ffe4e6] border border-rose-200/80 shadow-md shadow-rose-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                <!-- Frosted tape at top center -->
+                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[-0.5deg] pointer-events-none"></div>
+                <!-- Folded dog-ear corner -->
+                <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-rose-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+
+                <div>
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-rose-800/70">Store Catalog</span>
+                    <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Products</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
+                        <div class="text-slate-800 font-semibold">Curated items, sizes &amp; colors</div>
+                        <div class="text-slate-600 text-[11px]">Pricing, discounts, and photo uploads</div>
+                        <div class="text-slate-600 text-[11px]">Active in online store &amp; counter POS</div>
+                    </div>
+                </div>
+
+                <div class="pt-5 flex items-center justify-between">
+                    <a href="{{ route('admin.products.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-rose-950 group-hover:text-black group-hover:underline">
+                        <span>Manage catalog</span>
+                        <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                    </a>
+                    <a href="{{ route('admin.products.create') }}" class="text-[11px] font-bold text-rose-800 hover:text-rose-950">
+                        + Add Item
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sticky Note 4: Pastel Purple - Inventory Valuation & Health -->
+            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#f3e8ff] border border-purple-200/80 shadow-md shadow-purple-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                <!-- Frosted tape at top center -->
+                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[0.8deg] pointer-events-none"></div>
+                <!-- Folded dog-ear corner -->
+                <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-purple-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+
+                <div>
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-purple-800/70">Inventory Health</span>
+                    <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Inventory Valuation</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+                            <span><strong>₦{{ number_format($totalInventoryValuation, 0) }}</strong> total stock worth</span>
+                        </div>
+                        @if ($lowStockVariants->count() > 0)
+                            <div class="text-rose-700 font-bold pl-3.5 text-[11px]">
+                                &bull; {{ $lowStockVariants->count() }} variants low on stock
+                            </div>
+                        @else
+                            <div class="text-emerald-700 font-semibold pl-3.5 text-[11px]">
+                                &bull; All item quantities healthy
+                            </div>
+                        @endif
+                        <div class="text-slate-600 pl-3.5 text-[11px]">Audit counts &amp; restock logs</div>
+                    </div>
+                </div>
+
+                <div class="pt-5">
+                    <a href="{{ route('admin.stock.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-purple-950 group-hover:text-black group-hover:underline">
+                        <span>Check stock</span>
+                        <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sticky Note 5: Pastel Peach / Orange - Sales Reports -->
+            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#ffedd5] border border-orange-200/80 shadow-md shadow-orange-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                <!-- Frosted tape at top center -->
+                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[-1deg] pointer-events-none"></div>
+                <!-- Folded dog-ear corner -->
+                <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-orange-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+
+                <div>
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-orange-800/70">Sales &amp; Finance</span>
+                    <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Analytics</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-orange-600"></span>
+                            <span><strong>₦{{ number_format($monthRevenue, 0) }}</strong> this month</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                            <span><strong>₦{{ number_format($weekRevenue, 0) }}</strong> rolling week</span>
+                        </div>
+                        <div class="text-slate-600 pl-3.5 text-[11px]">Download reports &amp; CSV spreadsheets</div>
+                    </div>
+                </div>
+
+                <div class="pt-5">
+                    <a href="{{ route('admin.reports.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-orange-950 group-hover:text-black group-hover:underline">
+                        <span>View insights</span>
+                        <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sticky Note 6: Pastel Sky Blue - Scan Paper Daybook -->
+            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#e0f2fe] border border-sky-200/80 shadow-md shadow-sky-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                <!-- Frosted tape at top center -->
+                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[0.5deg] pointer-events-none"></div>
+                <!-- Folded dog-ear corner -->
+                <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-sky-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+
+                <div>
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-sky-800/70">Paper Daybook</span>
+                    <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Scan Receipts</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
+                        <div class="text-slate-800 font-semibold">Snap photo of written paper ledger</div>
+                        <div class="text-slate-600 text-[11px]">AI reads items, quantities &amp; prices</div>
+                        <div class="text-slate-600 text-[11px]">Imports automatically into store records</div>
+                    </div>
+                </div>
+
+                <div class="pt-5">
+                    <a href="{{ route('admin.ocr.create') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-sky-950 group-hover:text-black group-hover:underline">
+                        <span>Scan page</span>
+                        <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sticky Note 7: Pastel Lime - Staff & Payroll (Admin Only) -->
+            @if(Auth::user()->isAdmin())
+                <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#ecfccb] border border-lime-200/80 shadow-md shadow-lime-900/5 hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                    <!-- Frosted tape at top center -->
+                    <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/75 backdrop-blur-xs border border-white/90 shadow-2xs rounded-xs rotate-[-0.8deg] pointer-events-none"></div>
+                    <!-- Folded dog-ear corner -->
+                    <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-lime-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-lime-800/70">Store Team</span>
+                        <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Staff &amp; Payroll</h3>
+                        <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
+                            <div class="text-slate-800 font-semibold">Cashiers, attendants &amp; sales staff</div>
+                            <div class="text-slate-600 text-[11px]">Sales commissions &amp; monthly salary sheets</div>
+                            <div class="text-slate-600 text-[11px]">Track attendance &amp; roles</div>
+                        </div>
+                    </div>
+
+                    <div class="pt-5 flex items-center justify-between">
+                        <a href="{{ route('admin.staff.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-lime-950 group-hover:text-black group-hover:underline">
+                            <span>Manage team</span>
+                            <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                        </a>
+                        <a href="{{ route('admin.payroll.index') }}" class="text-[11px] font-bold text-lime-800 hover:text-lime-950">
+                            Payroll &rarr;
+                        </a>
+                    </div>
+                </div>
+            @endif
+
         </div>
 
-        <!-- Gentle Low Stock Notice (Only if items are low) -->
+        <!-- Gentle Low Stock Notice (If Any Items Need Restock) -->
         @if ($lowStockVariants->count() > 0)
-            <div class="bg-amber-50/60 border border-amber-200/70 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="bg-amber-50/80 border border-amber-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
                 <div class="flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                    </span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 text-sm">⚠️</span>
                     <div>
                         <div class="font-bold text-sm text-slate-900">
                             {{ $lowStockVariants->count() }} {{ Str::plural('item', $lowStockVariants->count()) }} running low on stock
                         </div>
                         <div class="text-xs text-slate-500 mt-0.5">
                             @foreach($lowStockVariants->take(3) as $v)
-                                {{ $v->product->name }} ({{ $v->size ?? $v->color ?? 'variant' }}: {{ $v->stock_quantity }} left){{ !$loop->last ? ' • ' : '' }}
+                                {{ $v->product->name }} ({{ $v->size ?? $v->color ?? 'variant' }}: {{ $v->stock_quantity }} left){{ !$loop->last ? ' &bull; ' : '' }}
                             @endforeach
                             @if($lowStockVariants->count() > 3)
                                 and {{ $lowStockVariants->count() - 3 }} more...
@@ -156,93 +278,51 @@
             </div>
         @endif
 
-        <!-- Recent Orders & Activity -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- Recent Orders (Main View) -->
-            <div class="lg:col-span-8 bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs space-y-4">
-                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <div>
-                        <h2 class="font-bold text-base text-slate-900">
-                            Recent Customer Orders
-                        </h2>
-                        <p class="text-xs text-slate-500 mt-0.5">Latest sales made online and in store</p>
-                    </div>
-                    <a href="{{ route('admin.orders.index') }}" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition">
-                        View all &rarr;
-                    </a>
+        <!-- Recent Activity Feed (Clean & Simple) -->
+        <div class="bg-white rounded-2xl p-5 sm:p-7 border border-slate-200/80 shadow-xs space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                    <h3 class="font-bold text-base text-slate-900">Recent Customer Purchases</h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Latest sales made at the counter and online</p>
                 </div>
-
-                @if ($recentOrders->count() > 0)
-                    <div class="divide-y divide-slate-100">
-                        @foreach ($recentOrders as $order)
-                            <div class="py-3.5 first:pt-0 last:pb-0 flex items-center justify-between gap-4 text-xs">
-                                <div class="min-w-0 flex-1">
-                                    <div class="flex items-center gap-2">
-                                        <a href="{{ route('admin.orders.show', $order->id) }}" class="font-bold text-slate-900 hover:text-indigo-600 transition">
-                                            #{{ $order->order_number }}
-                                        </a>
-                                        <span class="text-slate-400">&bull;</span>
-                                        <span class="text-slate-600 font-medium truncate">{{ $order->shipping_name ?? 'Walk-in Customer' }}</span>
-                                    </div>
-                                    <div class="text-slate-400 text-[11px] mt-0.5">
-                                        {{ $order->items->count() }} {{ Str::plural('item', $order->items->count()) }} &bull; {{ $order->created_at->diffForHumans() }}
-                                    </div>
-                                </div>
-
-                                <div class="flex items-center gap-3 shrink-0">
-                                    <span class="font-bold text-sm text-slate-900">₦{{ number_format($order->total_amount, 0) }}</span>
-                                    <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $order->payment_status === 'paid' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800' }}">
-                                        {{ $order->status }}
-                                    </span>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @else
-                    <div class="text-center py-10">
-                        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 text-base">🛍️</div>
-                        <div class="text-sm font-semibold text-slate-700">No orders recorded yet</div>
-                        <p class="text-xs text-slate-400 mt-1">When customers place orders, they will appear here.</p>
-                    </div>
-                @endif
+                <a href="{{ route('admin.orders.index') }}" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition">
+                    View all ({{ $totalOrdersCount }}) &rarr;
+                </a>
             </div>
 
-            <!-- Recent Stock Activity (Clean Side Card) -->
-            <div class="lg:col-span-4 bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs space-y-4">
-                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <div>
-                        <h2 class="font-bold text-base text-slate-900">
-                            Stock Updates
-                        </h2>
-                        <p class="text-xs text-slate-500 mt-0.5">Recent stock adjustments</p>
-                    </div>
-                    <a href="{{ route('admin.stock.index') }}" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition">
-                        History &rarr;
-                    </a>
-                </div>
-
-                @if ($recentStockMovements->count() > 0)
-                    <div class="divide-y divide-slate-100">
-                        @foreach ($recentStockMovements as $move)
-                            <div class="py-3 first:pt-0 last:pb-0 flex items-center justify-between gap-3 text-xs">
-                                <div class="min-w-0 flex-1">
-                                    <div class="font-semibold text-slate-900 truncate">{{ $move->variant?->product?->name ?? 'Item' }}</div>
-                                    <div class="text-[11px] text-slate-400 mt-0.5 truncate">
-                                        {{ $move->reason ?? 'Updated' }} &bull; {{ $move->created_at->diffForHumans() }}
-                                    </div>
+            @if ($recentOrders->count() > 0)
+                <div class="divide-y divide-slate-100">
+                    @foreach ($recentOrders as $order)
+                        <div class="py-3.5 first:pt-0 last:pb-0 flex items-center justify-between gap-4 text-xs">
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-2">
+                                    <a href="{{ route('admin.orders.show', $order->id) }}" class="font-bold text-slate-900 hover:text-indigo-600 transition">
+                                        #{{ $order->order_number }}
+                                    </a>
+                                    <span class="text-slate-300">&bull;</span>
+                                    <span class="text-slate-600 font-medium truncate">{{ $order->shipping_name ?? 'Walk-in Customer' }}</span>
                                 </div>
-                                <span class="px-2 py-0.5 rounded-md text-xs font-bold font-mono shrink-0 {{ $move->type === 'in' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700' }}">
-                                    {{ $move->type === 'in' ? '+' : '-' }}{{ $move->quantity }}
+                                <div class="text-slate-400 text-[11px] mt-0.5">
+                                    {{ $order->items->count() }} {{ Str::plural('item', $order->items->count()) }} &bull; {{ $order->created_at->diffForHumans() }}
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3 shrink-0">
+                                <span class="font-bold text-sm text-slate-900">₦{{ number_format($order->total_amount, 0) }}</span>
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $order->payment_status === 'paid' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' : 'bg-amber-50 text-amber-800 border border-amber-200/60' }}">
+                                    {{ $order->status }}
                                 </span>
                             </div>
-                        @endforeach
-                    </div>
-                @else
-                    <div class="text-center py-10 text-xs text-slate-400">
-                        No recent stock adjustments.
-                    </div>
-                @endif
-            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-10">
+                    <div class="w-12 h-12 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center mx-auto mb-2 text-base">🛍️</div>
+                    <div class="text-sm font-semibold text-slate-700">No orders recorded yet</div>
+                    <p class="text-xs text-slate-400 mt-1">When transactions occur, they will display here in real time.</p>
+                </div>
+            @endif
         </div>
     </div>
 </x-admin-layout>
