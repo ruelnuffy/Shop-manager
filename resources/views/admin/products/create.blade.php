@@ -23,6 +23,9 @@
             name: '{{ old('name', '') }}',
             category_id: '{{ old('category_id', '') }}',
             category_name: '',
+            categoriesList: {{ json_encode($categories->map(fn($c) => ['id' => (string) $c->id, 'name' => $c->name])->values()) }},
+            customCategoryInput: '',
+            showCustomInput: false,
             base_price: '{{ old('base_price', '') }}',
             description: '{{ old('description', '') }}',
             featuredPreview: null,
@@ -30,6 +33,33 @@
                 { size: 'M', color: 'Standard', sku: 'PRD-' + Math.floor(1000 + Math.random() * 9000) + '-M', stock: 10, price_override: '' }
             ],
             commonSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'One Size'],
+
+            init() {
+                if (this.categoriesList.length === 0) {
+                    this.categoriesList = [
+                        { id: 'new:General', name: 'General' },
+                        { id: 'new:Clothing', name: 'Clothing' },
+                        { id: 'new:Shoes', name: 'Shoes' },
+                        { id: 'new:Accessories', name: 'Accessories' },
+                        { id: 'new:Bags', name: 'Bags' }
+                    ];
+                }
+            },
+
+            addCustomCategory() {
+                if (!this.customCategoryInput.trim()) return;
+                const newName = this.customCategoryInput.trim();
+                const existing = this.categoriesList.find(c => c.name.toLowerCase() === newName.toLowerCase());
+                if (existing) {
+                    this.selectCategory(existing.id, existing.name);
+                } else {
+                    const tempId = 'new:' + newName;
+                    this.categoriesList.push({ id: tempId, name: newName });
+                    this.selectCategory(tempId, newName);
+                }
+                this.customCategoryInput = '';
+                this.showCustomInput = false;
+            },
 
             hasSize(size) {
                 return this.variants.some(v => v.size === size);
@@ -189,25 +219,65 @@
                             Which category does this belong to?
                         </h2>
                         <p class="text-xs sm:text-sm text-slate-400">
-                            Select the collection to organize this item in your store.
+                            Select an existing category or create a new one.
                         </p>
                     </div>
 
                     <input type="hidden" name="category_id" :value="category_id">
 
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                        @foreach ($categories as $cat)
+                        <template x-for="cat in categoriesList" :key="cat.id">
                             <button
                                 type="button"
-                                @click="selectCategory('{{ $cat->id }}', '{{ $cat->name }}')"
-                                :class="category_id == '{{ $cat->id }}' ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/15' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 shadow-xs'"
+                                @click="selectCategory(cat.id, cat.name)"
+                                :class="category_id == cat.id ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/15' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 shadow-xs'"
                                 class="p-4 rounded-2xl text-left font-bold text-xs sm:text-sm transition flex flex-col justify-between h-24 cursor-pointer"
                             >
                                 <span class="text-base">🏷️</span>
-                                <span class="truncate">{{ $cat->name }}</span>
+                                <span class="truncate" x-text="cat.name"></span>
                             </button>
-                        @endforeach
+                        </template>
+
+                        <!-- + Add Custom Category Button Card -->
+                        <button
+                            type="button"
+                            @click="showCustomInput = true; $nextTick(() => $refs.customCatInput?.focus())"
+                            x-show="!showCustomInput"
+                            class="p-4 rounded-2xl text-left font-bold text-xs sm:text-sm transition flex flex-col justify-between h-24 cursor-pointer bg-slate-50/80 hover:bg-slate-100 text-indigo-600 shadow-xs"
+                        >
+                            <span class="text-base">➕</span>
+                            <span>+ New Category</span>
+                        </button>
                     </div>
+
+                    <!-- Inline Custom Category Creator -->
+                    <div x-show="showCustomInput" class="pt-2" style="display: none;">
+                        <div class="flex items-center gap-2">
+                            <input
+                                type="text"
+                                x-ref="customCatInput"
+                                x-model="customCategoryInput"
+                                placeholder="Type category name (e.g. Watches, Perfumes)..."
+                                @keydown.enter.prevent="addCustomCategory()"
+                                class="flex-1 px-4 py-3 rounded-2xl bg-slate-50 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900/10 shadow-inner"
+                            >
+                            <button
+                                type="button"
+                                @click="addCustomCategory()"
+                                class="px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-md cursor-pointer shrink-0"
+                            >
+                                Add &bull; Select
+                            </button>
+                            <button
+                                type="button"
+                                @click="showCustomInput = false"
+                                class="px-3 py-3 rounded-2xl text-slate-400 hover:text-slate-600 text-xs font-bold shrink-0"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+
                     @error('category_id') <p class="text-rose-600 text-xs mt-2">{{ $message }}</p> @enderror
                 </div>
 

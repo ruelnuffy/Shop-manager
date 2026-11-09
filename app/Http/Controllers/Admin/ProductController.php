@@ -43,6 +43,20 @@ class ProductController extends Controller
 
     public function create(): View
     {
+        $tenantId = app(CurrentTenant::class)->id();
+        if ($tenantId && Category::where('tenant_id', $tenantId)->count() === 0) {
+            $defaultCategories = ['General', 'Clothing', 'Shoes', 'Accessories', 'Bags'];
+            foreach ($defaultCategories as $catName) {
+                Category::firstOrCreate([
+                    'tenant_id' => $tenantId,
+                    'name' => $catName,
+                ], [
+                    'slug' => Str::slug($catName).'-'.$tenantId,
+                    'is_active' => true,
+                ]);
+            }
+        }
+
         $categories = Category::where('is_active', true)->get();
 
         return view('admin.products.create', compact('categories'));
@@ -50,6 +64,20 @@ class ProductController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $tenantId = app(CurrentTenant::class)->id();
+
+        if ($request->filled('new_category_name') || (! is_numeric($request->input('category_id')) && $request->filled('category_id'))) {
+            $categoryName = trim((string) ($request->input('new_category_name') ?: $request->input('category_id')));
+            $category = Category::firstOrCreate([
+                'tenant_id' => $tenantId,
+                'name' => $categoryName,
+            ], [
+                'slug' => Str::slug($categoryName).'-'.Str::random(4),
+                'is_active' => true,
+            ]);
+            $request->merge(['category_id' => $category->id]);
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',

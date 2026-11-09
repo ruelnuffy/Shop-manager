@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\Tenant;
 use App\Models\User;
@@ -144,6 +145,16 @@ class TenantController extends Controller
             'role' => 'admin',
             'email_verified_at' => now(),
         ]);
+
+        // Provision Initial Starter Categories
+        foreach (['General', 'Clothing', 'Shoes', 'Accessories', 'Bags'] as $catName) {
+            Category::create([
+                'tenant_id' => $tenant->id,
+                'name' => $catName,
+                'slug' => Str::slug($catName).'-'.$tenant->id,
+                'is_active' => true,
+            ]);
+        }
 
         return redirect()->route('super-admin.tenants.show', $tenant)
             ->with('status', "Store '{$tenant->name}' provisioned successfully with owner {$validated['admin_email']}!");
