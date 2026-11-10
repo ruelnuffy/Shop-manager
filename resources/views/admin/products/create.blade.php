@@ -233,7 +233,7 @@
                                 :class="category_id == cat.id ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/15' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 shadow-xs'"
                                 class="p-4 rounded-2xl text-left font-bold text-xs sm:text-sm transition flex flex-col justify-between h-24 cursor-pointer"
                             >
-                                <span class="text-base">🏷️</span>
+                                <svg class="w-5 h-5 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
                                 <span class="truncate" x-text="cat.name"></span>
                             </button>
                         </template>
@@ -245,7 +245,7 @@
                             x-show="!showCustomInput"
                             class="p-4 rounded-2xl text-left font-bold text-xs sm:text-sm transition flex flex-col justify-between h-24 cursor-pointer bg-slate-50/80 hover:bg-slate-100 text-indigo-600 shadow-xs"
                         >
-                            <span class="text-base">➕</span>
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                             <span>+ New Category</span>
                         </button>
                     </div>
@@ -271,9 +271,12 @@
                             <button
                                 type="button"
                                 @click="showCustomInput = false"
-                                class="px-3 py-3 rounded-2xl text-slate-400 hover:text-slate-600 text-xs font-bold shrink-0"
+                                class="p-3 rounded-2xl text-slate-400 hover:text-slate-600 transition shrink-0 cursor-pointer"
+                                title="Cancel"
                             >
-                                ✕
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -451,7 +454,9 @@
                                 @change="handleFeaturedChange($event)"
                                 class="hidden"
                             >
-                            <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">📸</span>
+                            <div class="w-10 h-10 rounded-xl bg-slate-100 group-hover:bg-slate-200 text-slate-600 flex items-center justify-center mb-1 group-hover:scale-105 transition-all">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            </div>
                             <span class="text-xs font-bold text-slate-800">Click to choose product image</span>
                             <span class="text-[10px] text-slate-400 mt-0.5">PNG, JPG, WEBP up to 10MB</span>
                         </label>
@@ -488,7 +493,9 @@
                                 <span x-text="variants.length + ' variants (' + totalStock() + ' in stock)'"></span>
                             </div>
                         </div>
-                        <span class="text-base">✓</span>
+                        <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs shrink-0">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        </div>
                     </div>
                 </div>
 

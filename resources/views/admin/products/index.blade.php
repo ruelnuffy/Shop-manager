@@ -39,7 +39,11 @@
                         Filter
                     </button>
                     @if(request()->hasAny(['q', 'category_id', 'status']))
-                        <a href="{{ route('admin.products.index') }}" class="p-2 rounded-xl bg-[#f4f4f4] text-xs font-bold">✕</a>
+                        <a href="{{ route('admin.products.index') }}" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700 flex items-center justify-center transition" title="Clear filters">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </a>
                     @endif
                 </div>
             </form>

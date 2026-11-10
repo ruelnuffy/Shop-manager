@@ -23,11 +23,6 @@
                 </h2>
 
                 <div class="flex items-center gap-2">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold text-xs shadow-sm shadow-emerald-950/5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span>Atelier Overview &bull; Live</span>
-                    </span>
-
                     @if ($currentTenant && $currentTenant->hasFeature('storefront'))
                         <a href="{{ route('home') }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-slate-700 text-xs font-semibold shadow-md shadow-slate-900/5 hover:shadow-lg transition">
                             <span>View Storefront</span>
@@ -256,7 +251,9 @@
         @if ($lowStockVariants->count() > 0)
             <div class="bg-amber-50/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg shadow-amber-950/5">
                 <div class="flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 text-sm shadow-xs">⚠️</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 shadow-xs">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    </span>
                     <div>
                         <div class="font-bold text-sm text-slate-900">
                             {{ $lowStockVariants->count() }} {{ Str::plural('item', $lowStockVariants->count()) }} running low on stock
@@ -318,7 +315,9 @@
                 </div>
             @else
                 <div class="text-center py-10">
-                    <div class="w-12 h-12 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center mx-auto mb-2 text-base shadow-xs">🛍️</div>
+                    <div class="w-12 h-12 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center mx-auto mb-2 shadow-xs">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                    </div>
                     <div class="text-sm font-semibold text-slate-700">No orders recorded yet</div>
                     <p class="text-xs text-slate-400 mt-1">When transactions occur, they will display here in real time.</p>
                 </div>

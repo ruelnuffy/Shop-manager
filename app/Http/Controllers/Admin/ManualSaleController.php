@@ -48,7 +48,8 @@ class ManualSaleController extends Controller
             return redirect()->back()->withInput()->with('error', "Only {$variant->stock_quantity} available in stock.");
         }
 
-        DB::transaction(function () use ($variant, $request, $qty) {
+        $saleId = null;
+        DB::transaction(function () use ($variant, $request, $qty, &$saleId) {
             $prev = $variant->stock_quantity;
             $newStock = $prev - $qty;
 
@@ -68,6 +69,8 @@ class ManualSaleController extends Controller
                 'notes' => 'Walk-in sale paid via '.strtoupper($request->payment_method).($request->customer_name ? " to {$request->customer_name}" : '').($request->notes ? " | {$request->notes}" : ''),
             ]);
 
+            $saleId = $sale->id;
+
             // Record stock movement
             StockMovement::create([
                 'product_variant_id' => $variant->id,
@@ -82,6 +85,8 @@ class ManualSaleController extends Controller
             ]);
         });
 
-        return redirect()->route('admin.sales.create')->with('success', "In-store boutique sale recorded for {$variant->product->name}. Stock updated.");
+        return redirect()->route('admin.sales.create')
+            ->with('success', "In-store boutique sale recorded for {$variant->product->name}. Stock updated.")
+            ->with('receipt_sale_id', $saleId);
     }
 }

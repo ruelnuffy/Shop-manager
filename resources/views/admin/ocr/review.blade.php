@@ -172,8 +172,11 @@
                             <div class="p-4 rounded-xl bg-slate-50/60 border border-slate-200/80 space-y-3 relative hover:border-slate-300 transition">
                                 <div class="flex items-center justify-between">
                                     <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400" x-text="'Line #' + (idx + 1)"></span>
-                                    <button type="button" @click="removeRow(idx)" class="text-xs text-rose-500 hover:text-rose-700 font-semibold" title="Delete Row">
-                                        ✕ Remove
+                                    <button type="button" @click="removeRow(idx)" class="inline-flex items-center gap-1 text-xs text-rose-500 hover:text-rose-700 font-semibold" title="Delete Row">
+                                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                        <span>Remove</span>
                                     </button>
                                 </div>
 
