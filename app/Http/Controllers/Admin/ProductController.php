@@ -67,7 +67,8 @@ class ProductController extends Controller
         $tenantId = app(CurrentTenant::class)->id();
 
         if ($request->filled('new_category_name') || (! is_numeric($request->input('category_id')) && $request->filled('category_id'))) {
-            $categoryName = trim((string) ($request->input('new_category_name') ?: $request->input('category_id')));
+            $rawName = (string) ($request->input('new_category_name') ?: $request->input('category_id'));
+            $categoryName = trim(preg_replace('/^new:\s*/i', '', $rawName));
             $category = Category::firstOrCreate([
                 'tenant_id' => $tenantId,
                 'name' => $categoryName,
