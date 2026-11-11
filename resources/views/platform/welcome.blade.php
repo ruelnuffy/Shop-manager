@@ -46,14 +46,14 @@
         <header class="sticky top-2 sm:top-4 z-50 px-3 sm:px-6 max-w-7xl mx-auto">
             <div class="relative bg-white/85 backdrop-blur-2xl border border-white/60 shadow-xl shadow-slate-900/5 rounded-full px-3.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between ring-1 ring-slate-900/5 transition-all">
 
-                <!-- Brand Monogram & Title -->
-                <a href="{{ route('home') }}" class="flex items-center gap-2 sm:gap-2.5 group shrink-0">
-                    <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-display font-black text-xs sm:text-sm shadow-md shadow-blue-600/30 group-hover:scale-105 transition-transform">
-                        SM
-                    </div>
-                    <span class="font-display font-extrabold text-base sm:text-lg tracking-tight text-slate-950 truncate max-w-[130px] xs:max-w-none">
-                        {{ config('app.platform_name', 'ShopManager') }}
-                    </span>
+                <!-- Brand Logo (Uploaded Official Brand Mark) -->
+                <a href="{{ route('home') }}" class="flex items-center gap-2 group shrink-0">
+                    <img
+                        src="{{ asset('images/shopmanager-logo.png') }}"
+                        alt="{{ config('app.platform_name', 'ShopManager') }}"
+                        class="h-7 sm:h-8 md:h-9 w-auto object-contain max-w-[170px] sm:max-w-[210px] drop-shadow-xs group-hover:opacity-95 transition"
+                    />
+                    <span class="sr-only">{{ config('app.platform_name', 'ShopManager') }} Unified Retail, Inventory</span>
                 </a>
 
                 <!-- Desktop Navigation Links (iOS segmented style) -->
@@ -87,15 +87,16 @@
                     <!-- Mobile iOS Control Center Menu Toggle / Collapse Button -->
                     <button
                         type="button"
-                        @click.stop="mobileNav = !mobileNav"
-                        :aria-expanded="mobileNav ? 'true' : 'false'"
+                        id="mobileNavToggleBtn"
+                        onclick="toggleShopMobileMenu(event)"
+                        aria-expanded="false"
                         aria-label="Toggle navigation menu"
-                        class="lg:hidden w-9 h-9 rounded-full bg-slate-100/90 hover:bg-slate-200/80 active:scale-90 flex items-center justify-center transition border border-slate-200/60 text-slate-700 cursor-pointer"
+                        class="lg:hidden w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-90 flex items-center justify-center transition border border-slate-200 text-slate-700 cursor-pointer select-none"
                     >
-                        <svg x-show="!mobileNav" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg id="navBurgerIcon" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 7h16M4 17h16" />
                         </svg>
-                        <svg x-show="mobileNav" x-cloak class="w-4 h-4 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg id="navCloseIcon" class="w-4 h-4 text-slate-900 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
@@ -105,24 +106,15 @@
 
             <!-- iOS 27 Frosted Acrylic Control Center Sheet (Mobile Only) -->
             <div
-                x-show="mobileNav"
-                x-cloak
-                x-transition:enter="transition ease-out duration-300 transform"
-                x-transition:enter-start="opacity-0 -translate-y-3 scale-95"
-                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                x-transition:leave="transition ease-in duration-200 transform"
-                x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-                x-transition:leave-end="opacity-0 -translate-y-3 scale-95"
-                @click.outside="mobileNav = false"
-                @keydown.escape.window="mobileNav = false"
-                class="lg:hidden mt-2 p-3 sm:p-4 rounded-3xl bg-white/95 backdrop-blur-3xl border border-white/80 shadow-2xl shadow-slate-900/10 ring-1 ring-slate-900/10 space-y-2.5"
+                id="mobileNavSheet"
+                class="hidden lg:hidden mt-2 p-3 sm:p-4 rounded-3xl bg-white/95 backdrop-blur-3xl border border-white/80 shadow-2xl shadow-slate-900/15 ring-1 ring-slate-900/10 space-y-2.5 transition-all"
             >
                 <!-- Sheet Header with explicit Close / Done Button -->
                 <div class="flex items-center justify-between pb-2 px-2 border-b border-slate-100">
                     <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Navigation</span>
                     <button
                         type="button"
-                        @click="mobileNav = false"
+                        onclick="toggleShopMobileMenu(event, false)"
                         class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer flex items-center gap-1 active:scale-95"
                     >
                         <span>Close</span>
@@ -135,7 +127,7 @@
                 <!-- Grouped Navigation Tiles -->
                 <div class="grid grid-cols-1 gap-1">
                     <a
-                        @click="mobileNav = false"
+                        onclick="toggleShopMobileMenu(event, false)"
                         href="#features"
                         class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
                     >
@@ -152,7 +144,7 @@
                     </a>
 
                     <a
-                        @click="mobileNav = false"
+                        onclick="toggleShopMobileMenu(event, false)"
                         href="#pos"
                         class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
                     >
@@ -169,7 +161,7 @@
                     </a>
 
                     <a
-                        @click="mobileNav = false"
+                        onclick="toggleShopMobileMenu(event, false)"
                         href="#pricing"
                         class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
                     >
@@ -186,7 +178,7 @@
                     </a>
 
                     <a
-                        @click="mobileNav = false"
+                        onclick="toggleShopMobileMenu(event, false)"
                         href="#testimonials"
                         class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
                     >
@@ -203,7 +195,7 @@
                     </a>
 
                     <a
-                        @click="mobileNav = false"
+                        onclick="toggleShopMobileMenu(event, false)"
                         href="#faq"
                         class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
                     >
@@ -220,7 +212,7 @@
                     </a>
 
                     <a
-                        @click="mobileNav = false"
+                        onclick="toggleShopMobileMenu(event, false)"
                         href="#stores"
                         class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
                     >
@@ -254,6 +246,50 @@
                 </div>
             </div>
         </header>
+
+        <script>
+            function toggleShopMobileMenu(event, forceState) {
+                if (event && event.stopPropagation) {
+                    event.stopPropagation();
+                }
+                var sheet = document.getElementById('mobileNavSheet');
+                var burger = document.getElementById('navBurgerIcon');
+                var close = document.getElementById('navCloseIcon');
+                var btn = document.getElementById('mobileNavToggleBtn');
+                if (!sheet) return;
+
+                var shouldOpen = forceState !== undefined ? forceState : sheet.classList.contains('hidden');
+
+                if (shouldOpen) {
+                    sheet.classList.remove('hidden');
+                    if (burger) burger.classList.add('hidden');
+                    if (close) close.classList.remove('hidden');
+                    if (btn) btn.setAttribute('aria-expanded', 'true');
+                } else {
+                    sheet.classList.add('hidden');
+                    if (burger) burger.classList.remove('hidden');
+                    if (close) close.classList.add('hidden');
+                    if (btn) btn.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            // Dismiss sheet when clicking or tapping outside on touchscreens
+            document.addEventListener('click', function(e) {
+                var sheet = document.getElementById('mobileNavSheet');
+                var btn = document.getElementById('mobileNavToggleBtn');
+                if (!sheet || sheet.classList.contains('hidden')) return;
+                if (!sheet.contains(e.target) && !btn.contains(e.target)) {
+                    toggleShopMobileMenu(null, false);
+                }
+            });
+
+            // Dismiss sheet on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    toggleShopMobileMenu(null, false);
+                }
+            });
+        </script>
 
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 1: ROYAL BLUE HERO WITH DASHBOARD COMPOSITION      -->
@@ -1229,9 +1265,13 @@
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
                     <!-- Col 1: Brand Info -->
                     <div class="col-span-2 space-y-4">
-                        <div class="flex items-center gap-2.5 font-display font-extrabold text-base text-slate-900">
-                            <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs">SM</div>
-                            <span>{{ config('app.platform_name', 'ShopManager') }}</span>
+                        <div class="flex items-center gap-2.5">
+                            <img
+                                src="{{ asset('images/shopmanager-logo.png') }}"
+                                alt="{{ config('app.platform_name', 'ShopManager') }}"
+                                class="h-8 w-auto object-contain"
+                            />
+                            <span class="sr-only">{{ config('app.platform_name', 'ShopManager') }}</span>
                         </div>
                         <p class="text-xs text-slate-500 max-w-sm leading-relaxed">
                             The modern retail POS and multi-store inventory operating system for African boutiques, fashion merchants, and walk-in retailers.
