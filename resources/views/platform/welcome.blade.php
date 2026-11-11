@@ -23,6 +23,9 @@
             .bg-warm-sand {
                 background-color: #f7f5f0;
             }
+            [x-cloak] {
+                display: none !important;
+            }
         </style>
     </head>
     <body
@@ -81,17 +84,19 @@
                         </a>
                     @endauth
 
-                    <!-- Mobile iOS Control Center Menu Toggle -->
+                    <!-- Mobile iOS Control Center Menu Toggle / Collapse Button -->
                     <button
                         type="button"
-                        @click="mobileNav = !mobileNav"
-                        :aria-expanded="mobileNav"
+                        @click.stop="mobileNav = !mobileNav"
+                        :aria-expanded="mobileNav ? 'true' : 'false'"
                         aria-label="Toggle navigation menu"
-                        class="lg:hidden w-9 h-9 rounded-full bg-slate-100/90 hover:bg-slate-200/80 active:scale-90 flex items-center justify-center transition border border-slate-200/60 text-slate-700"
+                        class="lg:hidden w-9 h-9 rounded-full bg-slate-100/90 hover:bg-slate-200/80 active:scale-90 flex items-center justify-center transition border border-slate-200/60 text-slate-700 cursor-pointer"
                     >
-                        <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-90': mobileNav }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path x-show="!mobileNav" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 7h16M4 17h16" />
-                            <path x-show="mobileNav" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12" style="display: none;" />
+                        <svg x-show="!mobileNav" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 7h16M4 17h16" />
+                        </svg>
+                        <svg x-show="mobileNav" x-cloak class="w-4 h-4 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
@@ -101,6 +106,7 @@
             <!-- iOS 27 Frosted Acrylic Control Center Sheet (Mobile Only) -->
             <div
                 x-show="mobileNav"
+                x-cloak
                 x-transition:enter="transition ease-out duration-300 transform"
                 x-transition:enter-start="opacity-0 -translate-y-3 scale-95"
                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
@@ -108,9 +114,24 @@
                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
                 x-transition:leave-end="opacity-0 -translate-y-3 scale-95"
                 @click.outside="mobileNav = false"
-                class="lg:hidden mt-2 p-3 sm:p-4 rounded-3xl bg-white/95 backdrop-blur-3xl border border-white/80 shadow-2xl shadow-slate-900/10 ring-1 ring-slate-900/10 space-y-2"
-                style="display: none;"
+                @keydown.escape.window="mobileNav = false"
+                class="lg:hidden mt-2 p-3 sm:p-4 rounded-3xl bg-white/95 backdrop-blur-3xl border border-white/80 shadow-2xl shadow-slate-900/10 ring-1 ring-slate-900/10 space-y-2.5"
             >
+                <!-- Sheet Header with explicit Close / Done Button -->
+                <div class="flex items-center justify-between pb-2 px-2 border-b border-slate-100">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Navigation</span>
+                    <button
+                        type="button"
+                        @click="mobileNav = false"
+                        class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer flex items-center gap-1 active:scale-95"
+                    >
+                        <span>Close</span>
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
                 <!-- Grouped Navigation Tiles -->
                 <div class="grid grid-cols-1 gap-1">
                     <a
