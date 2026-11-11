@@ -6,7 +6,7 @@
 
         <title>{{ config('app.platform_name', 'ShopManager') }} &mdash; Modern Retail POS &amp; Inventory Operating System</title>
 
-        <!-- Google Fonts -->
+        <!-- Google Fonts: Plus Jakarta Sans for UI + Syne for bold headlines -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
@@ -20,504 +20,1002 @@
             .font-display {
                 font-family: 'Syne', 'Plus Jakarta Sans', sans-serif;
             }
+            .bg-warm-sand {
+                background-color: #f7f5f0;
+            }
         </style>
     </head>
     <body
         x-data="{
+            billingCycle: 'monthly',
+            openFaq: null,
             mobileNav: false,
-            activeTab: 'pos',
-            demoItem: 'Luxury Snake-Accent Bag',
-            demoPrice: 45000,
-            demoQty: 1,
-            demoMethod: 'split',
-            demoSuccess: false,
-            triggerDemoCharge() {
-                this.demoSuccess = true;
-                setTimeout(() => { this.demoSuccess = false; }, 3500);
+            toggleFaq(idx) {
+                this.openFaq = this.openFaq === idx ? null : idx;
             }
         }"
-        class="bg-[#fafbfe] text-slate-900 antialiased selection:bg-slate-900 selection:text-white min-h-screen flex flex-col"
+        class="bg-white text-slate-900 antialiased selection:bg-blue-600 selection:text-white"
     >
 
-        <!-- Ambient Background Soft Gradient Orbs -->
-        <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-            <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[550px] bg-gradient-to-b from-emerald-100/40 via-indigo-50/30 to-transparent rounded-full blur-3xl"></div>
-            <div class="absolute top-[45%] -left-40 w-[600px] h-[600px] bg-violet-100/30 rounded-full blur-3xl"></div>
-            <div class="absolute top-[65%] -right-40 w-[600px] h-[600px] bg-emerald-50/40 rounded-full blur-3xl"></div>
-        </div>
-
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <!-- FLOATING TOP NAVIGATION PILL                                -->
+        <!-- TOP STICKY NAVBAR (myshoplet style)                         -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <header class="sticky top-3 z-50 px-4 sm:px-6 pt-2 pb-4">
-            <div class="max-w-6xl mx-auto bg-white/90 backdrop-blur-md shadow-xl shadow-slate-900/5 rounded-full px-5 py-3 flex items-center justify-between gap-4">
-                <!-- Brand Logo -->
-                <a href="{{ route('home') }}" class="flex items-center gap-2.5 group">
-                    <div class="w-9 h-9 rounded-full bg-slate-900 text-white flex items-center justify-center font-extrabold text-sm shadow-md group-hover:scale-105 transition-transform">
-                        SM
-                    </div>
-                    <span class="font-display font-extrabold text-lg tracking-tight text-slate-900">
-                        {{ config('app.platform_name', 'ShopManager') }}
-                    </span>
-                </a>
+        <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20 gap-4">
 
-                <!-- Nav Links (Desktop) -->
-                <nav class="hidden md:flex items-center gap-1 text-xs font-semibold text-slate-600">
-                    <a href="#pos-feature" class="px-3.5 py-1.5 rounded-full hover:text-slate-900 hover:bg-slate-100/80 transition">Walk-in POS</a>
-                    <a href="#receipts" class="px-3.5 py-1.5 rounded-full hover:text-slate-900 hover:bg-slate-100/80 transition">Wireless Receipts</a>
-                    <a href="#inventory" class="px-3.5 py-1.5 rounded-full hover:text-slate-900 hover:bg-slate-100/80 transition">Inventory Sync</a>
-                    <a href="#pricing" class="px-3.5 py-1.5 rounded-full hover:text-slate-900 hover:bg-slate-100/80 transition">Pricing</a>
-                    <a href="#stores" class="px-3.5 py-1.5 rounded-full hover:text-slate-900 hover:bg-slate-100/80 transition">Live Stores</a>
-                </nav>
+                    <!-- Brand Logo -->
+                    <a href="{{ route('home') }}" class="flex items-center gap-2.5 group">
+                        <div class="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-display font-black text-lg shadow-md shadow-blue-600/20 group-hover:scale-105 transition-transform">
+                            SM
+                        </div>
+                        <span class="font-display font-extrabold text-xl tracking-tight text-slate-950">
+                            {{ config('app.platform_name', 'ShopManager') }}
+                        </span>
+                    </a>
 
-                <!-- Auth / Action Buttons -->
-                <div class="flex items-center gap-2">
-                    @auth
-                        @if (Auth::user()->isSuperAdmin())
-                            <a href="{{ route('super-admin.dashboard') }}" class="px-3.5 py-1.5 rounded-full bg-rose-50 text-rose-700 text-xs font-bold transition flex items-center gap-1.5 hover:bg-rose-100">
-                                <span>Super Admin</span>
+                    <!-- Navigation Links (myshoplet layout) -->
+                    <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
+                        <a href="#features" class="hover:text-blue-600 transition">Features</a>
+                        <a href="#pos" class="hover:text-blue-600 transition">Walk-in POS</a>
+                        <a href="#pricing" class="hover:text-blue-600 transition">Pricing</a>
+                        <a href="#testimonials" class="hover:text-blue-600 transition">Reviews</a>
+                        <a href="#faq" class="hover:text-blue-600 transition">FAQ</a>
+                        <a href="#stores" class="hover:text-blue-600 transition">Stores</a>
+                    </nav>
+
+                    <!-- Auth & CTA Actions -->
+                    <div class="flex items-center gap-3">
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-wider transition shadow-md shadow-blue-600/25">
+                                Open Dashboard &rarr;
                             </a>
-                        @endif
-                        <a href="{{ route('dashboard') }}" class="px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-md shadow-slate-900/10">
-                            Dashboard &rarr;
-                        </a>
-                    @else
-                        <a href="{{ route('login') }}" class="px-4 py-1.5 rounded-full text-xs font-bold text-slate-700 hover:bg-slate-100 transition">
-                            Sign In
-                        </a>
-                        <a href="{{ route('register') }}" class="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-md shadow-emerald-600/20 flex items-center gap-1.5">
-                            <span>Get Started</span>
-                            <span>&rarr;</span>
-                        </a>
-                    @endauth
+                        @else
+                            <a href="{{ route('login') }}" class="px-3.5 py-2 text-xs font-bold text-slate-700 hover:text-blue-600 transition">
+                                Login
+                            </a>
+                            <a href="{{ route('register') }}" class="px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-wider transition shadow-md shadow-blue-600/25 flex items-center gap-1.5 active:scale-95">
+                                <span>Try for free</span>
+                                <span>&rarr;</span>
+                            </a>
+                        @endauth
 
-                    <!-- Mobile Menu Button -->
-                    <button
-                        type="button"
-                        @click="mobileNav = !mobileNav"
-                        class="md:hidden p-2 rounded-full text-slate-700 hover:bg-slate-100"
-                    >
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                        </svg>
-                    </button>
+                        <!-- Mobile Hamburger Button -->
+                        <button
+                            type="button"
+                            @click="mobileNav = !mobileNav"
+                            class="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100"
+                        >
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                        </button>
+                    </div>
+
                 </div>
             </div>
 
-            <!-- Mobile Navigation Drawer -->
+            <!-- Mobile Dropdown Menu -->
             <div
                 x-show="mobileNav"
                 x-transition
-                class="md:hidden mt-2 bg-white rounded-3xl p-5 shadow-2xl space-y-3"
+                class="md:hidden bg-white border-b border-slate-100 px-6 py-4 space-y-3"
                 style="display: none;"
             >
-                <a @click="mobileNav = false" href="#pos-feature" class="block py-2 text-sm font-semibold text-slate-800">Walk-in POS</a>
-                <a @click="mobileNav = false" href="#receipts" class="block py-2 text-sm font-semibold text-slate-800">Wireless Receipts</a>
-                <a @click="mobileNav = false" href="#inventory" class="block py-2 text-sm font-semibold text-slate-800">Inventory Sync</a>
-                <a @click="mobileNav = false" href="#pricing" class="block py-2 text-sm font-semibold text-slate-800">Pricing</a>
-                <a @click="mobileNav = false" href="#stores" class="block py-2 text-sm font-semibold text-slate-800">Live Stores</a>
+                <a @click="mobileNav = false" href="#features" class="block py-1.5 text-sm font-semibold text-slate-800">Features</a>
+                <a @click="mobileNav = false" href="#pos" class="block py-1.5 text-sm font-semibold text-slate-800">Walk-in POS</a>
+                <a @click="mobileNav = false" href="#pricing" class="block py-1.5 text-sm font-semibold text-slate-800">Pricing</a>
+                <a @click="mobileNav = false" href="#testimonials" class="block py-1.5 text-sm font-semibold text-slate-800">Reviews</a>
+                <a @click="mobileNav = false" href="#faq" class="block py-1.5 text-sm font-semibold text-slate-800">FAQ</a>
+                <a @click="mobileNav = false" href="#stores" class="block py-1.5 text-sm font-semibold text-slate-800">Live Stores</a>
             </div>
         </header>
 
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <!-- HERO SECTION                                                -->
+        <!-- SECTION 1: ROYAL BLUE HERO WITH DASHBOARD COMPOSITION      -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <main class="flex-grow relative z-10 space-y-24 sm:space-y-32 pb-20">
+        <section class="bg-gradient-to-br from-[#1d4ed8] via-[#2563eb] to-[#1e40af] text-white pt-16 sm:pt-24 pb-20 sm:pb-32 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
-            <section class="pt-12 sm:pt-20 px-4 sm:px-6 lg:px-8 text-center max-w-5xl mx-auto space-y-6">
-                <!-- Social Proof Pill Badge -->
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold shadow-xs">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Unified Retail, Inventory &amp; Walk-In POS Operating System</span>
-                </div>
-
-                <!-- Main Punchy Headline -->
-                <h1 class="font-display font-extrabold text-4xl sm:text-6xl lg:text-7xl text-slate-950 tracking-tight leading-[1.08] max-w-4xl mx-auto">
-                    Sell anywhere.<br>
-                    <span class="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 bg-clip-text text-transparent">Manage everywhere.</span>
-                </h1>
-
-                <!-- Subtitle -->
-                <p class="text-sm sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
-                    Unified Retail, Inventory, and fast walk-in counter sales. Sync multi-channel stock in real time, print wireless 58mm receipts, and get paid with Paystack &mdash; all without clunky, expensive hardware.
-                </p>
-
-                <!-- Dual CTAs -->
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
-                    <a
-                        href="{{ route('register') }}"
-                        class="w-full sm:w-auto px-8 py-4 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition shadow-xl shadow-slate-900/15 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
-                    >
-                        <span>Start Free Trial</span>
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                        </svg>
-                    </a>
-
-                    <a
-                        href="{{ route('admin.sales.create') }}"
-                        class="w-full sm:w-auto px-7 py-4 rounded-full bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs uppercase tracking-wider transition shadow-lg shadow-slate-900/5 flex items-center justify-center gap-2"
-                    >
-                        <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                        <span>Try POS Counter Demo</span>
-                    </a>
-                </div>
-
-                <!-- Feature Highlights Badges Strip -->
-                <div class="pt-6 flex flex-wrap items-center justify-center gap-4 text-xs font-semibold text-slate-500">
-                    <span class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                        <span>Moniepoint-Fast Checkout</span>
-                    </span>
-                    <span class="text-slate-300">&bull;</span>
-                    <span class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                        <span>58mm Wireless Thermal Slips</span>
-                    </span>
-                    <span class="text-slate-300">&bull;</span>
-                    <span class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                        <span>Direct WhatsApp Receipts</span>
-                    </span>
-                    <span class="text-slate-300">&bull;</span>
-                    <span class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                        <span>Zero Extra Hardware</span>
-                    </span>
-                </div>
-
-                <!-- ═══════════════════════════════════════════════════════════ -->
-                <!-- INTERACTIVE LIVE HERO SHOWCASE (Terminal + Receipt)         -->
-                <!-- ═══════════════════════════════════════════════════════════ -->
-                <div class="pt-10 max-w-4xl mx-auto">
-                    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl shadow-slate-900/10 text-left relative overflow-hidden">
-
-                        <!-- Mockup Top Bar -->
-                        <div class="flex items-center justify-between pb-6 border-b border-slate-100">
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-rose-400"></span>
-                                <span class="w-3 h-3 rounded-full bg-amber-400"></span>
-                                <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
-                                <span class="text-xs font-bold text-slate-400 ml-2 font-mono">pos.shopmanager.local &bull; Live Register</span>
-                            </div>
-                            <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold">
-                                Shift Open
-                            </span>
+                    <!-- Left: Hero Text & Call to Actions -->
+                    <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-white text-xs font-bold tracking-wide">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span>FOR RETAILERS &amp; COMMERCE BRANDS</span>
                         </div>
 
-                        <!-- Split Mockup Content -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 pt-6 items-start">
-                            <!-- Left: Catalog Item -->
-                            <div class="md:col-span-7 space-y-4">
-                                <div class="p-4 rounded-2xl bg-slate-50 flex items-center justify-between gap-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow-sm">
-                                            <svg class="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <div class="font-bold text-sm text-slate-900" x-text="demoItem"></div>
-                                            <div class="text-xs text-slate-400">ClassiQ Exotic Snake Leather &bull; Standard</div>
-                                        </div>
+                        <h1 class="font-display font-extrabold text-4xl sm:text-6xl tracking-tight leading-[1.08]">
+                            Sell anywhere.<br>
+                            It all lands in<br>
+                            one place.
+                        </h1>
+
+                        <p class="text-base sm:text-lg text-blue-100 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+                            {{ config('app.platform_name', 'ShopManager') }} is the operating system for modern retail brands. Unified Retail, Inventory, physical POS counter sales, wireless receipts, and WhatsApp orders &mdash; without ever losing track of inventory or revenue.
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                            <a
+                                href="{{ route('register') }}"
+                                class="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-slate-50 text-blue-800 font-extrabold text-xs uppercase tracking-wider transition shadow-2xl shadow-blue-950/30 flex items-center justify-center gap-2 active:scale-95"
+                            >
+                                <span>Start free trial</span>
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </a>
+
+                            <a
+                                href="{{ route('admin.sales.create') }}"
+                                class="w-full sm:w-auto px-7 py-4 rounded-full bg-blue-800/60 hover:bg-blue-800 text-white font-bold text-xs uppercase tracking-wider transition border border-white/20 flex items-center justify-center gap-2"
+                            >
+                                <span>Try Walk-in POS Till</span>
+                                <span>&nearr;</span>
+                            </a>
+                        </div>
+
+                        <!-- Micro Trust Badges -->
+                        <div class="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs font-semibold text-blue-200">
+                            <span>&check; No credit card required</span>
+                            <span>&bull;</span>
+                            <span>&check; 14-day free trial</span>
+                            <span>&bull;</span>
+                            <span>&check; Cancel anytime</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: High-Converting Retail Dashboard Composition -->
+                    <div class="lg:col-span-6 relative">
+                        <div class="relative mx-auto max-w-lg lg:max-w-none">
+                            <!-- Background Ambient Aura -->
+                            <div class="absolute -inset-4 bg-gradient-to-r from-blue-400 to-indigo-300 rounded-3xl blur-2xl opacity-30"></div>
+
+                            <!-- Main Floating App Window Card -->
+                            <div class="relative bg-white rounded-3xl p-6 sm:p-7 shadow-2xl text-slate-900 space-y-5">
+                                <!-- Top Window Chrome -->
+                                <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-3 h-3 rounded-full bg-rose-400"></span>
+                                        <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+                                        <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                                        <span class="text-xs font-bold text-slate-400 ml-2 font-mono">shopmanager.console &bull; Live</span>
                                     </div>
-                                    <span class="font-display font-extrabold text-sm sm:text-base text-slate-900">
-                                        ₦<span x-text="demoPrice.toLocaleString()"></span>
+                                    <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                        <span>POS Terminal Online</span>
                                     </span>
                                 </div>
 
-                                <!-- Payment Selector Pills -->
-                                <div>
-                                    <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Select Payment Mode</div>
-                                    <div class="grid grid-cols-3 gap-2">
-                                        <button
-                                            type="button"
-                                            @click="demoMethod = 'pos_card'"
-                                            :class="demoMethod === 'pos_card' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700'"
-                                            class="p-2.5 rounded-xl text-center font-bold text-xs transition"
-                                        >
-                                            POS Card
-                                        </button>
-                                        <button
-                                            type="button"
-                                            @click="demoMethod = 'transfer'"
-                                            :class="demoMethod === 'transfer' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700'"
-                                            class="p-2.5 rounded-xl text-center font-bold text-xs transition"
-                                        >
-                                            Transfer
-                                        </button>
-                                        <button
-                                            type="button"
-                                            @click="demoMethod = 'split'"
-                                            :class="demoMethod === 'split' ? 'bg-indigo-900 text-white' : 'bg-indigo-50 text-indigo-900'"
-                                            class="p-2.5 rounded-xl text-center font-bold text-xs transition"
-                                        >
-                                            Split Pay
-                                        </button>
+                                <!-- Key Metrics Row -->
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="p-3.5 rounded-2xl bg-slate-50 space-y-1">
+                                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Today's Revenue</div>
+                                        <div class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">₦285,000</div>
+                                        <div class="text-[10px] text-emerald-600 font-bold">+18.4% vs yesterday</div>
+                                    </div>
+                                    <div class="p-3.5 rounded-2xl bg-slate-50 space-y-1">
+                                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Stock Valuation</div>
+                                        <div class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">₦4.2M</div>
+                                        <div class="text-[10px] text-slate-400 font-semibold">16 categories synced</div>
                                     </div>
                                 </div>
 
-                                <!-- Customer Autofill -->
-                                <div class="p-3 rounded-2xl bg-slate-50 text-xs text-slate-600 flex items-center justify-between">
+                                <!-- Recent Live Walk-in Transaction Pill -->
+                                <div class="p-4 rounded-2xl bg-slate-900 text-white flex items-center justify-between gap-3 shadow-lg shadow-slate-900/15">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-xs">
+                                            POS
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-xs">Snake-Accent Leather Bag &bull; Set</div>
+                                            <div class="text-[10px] text-slate-400">Cashier: Blessing &bull; Paid via SPLIT</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-display font-bold text-sm text-emerald-400">₦45,000</div>
+                                        <div class="text-[9px] text-slate-400">Receipt Printed &check;</div>
+                                    </div>
+                                </div>
+
+                                <!-- Floating Merchant WhatsApp Notification Bubble -->
+                                <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-between text-xs text-emerald-950">
                                     <div class="flex items-center gap-2">
-                                        <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/></svg>
-                                        <span>Customer: <strong>Chioma Ade</strong> (08012345678)</span>
+                                        <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/></svg>
+                                        <span>Customer receipt delivered to WhatsApp (08012345678)</span>
                                     </div>
-                                    <span class="text-emerald-700 font-bold text-[10px] uppercase">WhatsApp Linked</span>
-                                </div>
-                            </div>
-
-                            <!-- Right: Charge Action & Receipt Preview -->
-                            <div class="md:col-span-5 space-y-3">
-                                <div class="p-4 rounded-2xl bg-slate-900 text-white space-y-2">
-                                    <div class="text-[11px] font-mono text-slate-400">Total Charge Amount</div>
-                                    <div class="font-display font-extrabold text-2xl text-emerald-400">
-                                        ₦45,000<span class="text-xs text-slate-400 font-sans">.00</span>
-                                    </div>
-                                    <div class="text-[10px] text-slate-400">Cashier Security: <span class="text-white font-mono">••••••••</span> (Verified)</div>
-                                </div>
-
-                                <button
-                                    type="button"
-                                    @click="triggerDemoCharge()"
-                                    class="w-full py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 cursor-pointer active:scale-95"
-                                >
-                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                                    <span>TAP TO CHARGE &rarr;</span>
-                                </button>
-
-                                <div
-                                    x-show="demoSuccess"
-                                    x-transition
-                                    class="p-3 rounded-2xl bg-emerald-50 text-emerald-800 text-xs font-bold flex items-center justify-between"
-                                >
-                                    <span>Receipt Printed &amp; Sent to WhatsApp!</span>
-                                    <span class="text-emerald-600">&check;</span>
+                                    <span class="text-emerald-700 font-bold text-[10px]">Delivered</span>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                </div>
-            </section>
 
-            <!-- ═══════════════════════════════════════════════════════════ -->
-            <!-- 4 BIG SUPERPOWERS (Feature Pillars Grid)                    -->
-            <!-- ═══════════════════════════════════════════════════════════ -->
-            <section id="pos-feature" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                </div>
+            </div>
+
+            <!-- Crisp Clean Wave Bottom Divider -->
+            <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none">
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-10 sm:h-16 fill-white">
+                    <path d="M0,0 C150,90 350,-40 500,45 C650,130 900,10 1200,60 L1200,120 L0,120 Z"></path>
+                </svg>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 2: "ONE SYSTEM, NOT EIGHT APPS" (Hub & Satellites)  -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section id="features" class="py-20 sm:py-28 bg-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+                <!-- Section Header -->
                 <div class="text-center max-w-2xl mx-auto space-y-3">
-                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Built for Nigerian Retailers</span>
-                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight">
-                        Everything you need to run your boutique seamlessly.
+                    <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Unified Architecture</span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-slate-950 tracking-tight">
+                        One system, not eight apps
                     </h2>
-                    <p class="text-xs sm:text-sm text-slate-500">
-                        Say goodbye to missing paper ledger entries, inventory stockouts, and manual bank transfer headaches.
+                    <p class="text-sm sm:text-base text-slate-500 leading-relaxed">
+                        Stop juggling WhatsApp messages, physical paper ledgers, separate card swipe machines, and complex spreadsheets. {{ config('app.platform_name', 'ShopManager') }} connects your entire retail ecosystem into one unified workspace.
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Interactive Orbit Satellite Grid Layout -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 pt-4">
 
-                    <!-- Card 1: Moniepoint-Fast Walk-In POS -->
-                    <div class="bg-white rounded-3xl p-7 shadow-xl shadow-slate-900/5 space-y-4 hover:-translate-y-1 transition duration-200">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                            </svg>
+                    <!-- Satellite 1: Walk-In POS -->
+                    <div class="p-6 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center mx-auto">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-900">Moniepoint-Fast POS</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Turn any phone, tablet, or laptop into a fast cash register. Supports POS Card, Bank Transfer, Cash, and Split Payments with cashier password security.
-                        </p>
+                        <h3 class="font-bold text-sm text-slate-900">Walk-in POS Till</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">Fast barcode &amp; tap checkout on any device.</p>
                     </div>
 
-                    <!-- Card 2: Wireless Receipts & WhatsApp -->
-                    <div id="receipts" class="bg-white rounded-3xl p-7 shadow-xl shadow-slate-900/5 space-y-4 hover:-translate-y-1 transition duration-200">
-                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
-                            </svg>
+                    <!-- Satellite 2: Wireless Receipts -->
+                    <div class="p-6 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-900">58mm Wireless &amp; WhatsApp Receipts</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Print directly to portable Bluetooth mini thermal printers (RawBT &amp; ESC/POS) or send formatted digital receipt slips straight to customer WhatsApp in 1 tap.
-                        </p>
+                        <h3 class="font-bold text-sm text-slate-900">Wireless 58mm Slips</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">Direct Bluetooth mobile thermal printing.</p>
                     </div>
 
-                    <!-- Card 3: Multi-Location Inventory -->
-                    <div id="inventory" class="bg-white rounded-3xl p-7 shadow-xl shadow-slate-900/5 space-y-4 hover:-translate-y-1 transition duration-200">
-                        <div class="w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                            </svg>
+                    <!-- Satellite 3: WhatsApp Receipts -->
+                    <div class="p-6 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
+                        <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center mx-auto">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-900">Unified Inventory Sync</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            When an item is sold at your physical counter, stock levels instantly update across your storefront and warehouse. Never oversell or lose track of goods.
-                        </p>
+                        <h3 class="font-bold text-sm text-slate-900">WhatsApp Receipts</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">Instant customer receipts formatted in 1 tap.</p>
                     </div>
 
-                    <!-- Card 4: End-of-Day Daily Takings (Z-Report) -->
-                    <div class="bg-white rounded-3xl p-7 shadow-xl shadow-slate-900/5 space-y-4 hover:-translate-y-1 transition duration-200">
-                        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
+                    <!-- Satellite 4: Real-time Stock Sync -->
+                    <div class="p-6 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center mx-auto">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-900">Daily Closeout &amp; Z-Reports</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            1-click shift closeout. Generate instant breakdown of total cash collected, bank transfers received, and card charges with a printable end-of-day register slip.
-                        </p>
+                        <h3 class="font-bold text-sm text-slate-900">Inventory Sync</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">Automatic deduction across all channels.</p>
                     </div>
 
-                    <!-- Card 5: Automated Paystack Integration -->
-                    <div class="bg-white rounded-3xl p-7 shadow-xl shadow-slate-900/5 space-y-4 hover:-translate-y-1 transition duration-200">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M3 14h18m-9-4v8m-7 4h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
+                    <!-- Satellite 5: Split Payments -->
+                    <div class="p-6 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mx-auto">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-900">Integrated Paystack Payments</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Receive cards, instant dedicated virtual accounts, and USSD payments. Automated webhook reconciliation ensures zero missing funds.
-                        </p>
+                        <h3 class="font-bold text-sm text-slate-900">Split Payments</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">Collect partly in Cash &amp; partly by Transfer.</p>
                     </div>
 
-                    <!-- Card 6: Conversational Product Creator -->
-                    <div class="bg-white rounded-3xl p-7 shadow-xl shadow-slate-900/5 space-y-4 hover:-translate-y-1 transition duration-200">
-                        <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4v16m8-8H4"/>
-                            </svg>
+                    <!-- Satellite 6: Daily Z-Reports -->
+                    <div class="p-6 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
+                        <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center mx-auto">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-900">Simple 5-Step Product Creator</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            No overwhelming forms. Add items with a conversational step-by-step wizard: Name &rarr; Category &rarr; Price &rarr; Sizes &rarr; Photo &amp; Save.
-                        </p>
+                        <h3 class="font-bold text-sm text-slate-900">Daily Closeout Z-Report</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">1-click register balancing at end of shift.</p>
+                    </div>
+
+                    <!-- Satellite 7: Paystack Integration -->
+                    <div class="p-6 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
+                        <div class="w-12 h-12 rounded-2xl bg-cyan-100 text-cyan-700 flex items-center justify-center mx-auto">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M3 14h18m-9-4v8m-7 4h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        </div>
+                        <h3 class="font-bold text-sm text-slate-900">Paystack Checkout</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">Instant cards &amp; automated virtual accounts.</p>
+                    </div>
+
+                    <!-- Satellite 8: Multi-Store Isolation -->
+                    <div class="p-6 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
+                        <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center mx-auto">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                        </div>
+                        <h3 class="font-bold text-sm text-slate-900">Multi-Location Branch</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">Manage multiple boutiques from one login.</p>
                     </div>
 
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- ═══════════════════════════════════════════════════════════ -->
-            <!-- PRICING TIERS SECTION                                       -->
-            <!-- ═══════════════════════════════════════════════════════════ -->
-            <section id="pricing" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-                <div class="text-center space-y-3">
-                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Simple, Transparent Pricing</span>
-                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight">
-                        Grow your boutique without breaking the bank.
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 3: "SET UP IN THREE STEPS"                          -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section class="py-20 sm:py-28 bg-slate-50/60 border-y border-slate-100">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+                <!-- Section Header -->
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Fast Onboarding</span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-slate-950 tracking-tight">
+                        Set up in three steps
                     </h2>
-                    <p class="text-xs sm:text-sm text-slate-500">
-                        No surprise fees. No expensive hardware contracts.
+                    <p class="text-sm sm:text-base text-slate-500 leading-relaxed">
+                        From signing up to ringing up your first customer sale in under 10 minutes.
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+                <!-- 3 Steps Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                    <!-- Step 1 -->
+                    <div class="bg-white rounded-3xl p-8 shadow-xl shadow-slate-900/5 space-y-6 flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white font-display font-black text-xl flex items-center justify-center">
+                                1
+                            </div>
+                            <h3 class="font-display font-bold text-xl text-slate-900">Add your products</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                                Use our conversational 5-question wizard to enter items, sizes, colors, and prices in seconds.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100 text-xs font-bold text-blue-600 flex items-center gap-1">
+                            <span>Step 1: Inventory catalog</span>
+                            <span>&rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="bg-white rounded-3xl p-8 shadow-xl shadow-slate-900/5 space-y-6 flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white font-display font-black text-xl flex items-center justify-center">
+                                2
+                            </div>
+                            <h3 class="font-display font-bold text-xl text-slate-900">Connect your till &amp; staff</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                                Pair your mobile phone with any 58mm portable Bluetooth thermal printer and set cashier security passwords.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100 text-xs font-bold text-blue-600 flex items-center gap-1">
+                            <span>Step 2: Terminal setup</span>
+                            <span>&rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="bg-white rounded-3xl p-8 shadow-xl shadow-slate-900/5 space-y-6 flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white font-display font-black text-xl flex items-center justify-center">
+                                3
+                            </div>
+                            <h3 class="font-display font-bold text-xl text-slate-900">Start selling &amp; balancing</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                                Ring up walk-ins, split payments, print slips, send WhatsApp receipts, and balance your daily drawer with 1 click.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100 text-xs font-bold text-blue-600 flex items-center gap-1">
+                            <span>Step 3: Ring &amp; close shift</span>
+                            <span>&rarr;</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 4: "START FREE FOR 14 DAYS, GROW AT YOUR PACE"      -->
+        <!-- Warm Sand / Beige background matching myshoplet screenshot   -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section id="pricing" class="py-20 sm:py-28 bg-warm-sand">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                <!-- Section Header -->
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <span class="text-xs font-bold text-blue-700 uppercase tracking-wider">Pricing Plans</span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-slate-950 tracking-tight">
+                        Start free for 14 days, grow at your pace
+                    </h2>
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                        Transparent plans built for Nigerian boutiques and merchants. No contracts, cancel anytime.
+                    </p>
+
+                    <!-- Billing Toggle Pills -->
+                    <div class="pt-4 inline-flex items-center p-1.5 rounded-full bg-white shadow-sm border border-slate-200">
+                        <button
+                            type="button"
+                            @click="billingCycle = 'monthly'"
+                            :class="billingCycle === 'monthly' ? 'bg-blue-600 text-white font-bold' : 'text-slate-600 font-semibold'"
+                            class="px-5 py-2 rounded-full text-xs transition"
+                        >
+                            Monthly
+                        </button>
+                        <button
+                            type="button"
+                            @click="billingCycle = 'annual'"
+                            :class="billingCycle === 'annual' ? 'bg-blue-600 text-white font-bold' : 'text-slate-600 font-semibold'"
+                            class="px-5 py-2 rounded-full text-xs transition flex items-center gap-1.5"
+                        >
+                            <span>Annually</span>
+                            <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase">Save 20%</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3 Pricing Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch pt-4">
 
                     <!-- Plan 1: Starter -->
-                    <div class="bg-white rounded-3xl p-7 shadow-xl shadow-slate-900/5 space-y-6 flex flex-col justify-between">
+                    <div class="bg-white rounded-3xl p-8 shadow-xl shadow-slate-900/5 space-y-6 flex flex-col justify-between border border-slate-200/80">
                         <div class="space-y-4">
                             <div>
-                                <h3 class="font-bold text-base text-slate-900">Starter Store</h3>
-                                <p class="text-xs text-slate-400 mt-1">For single boutiques &amp; walk-in stores</p>
+                                <h3 class="font-display font-bold text-lg text-slate-900">Starter Store</h3>
+                                <p class="text-xs text-slate-500 mt-1">For single boutique owners &amp; walk-in stores</p>
                             </div>
+
                             <div class="flex items-baseline gap-1">
-                                <span class="font-display font-extrabold text-3xl text-slate-950">Free</span>
-                                <span class="text-xs text-slate-400">/ 14 days</span>
+                                <span class="font-display font-extrabold text-3xl sm:text-4xl text-slate-950" x-text="billingCycle === 'annual' ? '₦6,400' : '₦8,000'"></span>
+                                <span class="text-xs text-slate-400 font-medium">/ month</span>
                             </div>
+
                             <div class="border-b border-slate-100 pt-2"></div>
-                            <ul class="space-y-2.5 text-xs text-slate-600">
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Full Walk-In POS Till</li>
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> WhatsApp Receipts</li>
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Up to 100 Products</li>
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> 2 Cashier Accounts</li>
+
+                            <ul class="space-y-3 text-xs text-slate-600">
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Full Walk-In POS Till</span>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Direct WhatsApp Receipts</span>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Up to 150 Products</span>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>2 Cashier / Staff Logins</span>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Paystack Payment Gateway</span>
+                                </li>
                             </ul>
                         </div>
-                        <a href="{{ route('register') }}" class="w-full py-3 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold text-center transition">
-                            Get Started
+
+                        <a href="{{ route('register') }}" class="w-full py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs uppercase tracking-wider text-center transition">
+                            Start Free Trial
                         </a>
                     </div>
 
                     <!-- Plan 2: Pro Retailer (Highlighted) -->
-                    <div class="bg-slate-900 text-white rounded-3xl p-7 shadow-2xl shadow-slate-900/20 space-y-6 flex flex-col justify-between relative ring-2 ring-emerald-500">
-                        <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-wider">
-                            Most Popular
+                    <div class="bg-white rounded-3xl p-8 shadow-2xl shadow-blue-600/10 space-y-6 flex flex-col justify-between relative border-2 border-blue-600">
+                        <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-blue-600 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-sm">
+                            MOST POPULAR
                         </span>
+
                         <div class="space-y-4">
                             <div>
-                                <h3 class="font-bold text-base text-white">Pro Retailer</h3>
-                                <p class="text-xs text-slate-400 mt-1">For busy retail stores &amp; fashion boutiques</p>
+                                <h3 class="font-display font-bold text-lg text-slate-900">Pro Retailer</h3>
+                                <p class="text-xs text-slate-500 mt-1">For busy retail shops, boutiques &amp; growing brands</p>
                             </div>
+
                             <div class="flex items-baseline gap-1">
-                                <span class="font-display font-extrabold text-3xl text-emerald-400">₦15,000</span>
-                                <span class="text-xs text-slate-400">/ month</span>
+                                <span class="font-display font-extrabold text-3xl sm:text-4xl text-blue-600" x-text="billingCycle === 'annual' ? '₦14,400' : '₦18,000'"></span>
+                                <span class="text-xs text-slate-400 font-medium">/ month</span>
                             </div>
-                            <div class="border-b border-slate-800 pt-2"></div>
-                            <ul class="space-y-2.5 text-xs text-slate-300">
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Everything in Starter</li>
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> 58mm Wireless Thermal Slips</li>
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Split Payments &amp; Cashier Locks</li>
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Daily Closeout Z-Reports</li>
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Unlimited Products &amp; Staff</li>
+
+                            <div class="border-b border-slate-100 pt-2"></div>
+
+                            <ul class="space-y-3 text-xs text-slate-600">
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Everything in Starter</span>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <strong class="text-slate-900">58mm Wireless Thermal Slips</strong>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <strong class="text-slate-900">Split Payments (Cash + Transfer)</strong>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <strong class="text-slate-900">Cashier Password Authorization</strong>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Daily Closeout Z-Reports</span>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Unlimited Products &amp; Staff</span>
+                                </li>
                             </ul>
                         </div>
-                        <a href="{{ route('register') }}" class="w-full py-3 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold text-center transition shadow-lg shadow-emerald-600/30">
-                            Start Free Trial &rarr;
+
+                        <a href="{{ route('register') }}" class="w-full py-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs uppercase tracking-wider text-center transition shadow-lg shadow-blue-600/30 active:scale-95">
+                            Start 14-Day Free Trial &rarr;
                         </a>
                     </div>
 
-                    <!-- Plan 3: Multi-Store Enterprise -->
-                    <div class="bg-white rounded-3xl p-7 shadow-xl shadow-slate-900/5 space-y-6 flex flex-col justify-between">
+                    <!-- Plan 3: Enterprise -->
+                    <div class="bg-white rounded-3xl p-8 shadow-xl shadow-slate-900/5 space-y-6 flex flex-col justify-between border border-slate-200/80">
                         <div class="space-y-4">
                             <div>
-                                <h3 class="font-bold text-base text-slate-900">Multi-Location</h3>
-                                <p class="text-xs text-slate-400 mt-1">For multi-branch retail brands</p>
+                                <h3 class="font-display font-bold text-lg text-slate-900">Enterprise Multi-Store</h3>
+                                <p class="text-xs text-slate-500 mt-1">For multi-location retail chains &amp; franchises</p>
                             </div>
+
                             <div class="flex items-baseline gap-1">
-                                <span class="font-display font-extrabold text-3xl text-slate-950">₦35,000</span>
-                                <span class="text-xs text-slate-400">/ month</span>
+                                <span class="font-display font-extrabold text-3xl sm:text-4xl text-slate-950" x-text="billingCycle === 'annual' ? '₦36,000' : '₦45,000'"></span>
+                                <span class="text-xs text-slate-400 font-medium">/ month</span>
                             </div>
+
                             <div class="border-b border-slate-100 pt-2"></div>
-                            <ul class="space-y-2.5 text-xs text-slate-600">
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Up to 5 Branch Locations</li>
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Centralized Warehouse Sync</li>
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Automated Staff Payroll</li>
-                                <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Dedicated Account Manager</li>
+
+                            <ul class="space-y-3 text-xs text-slate-600">
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Up to 5 Store Branches</span>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Centralized Warehouse Stock Sync</span>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Automated Staff Payroll Transfers</span>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Custom Domain Integration</span>
+                                </li>
+                                <li class="flex items-center gap-2.5">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Dedicated Account Manager</span>
+                                </li>
                             </ul>
                         </div>
-                        <a href="{{ route('register') }}" class="w-full py-3 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold text-center transition">
+
+                        <a href="{{ route('register') }}" class="w-full py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs uppercase tracking-wider text-center transition">
                             Contact Sales
                         </a>
                     </div>
 
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- ═══════════════════════════════════════════════════════════ -->
-            <!-- ACTIVE STORES DIRECTORY (Quick Launch)                      -->
-            <!-- ═══════════════════════════════════════════════════════════ -->
-            @php
-                $activeStores = \App\Models\Tenant::where('status', 'active')->latest()->get();
-            @endphp
-            <section id="stores" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/60">
-                    <div>
-                        <h2 class="font-display font-extrabold text-xl text-slate-900">Your Connected Stores</h2>
-                        <p class="text-xs text-slate-400">Launch a live boutique console or customer storefront in 1 click.</p>
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 5: "A REAL SHOP. FROM BROWSING TO PAID."            -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section class="py-20 sm:py-28 bg-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Fast Checkout Experience</span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-slate-950 tracking-tight">
+                        A real shop. From browsing to paid.
+                    </h2>
+                    <p class="text-sm sm:text-base text-slate-500 leading-relaxed">
+                        Whether walk-in customers tap their cards, transfer to your bank, or pay cash, transactions are confirmed and recorded in under 5 seconds.
+                    </p>
+                </div>
+
+                <!-- Showcase Media Card -->
+                <div class="bg-gradient-to-tr from-slate-900 via-slate-950 to-slate-900 text-white rounded-3xl p-8 sm:p-14 shadow-2xl overflow-hidden relative">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div class="space-y-6">
+                            <span class="px-3.5 py-1.5 rounded-full bg-blue-600/30 border border-blue-500/40 text-blue-300 text-xs font-bold">
+                                Mobile POS &bull; Wireless Ready
+                            </span>
+                            <h3 class="font-display font-bold text-2xl sm:text-3xl text-white">
+                                Print receipts directly from your smartphone.
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                Pair your Android or iOS phone with any 58mm portable Bluetooth thermal printer (Goojprt, MPT-II, Netum). Tap "Print Slip" and watch the receipt feed cleanly past the tear bar. Or share formatted receipts straight to customer WhatsApp chats.
+                            </p>
+                            <div class="flex items-center gap-3 pt-2">
+                                <a href="{{ route('admin.sales.create') }}" class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition">
+                                    Open POS Terminal &rarr;
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Thermal Receipt Code Sample / Visual Ticket -->
+                        <div class="bg-white rounded-2xl p-6 font-mono text-xs text-slate-900 shadow-xl max-w-sm mx-auto space-y-3 border-t-4 border-slate-900">
+                            <div class="text-center space-y-0.5">
+                                <div class="font-extrabold text-sm uppercase">JESSI'S CLASSIQ STORE</div>
+                                <div class="text-[10px] text-slate-500 font-sans">Flagship Boutique &bull; Lagos</div>
+                                <div class="text-[9px] text-slate-400">*** OFFICIAL STORE RECEIPT ***</div>
+                            </div>
+                            <div class="border-b border-dashed border-slate-300 my-2"></div>
+                            <div class="space-y-1 text-[11px]">
+                                <div class="flex justify-between"><span>Receipt:</span><strong>SR-1024</strong></div>
+                                <div class="flex justify-between"><span>Date:</span><span>Today, 02:45 PM</span></div>
+                                <div class="flex justify-between"><span>Cashier:</span><span>Blessing</span></div>
+                            </div>
+                            <div class="border-b border-dashed border-slate-300 my-2"></div>
+                            <div class="space-y-1">
+                                <div class="font-bold">Snake-Accent Handbag &amp; Wallet Set</div>
+                                <div class="flex justify-between text-[11px] text-slate-600">
+                                    <span>1 x ₦45,000</span>
+                                    <strong class="text-black">₦45,000</strong>
+                                </div>
+                            </div>
+                            <div class="border-b border-dashed border-slate-300 my-2"></div>
+                            <div class="flex justify-between items-baseline pt-1">
+                                <span class="font-bold text-xs">TOTAL PAID</span>
+                                <span class="font-extrabold text-base text-black font-sans">₦45,000</span>
+                            </div>
+                            <div class="text-[10px] text-slate-500">PAYMENT METHOD: SPLIT (Cash + Transfer)</div>
+                            <div class="border-b border-dashed border-slate-300 my-2"></div>
+                            <div class="text-center text-[9px] text-slate-400 font-sans">
+                                Thank you for your patronage!
+                            </div>
+                        </div>
                     </div>
-                    <a href="{{ route('register') }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 transition">
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 6: "WHAT VENDORS ARE SAYING" (Testimonials)         -->
+        <!-- Warm Sand / Beige background matching myshoplet screenshot   -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section id="testimonials" class="py-20 sm:py-28 bg-warm-sand">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <span class="text-xs font-bold text-blue-700 uppercase tracking-wider">Social Proof</span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-slate-950 tracking-tight">
+                        What vendors are saying
+                    </h2>
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                        Trusted by fashion boutiques, shoe stores, and retail merchants across Nigeria.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <!-- Review 1 -->
+                    <div class="bg-white rounded-3xl p-7 shadow-xl shadow-slate-900/5 space-y-4 flex flex-col justify-between border border-slate-200/60">
+                        <div class="space-y-3">
+                            <div class="flex text-amber-400 text-xs gap-1">
+                                <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                "The POS counter is as fast as our Moniepoint terminal. Our walk-in customers love getting their receipts right on WhatsApp, and the wireless printer setup took literally 2 minutes on my phone."
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-100 flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center">
+                                JA
+                            </div>
+                            <div>
+                                <div class="font-bold text-xs text-slate-900">Jessica Adebayo</div>
+                                <div class="text-[10px] text-slate-400">Jessi's ClassiQ Boutique, Victoria Island</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 2 -->
+                    <div class="bg-white rounded-3xl p-7 shadow-xl shadow-slate-900/5 space-y-4 flex flex-col justify-between border border-slate-200/60">
+                        <div class="space-y-3">
+                            <div class="flex text-amber-400 text-xs gap-1">
+                                <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                "Before ShopManager, we were losing track of silk gowns sold between our Instagram page and our Lekki boutique. Now stock updates everywhere automatically the instant a sale happens."
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-100 flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+                                CE
+                            </div>
+                            <div>
+                                <div class="font-bold text-xs text-slate-900">Chidinma Eze</div>
+                                <div class="text-[10px] text-slate-400">Aura Luxury Apparel, Lekki Phase 1</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 3 -->
+                    <div class="bg-white rounded-3xl p-7 shadow-xl shadow-slate-900/5 space-y-4 flex flex-col justify-between border border-slate-200/60">
+                        <div class="space-y-3">
+                            <div class="flex text-amber-400 text-xs gap-1">
+                                <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                "The daily Z-report closeout is a lifesaver. At 7 PM when my staff closes the store, they print the slip showing exactly how much cash and transfer came in. No missing money."
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-100 flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center">
+                                TO
+                            </div>
+                            <div>
+                                <div class="font-bold text-xs text-slate-900">Tunde Ogunleye</div>
+                                <div class="text-[10px] text-slate-400">Urban Kicks &amp; Accessories, Ikeja</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 7: "QUESTIONS? ANSWERED." (Interactive FAQ)         -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section id="faq" class="py-20 sm:py-28 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                <div class="text-center space-y-3">
+                    <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Frequently Asked Questions</span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-slate-950 tracking-tight">
+                        Questions? Answered.
+                    </h2>
+                    <p class="text-sm sm:text-base text-slate-500">
+                        Everything you need to know about setting up and running your boutique.
+                    </p>
+                </div>
+
+                <div class="divide-y divide-slate-100 border-y border-slate-100">
+
+                    <!-- FAQ 1 -->
+                    <div class="py-5">
+                        <button
+                            type="button"
+                            @click="toggleFaq(1)"
+                            class="w-full text-left flex items-center justify-between text-base font-bold text-slate-900 hover:text-blue-600 transition cursor-pointer"
+                        >
+                            <span>Do I need to buy expensive POS hardware?</span>
+                            <span class="text-slate-400 text-lg" x-text="openFaq === 1 ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="openFaq === 1" x-transition class="pt-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            No! {{ config('app.platform_name', 'ShopManager') }} runs in the browser on any smartphone, iPad, tablet, or laptop you already own. You don't need dedicated bank terminals or POS hardware contracts.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 2 -->
+                    <div class="py-5">
+                        <button
+                            type="button"
+                            @click="toggleFaq(2)"
+                            class="w-full text-left flex items-center justify-between text-base font-bold text-slate-900 hover:text-blue-600 transition cursor-pointer"
+                        >
+                            <span>How do wireless thermal printers work with the system?</span>
+                            <span class="text-slate-400 text-lg" x-text="openFaq === 2 ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="openFaq === 2" x-transition class="pt-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            Our POS receipt slip is formatted strictly for 58mm &amp; 80mm wireless portable Bluetooth thermal printers (like Goojprt PT-210, MPT-II, Netum). It supports direct Android Bluetooth printing via RawBT as well as iOS AirPrint.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 3 -->
+                    <div class="py-5">
+                        <button
+                            type="button"
+                            @click="toggleFaq(3)"
+                            class="w-full text-left flex items-center justify-between text-base font-bold text-slate-900 hover:text-blue-600 transition cursor-pointer"
+                        >
+                            <span>Can customers pay with split payments (Cash + Bank Transfer)?</span>
+                            <span class="text-slate-400 text-lg" x-text="openFaq === 3 ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="openFaq === 3" x-transition class="pt-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            Yes! Our terminal has a built-in Split Pay mode. If a customer buys a ₦50,000 dress and pays ₦20,000 cash and ₦30,000 by transfer, both amounts are recorded and clearly shown on the customer's receipt.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 4 -->
+                    <div class="py-5">
+                        <button
+                            type="button"
+                            @click="toggleFaq(4)"
+                            class="w-full text-left flex items-center justify-between text-base font-bold text-slate-900 hover:text-blue-600 transition cursor-pointer"
+                        >
+                            <span>How do customer WhatsApp receipts work?</span>
+                            <span class="text-slate-400 text-lg" x-text="openFaq === 4 ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="openFaq === 4" x-transition class="pt-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            When entering the customer's phone number at checkout, clicking "Share on WhatsApp" directly opens the chat with that customer on your phone or web WhatsApp with their itemized receipt pre-filled and ready to send.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 5 -->
+                    <div class="py-5">
+                        <button
+                            type="button"
+                            @click="toggleFaq(5)"
+                            class="w-full text-left flex items-center justify-between text-base font-bold text-slate-900 hover:text-blue-600 transition cursor-pointer"
+                        >
+                            <span>Can I manage multiple branch stores under one account?</span>
+                            <span class="text-slate-400 text-lg" x-text="openFaq === 5 ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="openFaq === 5" x-transition class="pt-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            Yes! Our multi-tenant architecture allows you to run multiple stores or retail branches with separate inventories, staff accounts, and daily takings reports from one master login.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 8: "PRACTICAL TIPS TO GROW YOUR RETAIL SALES"       -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section class="py-20 sm:py-28 bg-white border-t border-slate-100">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div class="space-y-3">
+                        <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Retail Insights &amp; Guides</span>
+                        <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-950 tracking-tight">
+                            Practical tips to grow your online &amp; retail sales
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-500 max-w-xl">
+                            Field-tested playbooks, cashier management tips, and retail inventory strategies from fast-growing merchants.
+                        </p>
+                    </div>
+                    <a href="#pricing" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition">
+                        <span>Read all guides</span>
+                        <span>&rarr;</span>
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Guide 1 -->
+                    <article class="group rounded-3xl bg-slate-50/70 border border-slate-100 overflow-hidden hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 flex flex-col justify-between">
+                        <div class="p-6 space-y-4">
+                            <div class="h-44 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 p-6 flex flex-col justify-between text-white relative overflow-hidden">
+                                <div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+                                    <span class="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-xs">Retail Ops</span>
+                                    <span>5 min read</span>
+                                </div>
+                                <div class="font-display font-extrabold text-lg leading-snug">
+                                    Balancing cash &amp; bank transfer drawers without missing money
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <span class="text-[11px] text-slate-400 font-medium">Updated 3 days ago</span>
+                                <h3 class="font-bold text-base text-slate-900 group-hover:text-blue-600 transition leading-snug">
+                                    How Lagos boutiques use daily closeout Z-reports to audit cashiers
+                                </h3>
+                                <p class="text-xs text-slate-500 leading-relaxed">
+                                    Step-by-step cashier shifts handoff: separating transfer notifications from cash at register closing.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-2 text-xs font-bold text-blue-600 flex items-center gap-1">
+                            <span>Read article</span>
+                            <span>&rarr;</span>
+                        </div>
+                    </article>
+
+                    <!-- Guide 2 -->
+                    <article class="group rounded-3xl bg-slate-50/70 border border-slate-100 overflow-hidden hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 flex flex-col justify-between">
+                        <div class="p-6 space-y-4">
+                            <div class="h-44 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 p-6 flex flex-col justify-between text-white relative overflow-hidden">
+                                <div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+                                    <span class="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-xs">Customer Loyalty</span>
+                                    <span>4 min read</span>
+                                </div>
+                                <div class="font-display font-extrabold text-lg leading-snug">
+                                    Converting 1-time walk-ins into repeat buyers via WhatsApp
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <span class="text-[11px] text-slate-400 font-medium">Updated this week</span>
+                                <h3 class="font-bold text-base text-slate-900 group-hover:text-blue-600 transition leading-snug">
+                                    Why digital receipts on WhatsApp outperform paper slips for VIP re-engagement
+                                </h3>
+                                <p class="text-xs text-slate-500 leading-relaxed">
+                                    Capture genuine phone numbers at POS checkout and follow up with tailored restock announcements.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-2 text-xs font-bold text-blue-600 flex items-center gap-1">
+                            <span>Read article</span>
+                            <span>&rarr;</span>
+                        </div>
+                    </article>
+
+                    <!-- Guide 3 -->
+                    <article class="group rounded-3xl bg-slate-50/70 border border-slate-100 overflow-hidden hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 flex flex-col justify-between">
+                        <div class="p-6 space-y-4">
+                            <div class="h-44 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 p-6 flex flex-col justify-between text-white relative overflow-hidden">
+                                <div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+                                    <span class="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-xs">Hardware Setup</span>
+                                    <span>3 min read</span>
+                                </div>
+                                <div class="font-display font-extrabold text-lg leading-snug">
+                                    Setting up wireless 58mm thermal printers in under 3 minutes
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <span class="text-[11px] text-slate-400 font-medium">Hardware Guide</span>
+                                <h3 class="font-bold text-base text-slate-900 group-hover:text-blue-600 transition leading-snug">
+                                    The ultimate guide to Bluetooth thermal receipt printing on Android &amp; iOS
+                                </h3>
+                                <p class="text-xs text-slate-500 leading-relaxed">
+                                    Tested on Goojprt PT-210, MPT-II, and Netum mini printers with no special ink or ribbons needed.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-2 text-xs font-bold text-blue-600 flex items-center gap-1">
+                            <span>Read article</span>
+                            <span>&rarr;</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 9: COMMERCIAL PROMO OFFER (50% Off / Migration)     -->
+        <!-- Gradient banner matching myshoplet screenshot               -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section class="py-12 bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-700 text-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6 p-6 sm:p-10 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl">
+                    <div class="space-y-2 text-center md:text-left">
+                        <span class="px-3 py-1 rounded-full bg-white/20 text-white text-[10px] font-extrabold uppercase tracking-wider">
+                            Limited Time Merchant Offer
+                        </span>
+                        <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-white">
+                            Switching from another POS or manual ledgers?
+                        </h3>
+                        <p class="text-xs sm:text-sm text-blue-100 max-w-xl">
+                            We will import your inventory catalog for free and give you <strong>50% off your first 3 months</strong> on any plan.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-4 shrink-0">
+                        <div class="text-center sm:text-right hidden sm:block">
+                            <div class="font-display font-black text-3xl text-amber-300">50% OFF</div>
+                            <div class="text-[10px] text-blue-100 uppercase tracking-wider">Use code: SWITCH50</div>
+                        </div>
+                        <a
+                            href="{{ route('register') }}"
+                            class="px-8 py-3.5 rounded-full bg-white hover:bg-slate-100 text-blue-800 font-extrabold text-xs uppercase tracking-wider transition shadow-lg active:scale-95"
+                        >
+                            Claim offer &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 10: ACTIVE STORES DIRECTORY (Quick Launch)          -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        @php
+            $activeStores = \App\Models\Tenant::where('status', 'active')->latest()->get();
+        @endphp
+        <section id="stores" class="py-16 bg-slate-50 border-t border-slate-100">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
+                    <div>
+                        <h2 class="font-display font-extrabold text-xl text-slate-900">Connected Stores &amp; Boutiques</h2>
+                        <p class="text-xs text-slate-500">Launch a live store console or customer-facing boutique storefront.</p>
+                    </div>
+                    <a href="{{ route('register') }}" class="text-xs font-bold text-blue-600 hover:text-blue-700 transition">
                         + Onboard New Store
                     </a>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     @forelse ($activeStores as $store)
-                        <div class="p-5 rounded-3xl bg-white shadow-xl shadow-slate-900/5 flex flex-col justify-between gap-4">
+                        <div class="p-5 rounded-3xl bg-white shadow-md shadow-slate-900/5 flex flex-col justify-between gap-4 border border-slate-100">
                             <div class="flex items-start justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-sm shadow-sm">
+                                    <div class="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-extrabold text-sm shadow-sm">
                                         {{ strtoupper(substr($store->name, 0, 2)) }}
                                     </div>
                                     <div>
@@ -526,7 +1024,7 @@
                                     </div>
                                 </div>
                                 <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700">
-                                    Active
+                                    Live Store
                                 </span>
                             </div>
 
@@ -536,7 +1034,7 @@
                                         Storefront &nearr;
                                     </a>
                                 @endif
-                                <a href="{{ url('/admin?tenant=' . $store->slug) }}" class="flex-1 py-2 px-3 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold text-center transition shadow-xs">
+                                <a href="{{ url('/admin?tenant=' . $store->slug) }}" class="flex-1 py-2 px-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold text-center transition shadow-xs">
                                     Admin Console &rarr;
                                 </a>
                             </div>
@@ -547,55 +1045,153 @@
                         </div>
                     @endforelse
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- ═══════════════════════════════════════════════════════════ -->
-            <!-- FINAL CTA BANNER                                            -->
-            <!-- ═══════════════════════════════════════════════════════════ -->
-            <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 text-white rounded-3xl p-8 sm:p-14 text-center space-y-6 shadow-2xl shadow-slate-900/20 relative overflow-hidden">
-                    <div class="max-w-2xl mx-auto space-y-3">
-                        <h2 class="font-display font-extrabold text-3xl sm:text-5xl tracking-tight leading-tight">
-                            Upgrade your retail store today.
-                        </h2>
-                        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                            Join modern fashion boutiques and walk-in retailers taking full control of their counter, cash drawer, and inventory.
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 9: FINAL DARK CTA BANNER (myshoplet style)          -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section class="py-20 sm:py-28 bg-[#0b0f19] text-white relative overflow-hidden">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 relative z-10">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-white text-xs font-bold">
+                    <span>GET STARTED IN 2 MINUTES</span>
+                </div>
+
+                <h2 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-tight max-w-3xl mx-auto">
+                    Ready to grow your retail business?
+                </h2>
+
+                <p class="text-sm sm:text-lg text-slate-400 max-w-xl mx-auto leading-relaxed font-normal">
+                    Join modern fashion boutiques and retail merchants taking full control of their counter, inventory, and revenue.
+                </p>
+
+                <div class="pt-2">
+                    <a
+                        href="{{ route('register') }}"
+                        class="inline-flex items-center gap-2 px-9 py-4 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs uppercase tracking-wider transition shadow-2xl shadow-blue-600/40 active:scale-95"
+                    >
+                        <span>Start your free trial</span>
+                        <span>&rarr;</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 10: CLEAN COMPREHENSIVE FOOTER                      -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <footer class="bg-white border-t border-slate-200/80 py-16 text-slate-500 text-xs">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+                    <!-- Col 1: Brand Info -->
+                    <div class="col-span-2 space-y-4">
+                        <div class="flex items-center gap-2.5 font-display font-extrabold text-base text-slate-900">
+                            <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs">SM</div>
+                            <span>{{ config('app.platform_name', 'ShopManager') }}</span>
+                        </div>
+                        <p class="text-xs text-slate-500 max-w-sm leading-relaxed">
+                            The modern retail POS and multi-store inventory operating system for African boutiques, fashion merchants, and walk-in retailers.
                         </p>
+                        <div class="text-[11px] text-slate-400">
+                            Powered by Paystack &bull; Wireless 58mm Thermal Ready
+                        </div>
                     </div>
 
-                    <div class="pt-2">
-                        <a
-                            href="{{ route('register') }}"
-                            class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider transition shadow-xl shadow-emerald-500/25 active:scale-95"
-                        >
-                            <span>Launch Your Store Now</span>
-                            <span>&rarr;</span>
-                        </a>
+                    <!-- Col 2: Product -->
+                    <div class="space-y-3">
+                        <div class="font-bold text-slate-900 uppercase tracking-wider text-[11px]">Product</div>
+                        <ul class="space-y-2 text-xs">
+                            <li><a href="{{ route('admin.sales.create') }}" class="hover:text-blue-600 transition">Walk-in POS</a></li>
+                            <li><a href="#receipts" class="hover:text-blue-600 transition">Wireless Receipts</a></li>
+                            <li><a href="#inventory" class="hover:text-blue-600 transition">Inventory Sync</a></li>
+                            <li><a href="#pricing" class="hover:text-blue-600 transition">Pricing Plans</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Col 3: Resources -->
+                    <div class="space-y-3">
+                        <div class="font-bold text-slate-900 uppercase tracking-wider text-[11px]">Resources</div>
+                        <ul class="space-y-2 text-xs">
+                            <li><a href="{{ route('login') }}" class="hover:text-blue-600 transition">Merchant Login</a></li>
+                            <li><a href="{{ route('register') }}" class="hover:text-blue-600 transition">Create Store</a></li>
+                            <li><a href="#faq" class="hover:text-blue-600 transition">Support &amp; FAQ</a></li>
+                            <li><a href="#stores" class="hover:text-blue-600 transition">Active Boutiques</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Col 4: Platform -->
+                    <div class="space-y-3">
+                        <div class="font-bold text-slate-900 uppercase tracking-wider text-[11px]">Platform</div>
+                        <ul class="space-y-2 text-xs">
+                            <li><a href="{{ route('super-admin.dashboard') }}" class="hover:text-blue-600 transition">Super Admin</a></li>
+                            <li><a href="{{ route('cpanel.deploy') }}" class="hover:text-blue-600 transition">System Status</a></li>
+                            <li><span class="text-slate-400">Version 2.4.0</span></li>
+                        </ul>
                     </div>
                 </div>
-            </section>
 
-        </main>
-
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        <!-- CLEAN MINIMAL FOOTER                                        -->
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        <footer class="border-t border-slate-200/60 py-10 bg-white">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-                <div class="flex items-center gap-2 font-display font-bold text-slate-900">
-                    <div class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px]">SM</div>
-                    <span>{{ config('app.platform_name', 'ShopManager') }}</span>
-                </div>
-                <div>
-                    &copy; {{ date('Y') }} {{ config('app.platform_name', 'ShopManager') }}. Modern Retail &amp; POS Operating System.
-                </div>
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('login') }}" class="hover:text-slate-600 transition">Sign In</a>
-                    <a href="{{ route('register') }}" class="hover:text-slate-600 transition">Create Store</a>
-                    <a href="{{ route('admin.sales.create') }}" class="hover:text-slate-600 transition">POS Counter</a>
+                <div class="pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-[11px]">
+                    <div>
+                        &copy; {{ date('Y') }} {{ config('app.platform_name', 'ShopManager') }}. All rights reserved.
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <a href="#" class="hover:text-slate-600">Privacy Policy</a>
+                        <a href="#" class="hover:text-slate-600">Terms of Service</a>
+                        <a href="#" class="hover:text-slate-600">Security</a>
+                    </div>
                 </div>
             </div>
         </footer>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- FLOATING BOTTOM CONVERSION PILL (myshoplet style)           -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div
+            x-data="{ showStickyPill: true }"
+            x-show="showStickyPill"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 translate-y-4"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 translate-y-4"
+            class="fixed bottom-6 inset-x-4 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 z-40 max-w-md w-full"
+            style="display: none;"
+        >
+            <div class="bg-slate-900/95 backdrop-blur-md text-white rounded-2xl p-3 px-4 shadow-2xl border border-slate-800 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                        SM
+                    </div>
+                    <div class="min-w-0">
+                        <div class="font-bold text-xs text-white truncate">Open your free store in 2 mins</div>
+                        <div class="text-[10px] text-slate-400 flex items-center gap-1.5">
+                            <span class="text-amber-400">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <span>Rated 4.9/5 by 300+ merchants</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 shrink-0">
+                    <a
+                        href="{{ route('register') }}"
+                        class="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px] uppercase tracking-wider transition active:scale-95"
+                    >
+                        Try free &rarr;
+                    </a>
+                    <button
+                        type="button"
+                        @click="showStickyPill = false"
+                        class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                        title="Dismiss"
+                    >
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
 
     </body>
 </html>
