@@ -59,6 +59,8 @@
             customerName: '',
             notes: '',
             customAmount: null,
+            chargePassword: '',
+            showPassword: false,
             showReceipt: false,
             receiptData: null,
 
@@ -411,7 +413,7 @@
                             </div>
                         </div>
 
-                        <!-- Customer Details (Clean & Minimal) -->
+                        <!-- Customer Details & Notes -->
                         <div class="space-y-2 pt-1">
                             <input
                                 type="text"
@@ -429,14 +431,57 @@
                             >
                         </div>
 
+                        <!-- Cashier Authorization Password -->
+                        <div class="space-y-1.5 pt-1">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                    </svg>
+                                    <span>Cashier Password</span>
+                                </label>
+                                <span class="text-[10px] text-slate-400 font-semibold">Required to charge</span>
+                            </div>
+                            <div class="relative">
+                                <input
+                                    :type="showPassword ? 'text' : 'password'"
+                                    name="password"
+                                    x-model="chargePassword"
+                                    required
+                                    autocomplete="current-password"
+                                    placeholder="Enter your password to authorize"
+                                    class="w-full px-4 py-3 pr-11 rounded-xl bg-slate-50 text-xs font-semibold text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600/30 shadow-inner"
+                                >
+                                <button
+                                    type="button"
+                                    @click="showPassword = !showPassword"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg text-slate-400 hover:text-slate-600 transition cursor-pointer"
+                                    tabindex="-1"
+                                    title="Toggle password visibility"
+                                >
+                                    <template x-if="!showPassword">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </template>
+                                    <template x-if="showPassword">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                                        </svg>
+                                    </template>
+                                </button>
+                            </div>
+                        </div>
+
                         <!-- THE HUGE CHARGE BUTTON (Moniepoint Style) -->
                         <button
                             type="submit"
-                            :disabled="!selectedId || totalAmount <= 0"
-                            class="w-full py-4 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-extrabold text-sm sm:text-base uppercase tracking-wider transition shadow-xl shadow-emerald-600/25 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+                            :disabled="!selectedId || totalAmount <= 0 || !chargePassword.trim()"
+                            class="w-full py-4 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold text-sm sm:text-base uppercase tracking-wider transition shadow-xl shadow-emerald-600/25 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
                         >
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                             </svg>
                             <span>CHARGE ₦</span><span x-text="formatMoney(totalAmount)"></span>
                             <span>&rarr;</span>

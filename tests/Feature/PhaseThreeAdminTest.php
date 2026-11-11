@@ -217,6 +217,34 @@ class PhaseThreeAdminTest extends TestCase
         $this->assertEquals($saleQty, $movement->quantity);
     }
 
+    public function test_pos_charge_validates_cashier_password(): void
+    {
+        $variant = ProductVariant::first();
+        $this->assertNotNull($variant);
+
+        // Incorrect password should fail with error flash
+        $responseFail = $this->actingAs($this->admin)->from('/admin/sales/create')->post('/admin/sales', [
+            'variant_id' => $variant->id,
+            'quantity' => 1,
+            'amount' => 10000,
+            'payment_method' => 'cash',
+            'password' => 'wrong-pass',
+        ]);
+        $responseFail->assertRedirect('/admin/sales/create');
+        $responseFail->assertSessionHas('error');
+
+        // Correct user password should succeed
+        $responseSuccess = $this->actingAs($this->admin)->from('/admin/sales/create')->post('/admin/sales', [
+            'variant_id' => $variant->id,
+            'quantity' => 1,
+            'amount' => 10000,
+            'payment_method' => 'cash',
+            'password' => 'password123',
+        ]);
+        $responseSuccess->assertRedirect('/admin/sales/create');
+        $responseSuccess->assertSessionHas('success');
+    }
+
     public function test_admin_reports_and_csv_export(): void
     {
         $reportsView = $this->actingAs($this->admin)->get('/admin/reports');

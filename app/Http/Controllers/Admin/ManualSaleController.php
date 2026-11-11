@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\ProductVariant;
 use App\Models\SalesRecord;
 use App\Models\StockMovement;
+use App\Services\CurrentTenant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class ManualSaleController extends Controller
@@ -39,7 +41,19 @@ class ManualSaleController extends Controller
             'payment_method' => 'required|in:cash,pos_terminal,transfer',
             'customer_name' => 'nullable|string|max:255',
             'notes' => 'nullable|string|max:500',
+            'password' => 'nullable|string',
         ]);
+
+        if ($request->filled('password')) {
+            $userPasswordValid = Hash::check($request->password, $request->user()->password);
+            $tenant = app(CurrentTenant::class)->get();
+            $posPin = $tenant?->setting('pos.pin');
+            $pinValid = $posPin && $request->password === (string) $posPin;
+
+            if (! $userPasswordValid && ! $pinValid) {
+                return redirect()->back()->withInput()->with('error', 'Incorrect cashier password. Transaction not authorized.');
+            }
+        }
 
         $variant = ProductVariant::with('product')->findOrFail($request->variant_id);
         $qty = (int) $request->quantity;
