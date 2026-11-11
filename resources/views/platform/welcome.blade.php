@@ -38,76 +38,199 @@
     >
 
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <!-- TOP STICKY NAVBAR (myshoplet style)                         -->
+        <!-- FLOATING iOS 27 DYNAMIC CAPSULE NAVBAR                      -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-20 gap-4">
+        <header class="sticky top-2 sm:top-4 z-50 px-3 sm:px-6 max-w-7xl mx-auto">
+            <div class="relative bg-white/85 backdrop-blur-2xl border border-white/60 shadow-xl shadow-slate-900/5 rounded-full px-3.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between ring-1 ring-slate-900/5 transition-all">
 
-                    <!-- Brand Logo -->
-                    <a href="{{ route('home') }}" class="flex items-center gap-2.5 group">
-                        <div class="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-display font-black text-lg shadow-md shadow-blue-600/20 group-hover:scale-105 transition-transform">
-                            SM
-                        </div>
-                        <span class="font-display font-extrabold text-xl tracking-tight text-slate-950">
-                            {{ config('app.platform_name', 'ShopManager') }}
-                        </span>
-                    </a>
-
-                    <!-- Navigation Links (myshoplet layout) -->
-                    <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-                        <a href="#features" class="hover:text-blue-600 transition">Features</a>
-                        <a href="#pos" class="hover:text-blue-600 transition">Walk-in POS</a>
-                        <a href="#pricing" class="hover:text-blue-600 transition">Pricing</a>
-                        <a href="#testimonials" class="hover:text-blue-600 transition">Reviews</a>
-                        <a href="#faq" class="hover:text-blue-600 transition">FAQ</a>
-                        <a href="#stores" class="hover:text-blue-600 transition">Stores</a>
-                    </nav>
-
-                    <!-- Auth & CTA Actions -->
-                    <div class="flex items-center gap-3">
-                        @auth
-                            <a href="{{ route('dashboard') }}" class="px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-wider transition shadow-md shadow-blue-600/25">
-                                Open Dashboard &rarr;
-                            </a>
-                        @else
-                            <a href="{{ route('login') }}" class="px-3.5 py-2 text-xs font-bold text-slate-700 hover:text-blue-600 transition">
-                                Login
-                            </a>
-                            <a href="{{ route('register') }}" class="px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-wider transition shadow-md shadow-blue-600/25 flex items-center gap-1.5 active:scale-95">
-                                <span>Try for free</span>
-                                <span>&rarr;</span>
-                            </a>
-                        @endauth
-
-                        <!-- Mobile Hamburger Button -->
-                        <button
-                            type="button"
-                            @click="mobileNav = !mobileNav"
-                            class="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100"
-                        >
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                            </svg>
-                        </button>
+                <!-- Brand Monogram & Title -->
+                <a href="{{ route('home') }}" class="flex items-center gap-2 sm:gap-2.5 group shrink-0">
+                    <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-display font-black text-xs sm:text-sm shadow-md shadow-blue-600/30 group-hover:scale-105 transition-transform">
+                        SM
                     </div>
+                    <span class="font-display font-extrabold text-base sm:text-lg tracking-tight text-slate-950 truncate max-w-[130px] xs:max-w-none">
+                        {{ config('app.platform_name', 'ShopManager') }}
+                    </span>
+                </a>
 
+                <!-- Desktop Navigation Links (iOS segmented style) -->
+                <nav class="hidden lg:flex items-center gap-1 p-1 bg-slate-100/70 rounded-full border border-slate-200/50 text-xs font-semibold text-slate-600">
+                    <a href="#features" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">Features</a>
+                    <a href="#pos" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">Walk-in POS</a>
+                    <a href="#pricing" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">Pricing</a>
+                    <a href="#testimonials" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">Reviews</a>
+                    <a href="#faq" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">FAQ</a>
+                    <a href="#stores" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">Stores</a>
+                </nav>
+
+                <!-- Auth & Dynamic Action Cluster -->
+                <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider transition shadow-md shadow-blue-600/25 active:scale-95">
+                            <span class="hidden sm:inline">Dashboard</span>
+                            <span class="sm:hidden">Console</span>
+                            <span>&rarr;</span>
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" class="hidden sm:inline-block px-3 py-1.5 text-xs font-bold text-slate-700 hover:text-blue-600 transition">
+                            Login
+                        </a>
+                        <a href="{{ route('register') }}" class="px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider transition shadow-md shadow-blue-600/25 flex items-center gap-1 active:scale-95">
+                            <span>Try Free</span>
+                            <span class="hidden xs:inline">&rarr;</span>
+                        </a>
+                    @endauth
+
+                    <!-- Mobile iOS Control Center Menu Toggle -->
+                    <button
+                        type="button"
+                        @click="mobileNav = !mobileNav"
+                        :aria-expanded="mobileNav"
+                        aria-label="Toggle navigation menu"
+                        class="lg:hidden w-9 h-9 rounded-full bg-slate-100/90 hover:bg-slate-200/80 active:scale-90 flex items-center justify-center transition border border-slate-200/60 text-slate-700"
+                    >
+                        <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-90': mobileNav }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path x-show="!mobileNav" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 7h16M4 17h16" />
+                            <path x-show="mobileNav" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12" style="display: none;" />
+                        </svg>
+                    </button>
                 </div>
+
             </div>
 
-            <!-- Mobile Dropdown Menu -->
+            <!-- iOS 27 Frosted Acrylic Control Center Sheet (Mobile Only) -->
             <div
                 x-show="mobileNav"
-                x-transition
-                class="md:hidden bg-white border-b border-slate-100 px-6 py-4 space-y-3"
+                x-transition:enter="transition ease-out duration-300 transform"
+                x-transition:enter-start="opacity-0 -translate-y-3 scale-95"
+                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                x-transition:leave="transition ease-in duration-200 transform"
+                x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                x-transition:leave-end="opacity-0 -translate-y-3 scale-95"
+                @click.outside="mobileNav = false"
+                class="lg:hidden mt-2 p-3 sm:p-4 rounded-3xl bg-white/95 backdrop-blur-3xl border border-white/80 shadow-2xl shadow-slate-900/10 ring-1 ring-slate-900/10 space-y-2"
                 style="display: none;"
             >
-                <a @click="mobileNav = false" href="#features" class="block py-1.5 text-sm font-semibold text-slate-800">Features</a>
-                <a @click="mobileNav = false" href="#pos" class="block py-1.5 text-sm font-semibold text-slate-800">Walk-in POS</a>
-                <a @click="mobileNav = false" href="#pricing" class="block py-1.5 text-sm font-semibold text-slate-800">Pricing</a>
-                <a @click="mobileNav = false" href="#testimonials" class="block py-1.5 text-sm font-semibold text-slate-800">Reviews</a>
-                <a @click="mobileNav = false" href="#faq" class="block py-1.5 text-sm font-semibold text-slate-800">FAQ</a>
-                <a @click="mobileNav = false" href="#stores" class="block py-1.5 text-sm font-semibold text-slate-800">Live Stores</a>
+                <!-- Grouped Navigation Tiles -->
+                <div class="grid grid-cols-1 gap-1">
+                    <a
+                        @click="mobileNav = false"
+                        href="#features"
+                        class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
+                    >
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-900">Features &amp; Hub</div>
+                                <div class="text-[10px] text-slate-400">Unified retail, inventory &amp; POS</div>
+                            </div>
+                        </div>
+                        <span class="text-slate-300 group-hover:text-slate-500 font-bold">&rsaquo;</span>
+                    </a>
+
+                    <a
+                        @click="mobileNav = false"
+                        href="#pos"
+                        class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
+                    >
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-900">Walk-in POS Till</div>
+                                <div class="text-[10px] text-slate-400">Fast checkout &amp; thermal slips</div>
+                            </div>
+                        </div>
+                        <span class="text-slate-300 group-hover:text-slate-500 font-bold">&rsaquo;</span>
+                    </a>
+
+                    <a
+                        @click="mobileNav = false"
+                        href="#pricing"
+                        class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
+                    >
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-900">Pricing &amp; Plans</div>
+                                <div class="text-[10px] text-slate-400">14-day free trial, cancel anytime</div>
+                            </div>
+                        </div>
+                        <span class="text-slate-300 group-hover:text-slate-500 font-bold">&rsaquo;</span>
+                    </a>
+
+                    <a
+                        @click="mobileNav = false"
+                        href="#testimonials"
+                        class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
+                    >
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-900">Vendor Reviews</div>
+                                <div class="text-[10px] text-slate-400">Stories from Nigerian retailers</div>
+                            </div>
+                        </div>
+                        <span class="text-slate-300 group-hover:text-slate-500 font-bold">&rsaquo;</span>
+                    </a>
+
+                    <a
+                        @click="mobileNav = false"
+                        href="#faq"
+                        class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
+                    >
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-900">FAQ &amp; Hardware</div>
+                                <div class="text-[10px] text-slate-400">Bluetooth printer pairing &amp; setup</div>
+                            </div>
+                        </div>
+                        <span class="text-slate-300 group-hover:text-slate-500 font-bold">&rsaquo;</span>
+                    </a>
+
+                    <a
+                        @click="mobileNav = false"
+                        href="#stores"
+                        class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
+                    >
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-900">Live Boutiques</div>
+                                <div class="text-[10px] text-slate-400">Explore active client shops</div>
+                            </div>
+                        </div>
+                        <span class="text-slate-300 group-hover:text-slate-500 font-bold">&rsaquo;</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Action CTA Row -->
+                <div class="pt-2 border-t border-slate-100/80 flex flex-col gap-2">
+                    <a
+                        href="{{ route('register') }}"
+                        class="w-full py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-extrabold text-xs uppercase tracking-wider text-center transition shadow-lg shadow-blue-600/30 active:scale-95"
+                    >
+                        Start 14-Day Free Trial &rarr;
+                    </a>
+                    <a
+                        href="{{ route('login') }}"
+                        class="w-full py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs text-center transition active:scale-95"
+                    >
+                        Merchant Login
+                    </a>
+                </div>
             </div>
         </header>
 
