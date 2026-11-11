@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ProductVariant;
 use App\Models\SalesRecord;
 use App\Models\StockMovement;
+use App\Models\User;
 use App\Services\CurrentTenant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,6 +19,8 @@ class ManualSaleController extends Controller
 {
     public function create(): View
     {
+        $tenantId = app(CurrentTenant::class)->id();
+
         $variants = ProductVariant::with('product')
             ->where('is_active', true)
             ->where('stock_quantity', '>', 0)
@@ -29,7 +32,55 @@ class ManualSaleController extends Controller
             ->take(10)
             ->get();
 
-        return view('admin.sales.create', compact('variants', 'recentSales'));
+        // Customer profiles for auto-fill / quick lookup
+        $customers = User::where('tenant_id', $tenantId)
+            ->whereNotNull('phone')
+            ->where('phone', '!=', '')
+            ->select('id', 'name', 'phone')
+            ->take(50)
+            ->get();
+
+        // End-of-Day Register Takings (Z-Report)
+        $todaySales = SalesRecord::where('source', 'manual')
+            ->whereDate('date', today())
+            ->get();
+
+        $cashTotal = 0.0;
+        $transferTotal = 0.0;
+        $cardTotal = 0.0;
+
+        foreach ($todaySales as $s) {
+            $notes = strtoupper($s->notes ?? '');
+            if (str_contains($notes, 'SPLIT')) {
+                if (preg_match('/CASH:\s*₦?([0-9,\.]+)/i', $notes, $m)) {
+                    $cashTotal += (float) str_replace(',', '', $m[1]);
+                }
+                if (preg_match('/TRANSFER:\s*₦?([0-9,\.]+)/i', $notes, $m)) {
+                    $transferTotal += (float) str_replace(',', '', $m[1]);
+                }
+                if (preg_match('/(POS CARD|POS_TERMINAL):\s*₦?([0-9,\.]+)/i', $notes, $m)) {
+                    $cardTotal += (float) str_replace(',', '', $m[1]);
+                }
+            } elseif (str_contains($notes, 'CASH')) {
+                $cashTotal += (float) $s->amount;
+            } elseif (str_contains($notes, 'TRANSFER')) {
+                $transferTotal += (float) $s->amount;
+            } elseif (str_contains($notes, 'POS_TERMINAL') || str_contains($notes, 'POS CARD')) {
+                $cardTotal += (float) $s->amount;
+            }
+        }
+
+        $dailyTakings = [
+            'date' => today()->format('d M Y'),
+            'transactions_count' => $todaySales->count(),
+            'units_sold' => (int) $todaySales->sum('quantity'),
+            'total_amount' => (float) $todaySales->sum('amount'),
+            'cash_total' => $cashTotal,
+            'transfer_total' => $transferTotal,
+            'card_total' => $cardTotal,
+        ];
+
+        return view('admin.sales.create', compact('variants', 'recentSales', 'customers', 'dailyTakings'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -38,10 +89,13 @@ class ManualSaleController extends Controller
             'variant_id' => 'required|exists:product_variants,id',
             'quantity' => 'required|integer|min:1',
             'amount' => 'required|numeric|min:0',
-            'payment_method' => 'required|in:cash,pos_terminal,transfer',
+            'payment_method' => 'required|in:cash,pos_terminal,transfer,split',
             'customer_name' => 'nullable|string|max:255',
+            'customer_phone' => 'nullable|string|max:30',
             'notes' => 'nullable|string|max:500',
             'password' => 'nullable|string',
+            'split_cash_amount' => 'nullable|numeric|min:0',
+            'split_transfer_amount' => 'nullable|numeric|min:0',
         ]);
 
         if ($request->filled('password')) {
@@ -69,6 +123,26 @@ class ManualSaleController extends Controller
 
             $variant->update(['stock_quantity' => $newStock]);
 
+            // Construct payment method label
+            $pm = strtoupper($request->payment_method);
+            if ($request->payment_method === 'split') {
+                $cashPart = number_format((float) ($request->split_cash_amount ?? 0));
+                $transPart = number_format((float) ($request->split_transfer_amount ?? 0));
+                $pm = "SPLIT (Cash: ₦{$cashPart}, Transfer: ₦{$transPart})";
+            }
+
+            // Customer info format
+            $custInfo = '';
+            if ($request->filled('customer_name') && $request->filled('customer_phone')) {
+                $custInfo = " to {$request->customer_name} ({$request->customer_phone})";
+            } elseif ($request->filled('customer_name')) {
+                $custInfo = " to {$request->customer_name}";
+            } elseif ($request->filled('customer_phone')) {
+                $custInfo = " to ({$request->customer_phone})";
+            }
+
+            $notes = "Walk-in sale paid via {$pm}{$custInfo}".($request->notes ? " | {$request->notes}" : '');
+
             // Create Sales Record for walk-in ledger
             $sale = SalesRecord::create([
                 'product_variant_id' => $variant->id,
@@ -80,7 +154,7 @@ class ManualSaleController extends Controller
                 'source' => 'manual',
                 'status' => 'confirmed',
                 'created_by' => Auth::id(),
-                'notes' => 'Walk-in sale paid via '.strtoupper($request->payment_method).($request->customer_name ? " to {$request->customer_name}" : '').($request->notes ? " | {$request->notes}" : ''),
+                'notes' => $notes,
             ]);
 
             $saleId = $sale->id;

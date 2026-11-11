@@ -241,8 +241,24 @@ class PhaseThreeAdminTest extends TestCase
             'payment_method' => 'cash',
             'password' => 'password123',
         ]);
-        $responseSuccess->assertRedirect('/admin/sales/create');
-        $responseSuccess->assertSessionHas('success');
+        // Split payment with customer phone should record properly
+        $responseSplit = $this->actingAs($this->admin)->from('/admin/sales/create')->post('/admin/sales', [
+            'variant_id' => $variant->id,
+            'quantity' => 1,
+            'amount' => 25000,
+            'payment_method' => 'split',
+            'split_cash_amount' => 10000,
+            'split_transfer_amount' => 15000,
+            'customer_name' => 'Chioma Ade',
+            'customer_phone' => '08099887766',
+            'password' => 'password123',
+        ]);
+        $responseSplit->assertRedirect('/admin/sales/create');
+        $responseSplit->assertSessionHas('success');
+
+        $splitRecord = SalesRecord::where('source', 'manual')->latest('id')->first();
+        $this->assertStringContainsString('SPLIT (Cash: ₦10,000, Transfer: ₦15,000)', $splitRecord->notes);
+        $this->assertStringContainsString('Chioma Ade (08099887766)', $splitRecord->notes);
     }
 
     public function test_admin_reports_and_csv_export(): void

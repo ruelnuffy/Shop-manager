@@ -1,12 +1,26 @@
 <x-admin-layout>
     <x-slot name="header">
-        <div>
-            <h1 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 tracking-tight">
-                Direct In-Store POS Sale
-            </h1>
-            <p class="text-xs text-slate-400 mt-0.5">
-                Fast counter checkout &bull; Instant inventory deduction &amp; receipt
-            </p>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+                <h1 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 tracking-tight">
+                    Direct In-Store POS Sale
+                </h1>
+                <p class="text-xs text-slate-400 mt-0.5">
+                    Fast counter checkout &bull; Instant inventory deduction &amp; receipt
+                </p>
+            </div>
+
+            <!-- End-of-Day Closeout (Z-Report) Trigger -->
+            <button
+                type="button"
+                @click="showTakingsModal = true"
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white hover:bg-slate-50 text-slate-800 text-xs font-bold shadow-lg shadow-slate-900/5 transition cursor-pointer self-start sm:self-auto"
+            >
+                <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span>Daily Closeout &bull; Takings</span>
+            </button>
         </div>
     </x-slot>
 
@@ -50,6 +64,7 @@
     <div
         class="space-y-8"
         x-data="{
+            customers: {{ json_encode($customers->map(fn($c) => ['name' => $c->name, 'phone' => $c->phone])->values()) }},
             variants: {{ json_encode($variantsJson) }},
             recentSales: {{ json_encode($recentSalesJson) }},
             search: '',
@@ -57,11 +72,16 @@
             quantity: 1,
             paymentMethod: 'pos_terminal',
             customerName: '',
+            customerPhone: '',
+            phoneMatches: [],
+            splitCashAmount: '',
+            splitTransferAmount: '',
             notes: '',
             customAmount: null,
             chargePassword: '',
             showPassword: false,
             showReceipt: false,
+            showTakingsModal: false,
             receiptData: null,
 
             init() {
@@ -72,6 +92,44 @@
                         this.openReceipt(match);
                     }
                 }
+            },
+
+            onPhoneInput() {
+                if (!this.customerPhone || this.customerPhone.length < 3) {
+                    this.phoneMatches = [];
+                    return;
+                }
+                const clean = this.customerPhone.replace(/[^0-9]/g, '');
+                this.phoneMatches = this.customers.filter(c => c.phone && c.phone.replace(/[^0-9]/g, '').includes(clean));
+            },
+
+            selectCustomer(c) {
+                this.customerName = c.name;
+                this.customerPhone = c.phone;
+                this.phoneMatches = [];
+            },
+
+            onSplitCashInput() {
+                const cash = parseFloat(this.splitCashAmount) || 0;
+                const total = this.totalAmount;
+                const diff = Math.max(0, total - cash);
+                this.splitTransferAmount = diff > 0 ? diff : 0;
+            },
+
+            initSplit() {
+                this.paymentMethod = 'split';
+                const half = Math.round(this.totalAmount / 2);
+                this.splitCashAmount = half;
+                this.splitTransferAmount = this.totalAmount - half;
+            },
+
+            cleanPhone(phone) {
+                if (!phone) return '';
+                let p = phone.replace(/[^0-9]/g, '');
+                if (p.startsWith('0') && p.length === 11) {
+                    p = '234' + p.substring(1);
+                }
+                return p;
             },
 
             get selectedVariant() {
@@ -176,6 +234,7 @@
 
             get whatsappUrl() {
                 if (!this.receiptData) return '#';
+                const clean = this.cleanPhone(this.customerPhone);
                 const text = encodeURIComponent(
                     '*{{ $storeName }} — SALES RECEIPT*\n' +
                     'Receipt #: SR-' + this.receiptData.id + '\n' +
@@ -186,7 +245,7 @@
                     'Payment Method: ' + this.receiptData.payment_method + '\n' +
                     'Thank you for shopping with us!'
                 );
-                return 'https://wa.me/?text=' + text;
+                return clean ? ('https://wa.me/' + clean + '?text=' + text) : ('https://wa.me/?text=' + text);
             }
         }"
     >
@@ -335,6 +394,9 @@
                         <input type="hidden" name="amount" :value="totalAmount">
                         <input type="hidden" name="quantity" :value="quantity">
                         <input type="hidden" name="payment_method" :value="paymentMethod">
+                        <input type="hidden" name="split_cash_amount" :value="splitCashAmount">
+                        <input type="hidden" name="split_transfer_amount" :value="splitTransferAmount">
+                        <input type="hidden" name="customer_phone" :value="customerPhone">
 
                         <!-- Quantity Selector Controls -->
                         <div>
@@ -366,20 +428,23 @@
                             </div>
                         </div>
 
-                        <!-- Payment Method (The 3 Big Moniepoint Buttons) -->
+                        <!-- Payment Method (With Split Pay Option) -->
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-                                Payment Method
-                            </label>
-                            <div class="grid grid-cols-3 gap-2">
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">
+                                    Payment Method
+                                </label>
+                                <span class="text-[10px] text-slate-400 font-semibold" x-text="paymentMethod === 'split' ? 'Split Cash & Transfer' : 'Direct full charge'"></span>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                                 <!-- POS Card -->
                                 <button
                                     type="button"
                                     @click="paymentMethod = 'pos_terminal'"
                                     :class="paymentMethod === 'pos_terminal' ? 'bg-slate-900 text-white shadow-md shadow-slate-900/15' : 'bg-slate-50 hover:bg-slate-100 text-slate-700 shadow-xs'"
-                                    class="p-3 rounded-2xl text-center font-bold text-xs transition cursor-pointer flex flex-col items-center justify-center gap-1.5 min-h-[68px]"
+                                    class="p-2.5 rounded-2xl text-center font-bold text-xs transition cursor-pointer flex flex-col items-center justify-center gap-1 min-h-[64px]"
                                 >
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
                                     </svg>
                                     <span>POS Card</span>
@@ -390,9 +455,9 @@
                                     type="button"
                                     @click="paymentMethod = 'transfer'"
                                     :class="paymentMethod === 'transfer' ? 'bg-slate-900 text-white shadow-md shadow-slate-900/15' : 'bg-slate-50 hover:bg-slate-100 text-slate-700 shadow-xs'"
-                                    class="p-3 rounded-2xl text-center font-bold text-xs transition cursor-pointer flex flex-col items-center justify-center gap-1.5 min-h-[68px]"
+                                    class="p-2.5 rounded-2xl text-center font-bold text-xs transition cursor-pointer flex flex-col items-center justify-center gap-1 min-h-[64px]"
                                 >
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
                                     </svg>
                                     <span>Transfer</span>
@@ -403,18 +468,94 @@
                                     type="button"
                                     @click="paymentMethod = 'cash'"
                                     :class="paymentMethod === 'cash' ? 'bg-slate-900 text-white shadow-md shadow-slate-900/15' : 'bg-slate-50 hover:bg-slate-100 text-slate-700 shadow-xs'"
-                                    class="p-3 rounded-2xl text-center font-bold text-xs transition cursor-pointer flex flex-col items-center justify-center gap-1.5 min-h-[68px]"
+                                    class="p-2.5 rounded-2xl text-center font-bold text-xs transition cursor-pointer flex flex-col items-center justify-center gap-1 min-h-[64px]"
                                 >
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
                                     </svg>
                                     <span>Cash</span>
                                 </button>
+
+                                <!-- Split Pay (Cash + Transfer) -->
+                                <button
+                                    type="button"
+                                    @click="initSplit()"
+                                    :class="paymentMethod === 'split' ? 'bg-indigo-900 text-white shadow-md shadow-indigo-900/20' : 'bg-indigo-50/70 hover:bg-indigo-100 text-indigo-900 shadow-xs'"
+                                    class="p-2.5 rounded-2xl text-center font-bold text-xs transition cursor-pointer flex flex-col items-center justify-center gap-1 min-h-[64px]"
+                                >
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                    </svg>
+                                    <span>Split Pay</span>
+                                </button>
+                            </div>
+
+                            <!-- Split Amounts Inline Inputs -->
+                            <div
+                                x-show="paymentMethod === 'split'"
+                                x-transition
+                                class="mt-2.5 p-3.5 rounded-2xl bg-indigo-50/60 border border-indigo-100/60 space-y-2 text-xs"
+                            >
+                                <div class="flex items-center justify-between text-[11px] font-bold text-indigo-950">
+                                    <span>Split Breakdown</span>
+                                    <span>Total: ₦<span x-text="formatMoney(totalAmount)"></span></span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-slate-600 mb-1">Cash Part (₦)</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            x-model="splitCashAmount"
+                                            @input="onSplitCashInput()"
+                                            placeholder="Cash"
+                                            class="w-full px-3 py-2 rounded-xl bg-white text-xs font-bold text-slate-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-indigo-600/30"
+                                        >
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-slate-600 mb-1">Transfer Part (₦)</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            x-model="splitTransferAmount"
+                                            placeholder="Transfer"
+                                            class="w-full px-3 py-2 rounded-xl bg-white text-xs font-bold text-slate-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-indigo-600/30"
+                                        >
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Customer Details & Notes -->
-                        <div class="space-y-2 pt-1">
+                        <!-- Customer Phone Lookup, Name & Notes -->
+                        <div class="space-y-2 pt-1 relative" @click.away="phoneMatches = []">
+                            <!-- Customer Phone with Auto-Complete -->
+                            <div class="relative">
+                                <input
+                                    type="tel"
+                                    x-model="customerPhone"
+                                    @input="onPhoneInput()"
+                                    placeholder="Customer Phone (e.g. 08012345678) — WhatsApp autofill"
+                                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900/10 shadow-inner"
+                                >
+                                <!-- Quick Match Dropdown -->
+                                <div
+                                    x-show="phoneMatches.length > 0"
+                                    class="absolute left-0 right-0 top-full mt-1 bg-white rounded-2xl shadow-xl z-30 p-2 space-y-1 max-h-40 overflow-y-auto"
+                                    style="display: none;"
+                                >
+                                    <template x-for="c in phoneMatches" :key="c.phone">
+                                        <button
+                                            type="button"
+                                            @click="selectCustomer(c)"
+                                            class="w-full text-left p-2 rounded-xl hover:bg-slate-50 text-xs flex items-center justify-between transition cursor-pointer"
+                                        >
+                                            <span class="font-bold text-slate-800" x-text="c.name"></span>
+                                            <span class="text-slate-400 font-mono text-[11px]" x-text="c.phone"></span>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+
                             <input
                                 type="text"
                                 name="customer_name"
@@ -422,6 +563,7 @@
                                 placeholder="Customer Name (optional)"
                                 class="w-full px-4 py-2.5 rounded-xl bg-slate-50 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900/10 shadow-inner"
                             >
+
                             <input
                                 type="text"
                                 name="notes"
@@ -715,6 +857,143 @@
                 </div>
             </div>
         </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- DAILY CLOSEOUT / REGISTER TAKINGS MODAL (Z-REPORT)          -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div
+            x-show="showTakingsModal"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm"
+            style="display: none;"
+        >
+            <div
+                @click.away="showTakingsModal = false"
+                class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl shadow-slate-950/20 space-y-5 animate-in fade-in zoom-in-95 duration-150"
+            >
+                <!-- Close Button & Header -->
+                <div class="flex items-center justify-between no-print">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-900">Daily Closeout</h3>
+                            <p class="text-[11px] text-slate-400">Shift register takings &amp; Z-Report</p>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        @click="showTakingsModal = false"
+                        class="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+                        title="Close"
+                    >
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Printable Z-Report Slip Container (58mm Thermal Printer) -->
+                <div id="printable-zreport" class="bg-white rounded-2xl p-4 font-mono text-xs text-slate-900 space-y-3 shadow-md border-t-4 border-slate-900 mx-auto max-w-[280px]">
+                    <!-- Store Header -->
+                    <div class="text-center space-y-0.5">
+                        <div class="font-extrabold text-sm uppercase tracking-wider text-black">{{ $storeName }}</div>
+                        <div class="text-[10px] text-slate-500 font-sans print:text-black">DAILY REGISTER TAKINGS</div>
+                        <div class="text-[9px] text-slate-400 print:text-black pt-0.5 tracking-tight">*** OFFICIAL Z-REPORT ***</div>
+                    </div>
+
+                    <div class="dashed-line border-b border-dashed border-slate-300 print:border-black my-2"></div>
+
+                    <!-- Metadata -->
+                    <div class="space-y-1 text-[11px] leading-tight">
+                        <div class="flex justify-between">
+                            <span class="text-slate-500 print:text-black">Date:</span>
+                            <span class="text-black">{{ $dailyTakings['date'] }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500 print:text-black">Cashier:</span>
+                            <span class="text-black">{{ Auth::user()->name }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500 print:text-black">Sales Count:</span>
+                            <strong class="text-black">{{ $dailyTakings['transactions_count'] }} transactions</strong>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500 print:text-black">Units Sold:</span>
+                            <strong class="text-black">{{ $dailyTakings['units_sold'] }} items</strong>
+                        </div>
+                    </div>
+
+                    <div class="dashed-line border-b border-dashed border-slate-300 print:border-black my-2"></div>
+
+                    <!-- Payment Mode Breakdown -->
+                    <div class="space-y-1.5 leading-tight">
+                        <div class="font-bold text-black text-[11px] uppercase">Payment Breakdown</div>
+                        <div class="flex justify-between text-[11px]">
+                            <span class="text-slate-600 print:text-black">Cash Collected:</span>
+                            <strong class="font-bold text-black">₦{{ number_format($dailyTakings['cash_total']) }}</strong>
+                        </div>
+                        <div class="flex justify-between text-[11px]">
+                            <span class="text-slate-600 print:text-black">Bank Transfers:</span>
+                            <strong class="font-bold text-black">₦{{ number_format($dailyTakings['transfer_total']) }}</strong>
+                        </div>
+                        <div class="flex justify-between text-[11px]">
+                            <span class="text-slate-600 print:text-black">POS Terminal Cards:</span>
+                            <strong class="font-bold text-black">₦{{ number_format($dailyTakings['card_total']) }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="dashed-line border-b border-dashed border-slate-300 print:border-black my-2"></div>
+
+                    <!-- Total Takings -->
+                    <div class="flex justify-between items-baseline pt-0.5 leading-tight">
+                        <span class="font-bold text-black text-xs">TOTAL TAKINGS</span>
+                        <span class="font-extrabold text-base text-black font-sans">₦{{ number_format($dailyTakings['total_amount']) }}</span>
+                    </div>
+
+                    <div class="dashed-line border-b border-dashed border-slate-300 print:border-black my-2"></div>
+
+                    <!-- Footer -->
+                    <div class="text-center text-[10px] text-slate-500 print:text-black space-y-0.5 pt-1 font-sans">
+                        <p class="font-bold text-black">Register Balanced &amp; Closed</p>
+                        <p class="text-[9px]">Shift timestamp: {{ now()->format('h:i A') }}</p>
+                        <p class="text-[9px] pt-0.5 font-mono">*** {{ config('app.platform_name', 'ShopManager') }} POS ***</p>
+                    </div>
+
+                    <div class="thermal-feed-spacer hidden print:block" style="height: 18mm;"></div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="space-y-2 no-print pt-1">
+                    <button
+                        type="button"
+                        onclick="window.print()"
+                        class="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+                    >
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                        </svg>
+                        <span>Print Z-Report Slip (58mm)</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        @click="showTakingsModal = false"
+                        class="w-full py-2 px-3 text-slate-400 hover:text-slate-600 text-xs font-semibold text-center cursor-pointer"
+                    >
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Thermal Print Specific CSS for 58mm / 80mm Wireless Mobile Printers -->
@@ -739,11 +1018,13 @@
                 visibility: hidden !important;
             }
 
-            #printable-receipt, #printable-receipt * {
+            #printable-receipt, #printable-receipt *,
+            #printable-zreport, #printable-zreport * {
                 visibility: visible !important;
             }
 
-            #printable-receipt {
+            #printable-receipt,
+            #printable-zreport {
                 position: absolute !important;
                 left: 0 !important;
                 top: 0 !important;
@@ -760,7 +1041,8 @@
                 border: none !important;
             }
 
-            #printable-receipt .dashed-line {
+            #printable-receipt .dashed-line,
+            #printable-zreport .dashed-line {
                 border-bottom: 1px dashed #000000 !important;
                 margin: 4px 0 !important;
             }
