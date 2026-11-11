@@ -6,10 +6,10 @@
 
         <title>{{ config('app.platform_name', 'ShopManager') }} &mdash; Modern Retail POS &amp; Inventory Operating System</title>
 
-        <!-- Google Fonts: Plus Jakarta Sans for UI + Syne for bold headlines -->
+        <!-- Google Fonts: Plus Jakarta Sans for UI & headlines -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -18,7 +18,8 @@
                 font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
             }
             .font-display {
-                font-family: 'Syne', 'Plus Jakarta Sans', sans-serif;
+                font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+                letter-spacing: -0.035em;
             }
             .bg-warm-sand {
                 background-color: #f7f5f0;
@@ -297,7 +298,7 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 1: ROYAL BLUE HERO CONTENT (TIGHT & COMPACT)        -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-4 sm:pt-7 pb-10 sm:pb-14">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-3 sm:pt-5 pb-6 sm:pb-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
 
                 <!-- Left: Hero Text & Call to Actions -->
@@ -383,12 +384,14 @@
                                 </div>
                             </div>
 
-                            <!-- Recent Live Walk-in Transaction Pill -->
+                            <!-- Recent Live Walk-in Transaction Pill (with real product image) -->
                             <div class="p-3.5 rounded-2xl bg-slate-900 text-white flex items-center justify-between gap-3 shadow-md">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-xs">
-                                        POS
-                                    </div>
+                                    <img
+                                        src="{{ asset('images/products/versse-snakeskin-accent-bag.png') }}"
+                                        alt="Snake-Accent Leather Bag"
+                                        class="w-10 h-10 rounded-xl object-cover bg-slate-800 border border-slate-700 shrink-0 shadow-xs"
+                                    />
                                     <div>
                                         <div class="font-bold text-xs">Snake-Accent Leather Bag &bull; Set</div>
                                         <div class="text-[10px] text-slate-400">Cashier: Blessing &bull; Paid via SPLIT</div>
@@ -415,7 +418,7 @@
             </div>
 
             <!-- Trusted Retail Partners / Logos Row (Myshoplet Reference Style) -->
-            <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div class="mt-6 pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
                 <span class="text-[11px] font-semibold text-blue-200 uppercase tracking-wider">
                     Trusted by retail brands &amp; connected with:
                 </span>
@@ -431,8 +434,8 @@
         </div>
 
         <!-- Crisp Clean Wave Bottom Divider -->
-        <div class="w-full overflow-hidden leading-none pointer-events-none mt-2">
-            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-8 sm:h-12 fill-white">
+        <div class="w-full overflow-hidden leading-none pointer-events-none mt-1">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-6 sm:h-9 fill-white">
                 <path d="M0,0 C150,90 350,-40 500,45 C650,130 900,10 1200,60 L1200,120 L0,120 Z"></path>
             </svg>
         </div>
@@ -441,8 +444,8 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 2: "ONE SYSTEM, NOT EIGHT APPS" (Hub & Satellites)  -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section id="features" class="py-14 sm:py-20 bg-white">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        <section id="features" class="pt-8 sm:pt-12 pb-14 sm:pb-18 bg-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
                 <!-- Section Header -->
                 <div class="text-center max-w-2xl mx-auto space-y-3">
                     <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Unified Architecture</span>
@@ -1346,18 +1349,20 @@
 
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- FLOATING BOTTOM CONVERSION PILL (myshoplet style)           -->
+        <!-- Only surfaces after scrolling down past the hero fold       -->
         <!-- ═══════════════════════════════════════════════════════════ -->
         <div
-            x-data="{ showStickyPill: true }"
-            x-show="showStickyPill"
+            x-data="{ showStickyPill: false, dismissed: false }"
+            x-init="window.addEventListener('scroll', () => { if (!dismissed) { showStickyPill = window.scrollY > 400; } })"
+            x-show="showStickyPill && !dismissed"
+            x-cloak
             x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 translate-y-4"
+            x-transition:enter-start="opacity-0 translate-y-6"
             x-transition:enter-end="opacity-100 translate-y-0"
             x-transition:leave="transition ease-in duration-200"
             x-transition:leave-start="opacity-100 translate-y-0"
-            x-transition:leave-end="opacity-0 translate-y-4"
+            x-transition:leave-end="opacity-0 translate-y-6"
             class="fixed bottom-6 inset-x-4 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 z-40 max-w-md w-full"
-            style="display: none;"
         >
             <div class="bg-slate-900/95 backdrop-blur-md text-white rounded-2xl p-3 px-4 shadow-2xl border border-slate-800 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-2.5 min-w-0">
@@ -1382,7 +1387,7 @@
                     </a>
                     <button
                         type="button"
-                        @click="showStickyPill = false"
+                        @click="dismissed = true; showStickyPill = false"
                         class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
                         title="Dismiss"
                     >
