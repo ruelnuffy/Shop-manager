@@ -77,6 +77,11 @@ class CpanelDeployController extends Controller
                     $output = Artisan::output();
                     break;
 
+                case 'list_users':
+                    $users = DB::table('users')->select('id', 'name', 'email', 'role', 'created_at')->get();
+                    $output = json_encode($users, JSON_PRETTY_PRINT);
+                    break;
+
                 case 'seed':
                     Artisan::call('db:seed', ['--force' => true]);
                     $output = Artisan::output();

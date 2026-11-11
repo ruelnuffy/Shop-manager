@@ -78,75 +78,86 @@ class UserSeeder extends Seeder
         );
         $customer->syncRoles(['customer']);
 
-        // Neutral demo accounts for local/testing only
-        if (app()->environment(['local', 'testing'])) {
-            $superAdmin = User::updateOrCreate(
-                ['email' => 'superadmin@shopmanager.test'],
-                [
-                    'name' => 'ShopManager Super Admin',
-                    'password' => Hash::make('password123'),
-                    'role' => 'super_admin',
-                    'phone' => '+2348000000000',
-                    'address' => 'Platform Control Center',
-                    'city' => 'Lagos',
-                    'email_verified_at' => now(),
-                ]
-            );
+        // Platform & Demo accounts (available across environments for test logins)
+        $superAdmin = User::updateOrCreate(
+            ['email' => 'superadmin@shopmanager.test'],
+            [
+                'name' => 'ShopManager Super Admin',
+                'password' => Hash::make('password123'),
+                'role' => 'super_admin',
+                'phone' => '+2348000000000',
+                'address' => 'Platform Control Center',
+                'city' => 'Lagos',
+                'email_verified_at' => now(),
+            ]
+        );
 
-            $platformAdmin = User::updateOrCreate(
-                ['email' => 'admin@shopmanager.test'],
-                [
-                    'name' => 'ShopManager Admin',
-                    'password' => Hash::make('password123'),
-                    'role' => 'admin',
-                    'phone' => '+2348000000001',
-                    'address' => 'Platform HQ, Victoria Island',
-                    'city' => 'Lagos',
-                    'email_verified_at' => now(),
-                ]
-            );
-            $platformAdmin->syncRoles(['admin']);
+        $platformAdmin = User::updateOrCreate(
+            ['email' => 'admin@shopmanager.test'],
+            [
+                'name' => 'ShopManager Admin',
+                'password' => Hash::make('password123'),
+                'role' => 'admin',
+                'phone' => '+2348000000001',
+                'address' => 'Platform HQ, Victoria Island',
+                'city' => 'Lagos',
+                'email_verified_at' => now(),
+            ]
+        );
+        $platformAdmin->syncRoles(['admin']);
 
-            $platformStaff = User::updateOrCreate(
-                ['email' => 'staff@shopmanager.test'],
-                [
-                    'name' => 'ShopManager Staff',
-                    'password' => Hash::make('password123'),
-                    'role' => 'staff',
-                    'phone' => '+2348000000002',
-                    'address' => 'Store Operations, Lekki Phase 1',
-                    'city' => 'Lagos',
-                    'email_verified_at' => now(),
-                ]
-            );
-            $platformStaff->syncRoles(['staff']);
+        $platformStaff = User::updateOrCreate(
+            ['email' => 'staff@shopmanager.test'],
+            [
+                'name' => 'ShopManager Staff',
+                'password' => Hash::make('password123'),
+                'role' => 'staff',
+                'phone' => '+2348000000002',
+                'address' => 'Store Operations, Lekki Phase 1',
+                'city' => 'Lagos',
+                'email_verified_at' => now(),
+            ]
+        );
+        $platformStaff->syncRoles(['staff']);
 
-            Staff::updateOrCreate(
-                ['user_id' => $platformStaff->id],
-                [
-                    'position' => 'Retail Specialist',
-                    'bank_name' => 'GTBank',
-                    'bank_account_number' => '0123456788',
-                    'bank_code' => '058',
-                    'recipient_code' => 'RCP_demo123',
-                    'monthly_salary' => 175000.00,
-                    'is_active' => true,
-                ]
-            );
+        Staff::updateOrCreate(
+            ['user_id' => $platformStaff->id],
+            [
+                'position' => 'Retail Specialist',
+                'bank_name' => 'GTBank',
+                'bank_account_number' => '0123456788',
+                'bank_code' => '058',
+                'recipient_code' => 'RCP_demo123',
+                'monthly_salary' => 175000.00,
+                'is_active' => true,
+            ]
+        );
 
-            $platformCustomer = User::updateOrCreate(
-                ['email' => 'customer@shopmanager.test'],
-                [
-                    'name' => 'ShopManager Customer',
-                    'password' => Hash::make('password123'),
-                    'role' => 'customer',
-                    'phone' => '+2348000000003',
-                    'address' => '10 Innovation Way',
-                    'city' => 'Lagos',
-                    'email_verified_at' => now(),
-                ]
-            );
-            $platformCustomer->syncRoles(['customer']);
-        }
+        $platformCustomer = User::updateOrCreate(
+            ['email' => 'customer@shopmanager.test'],
+            [
+                'name' => 'ShopManager Customer',
+                'password' => Hash::make('password123'),
+                'role' => 'customer',
+                'phone' => '+2348000000003',
+                'address' => '10 Innovation Way',
+                'city' => 'Lagos',
+                'email_verified_at' => now(),
+            ]
+        );
+        $platformCustomer->syncRoles(['customer']);
+
+        User::updateOrCreate(
+            ['email' => 'testadmin@shopmanager.test'],
+            [
+                'name' => 'Test Admin',
+                'password' => Hash::make('password123'),
+                'role' => 'admin',
+                'phone' => '+2348000000004',
+                'address' => 'Test HQ',
+                'city' => 'Lagos',
+                'email_verified_at' => now(),
+            ]
+        )->syncRoles(['admin']);
     }
 }
