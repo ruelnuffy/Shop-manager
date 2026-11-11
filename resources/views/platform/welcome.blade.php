@@ -41,10 +41,13 @@
     >
 
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <!-- FLOATING iOS 27 DYNAMIC CAPSULE NAVBAR                      -->
+        <!-- HERO & FLOATING NAVBAR WRAPPER (Full-Bleed Royal Blue)      -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <header class="sticky top-2 sm:top-4 z-50 px-3 sm:px-6 max-w-7xl mx-auto">
-            <div class="relative bg-white/85 backdrop-blur-2xl border border-white/60 shadow-xl shadow-slate-900/5 rounded-full px-3.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between ring-1 ring-slate-900/5 transition-all">
+        <div class="relative bg-gradient-to-br from-[#1d4ed8] via-[#2563eb] to-[#1e40af] text-white overflow-hidden">
+
+            <!-- FLOATING iOS 27 DYNAMIC CAPSULE NAVBAR -->
+            <header class="sticky top-2 sm:top-3 z-50 px-3 sm:px-6 max-w-7xl mx-auto pt-2 sm:pt-3">
+                <div class="relative bg-white/90 backdrop-blur-2xl border border-white/60 shadow-xl shadow-blue-950/20 rounded-full px-3.5 sm:px-6 h-13 sm:h-15 flex items-center justify-between ring-1 ring-white/30 transition-all">
 
                 <!-- Brand Logo (Uploaded Official Brand Mark) -->
                 <a href="{{ route('home') }}" class="flex items-center gap-2 group shrink-0">
@@ -107,7 +110,7 @@
             <!-- iOS 27 Frosted Acrylic Control Center Sheet (Mobile Only) -->
             <div
                 id="mobileNavSheet"
-                class="hidden lg:hidden mt-2 p-3 sm:p-4 rounded-3xl bg-white/95 backdrop-blur-3xl border border-white/80 shadow-2xl shadow-slate-900/15 ring-1 ring-slate-900/10 space-y-2.5 transition-all"
+                class="hidden lg:hidden mt-2 p-3 sm:p-4 rounded-3xl bg-white/95 backdrop-blur-3xl border border-white/80 shadow-2xl shadow-slate-900/15 ring-1 ring-slate-900/10 space-y-2.5 transition-all text-slate-900"
             >
                 <!-- Sheet Header with explicit Close / Done Button -->
                 <div class="flex items-center justify-between pb-2 px-2 border-b border-slate-100">
@@ -292,139 +295,153 @@
         </script>
 
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <!-- SECTION 1: ROYAL BLUE HERO WITH DASHBOARD COMPOSITION      -->
+        <!-- SECTION 1: ROYAL BLUE HERO CONTENT (TIGHT & COMPACT)        -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section class="bg-gradient-to-br from-[#1d4ed8] via-[#2563eb] to-[#1e40af] text-white pt-16 sm:pt-24 pb-20 sm:pb-32 relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-4 sm:pt-7 pb-10 sm:pb-14">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
 
-                    <!-- Left: Hero Text & Call to Actions -->
-                    <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
-                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-white text-xs font-bold tracking-wide">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span>FOR RETAILERS &amp; COMMERCE BRANDS</span>
-                        </div>
-
-                        <h1 class="font-display font-extrabold text-4xl sm:text-6xl tracking-tight leading-[1.08]">
-                            Sell anywhere.<br>
-                            It all lands in<br>
-                            one place.
-                        </h1>
-
-                        <p class="text-base sm:text-lg text-blue-100 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-                            {{ config('app.platform_name', 'ShopManager') }} is the operating system for modern retail brands. Unified Retail, Inventory, physical POS counter sales, wireless receipts, and WhatsApp orders &mdash; without ever losing track of inventory or revenue.
-                        </p>
-
-                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-                            <a
-                                href="{{ route('register') }}"
-                                class="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-slate-50 text-blue-800 font-extrabold text-xs uppercase tracking-wider transition shadow-2xl shadow-blue-950/30 flex items-center justify-center gap-2 active:scale-95"
-                            >
-                                <span>Start free trial</span>
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                                </svg>
-                            </a>
-
-                            <a
-                                href="{{ route('admin.sales.create') }}"
-                                class="w-full sm:w-auto px-7 py-4 rounded-full bg-blue-800/60 hover:bg-blue-800 text-white font-bold text-xs uppercase tracking-wider transition border border-white/20 flex items-center justify-center gap-2"
-                            >
-                                <span>Try Walk-in POS Till</span>
-                                <span>&nearr;</span>
-                            </a>
-                        </div>
-
-                        <!-- Micro Trust Badges -->
-                        <div class="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs font-semibold text-blue-200">
-                            <span>&check; No credit card required</span>
-                            <span>&bull;</span>
-                            <span>&check; 14-day free trial</span>
-                            <span>&bull;</span>
-                            <span>&check; Cancel anytime</span>
-                        </div>
+                <!-- Left: Hero Text & Call to Actions -->
+                <div class="lg:col-span-6 space-y-4 sm:space-y-5 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-white text-[11px] font-bold tracking-wide">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>FOR RETAILERS &amp; COMMERCE BRANDS</span>
                     </div>
 
-                    <!-- Right: High-Converting Retail Dashboard Composition -->
-                    <div class="lg:col-span-6 relative">
-                        <div class="relative mx-auto max-w-lg lg:max-w-none">
-                            <!-- Background Ambient Aura -->
-                            <div class="absolute -inset-4 bg-gradient-to-r from-blue-400 to-indigo-300 rounded-3xl blur-2xl opacity-30"></div>
+                    <h1 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-5xl tracking-tight leading-[1.08]">
+                        Sell anywhere.<br>
+                        It all lands in<br>
+                        one place.
+                    </h1>
 
-                            <!-- Main Floating App Window Card -->
-                            <div class="relative bg-white rounded-3xl p-6 sm:p-7 shadow-2xl text-slate-900 space-y-5">
-                                <!-- Top Window Chrome -->
-                                <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-3 h-3 rounded-full bg-rose-400"></span>
-                                        <span class="w-3 h-3 rounded-full bg-amber-400"></span>
-                                        <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
-                                        <span class="text-xs font-bold text-slate-400 ml-2 font-mono">shopmanager.console &bull; Live</span>
-                                    </div>
-                                    <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold flex items-center gap-1.5">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                        <span>POS Terminal Online</span>
-                                    </span>
-                                </div>
+                    <p class="text-sm sm:text-base text-blue-100/95 max-w-lg mx-auto lg:mx-0 leading-relaxed font-normal">
+                        {{ config('app.platform_name', 'ShopManager') }} is the operating system for modern retail brands. Unified Retail, Inventory, physical POS counter sales, wireless receipts, and WhatsApp orders &mdash; without ever losing track of inventory or revenue.
+                    </p>
 
-                                <!-- Key Metrics Row -->
-                                <div class="grid grid-cols-2 gap-3">
-                                    <div class="p-3.5 rounded-2xl bg-slate-50 space-y-1">
-                                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Today's Revenue</div>
-                                        <div class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">₦285,000</div>
-                                        <div class="text-[10px] text-emerald-600 font-bold">+18.4% vs yesterday</div>
-                                    </div>
-                                    <div class="p-3.5 rounded-2xl bg-slate-50 space-y-1">
-                                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Stock Valuation</div>
-                                        <div class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">₦4.2M</div>
-                                        <div class="text-[10px] text-slate-400 font-semibold">16 categories synced</div>
-                                    </div>
-                                </div>
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
+                        <a
+                            href="{{ route('register') }}"
+                            class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white hover:bg-slate-50 text-blue-800 font-extrabold text-xs uppercase tracking-wider transition shadow-xl shadow-blue-950/20 flex items-center justify-center gap-2 active:scale-95"
+                        >
+                            <span>Start free trial</span>
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
 
-                                <!-- Recent Live Walk-in Transaction Pill -->
-                                <div class="p-4 rounded-2xl bg-slate-900 text-white flex items-center justify-between gap-3 shadow-lg shadow-slate-900/15">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-xs">
-                                            POS
-                                        </div>
-                                        <div>
-                                            <div class="font-bold text-xs">Snake-Accent Leather Bag &bull; Set</div>
-                                            <div class="text-[10px] text-slate-400">Cashier: Blessing &bull; Paid via SPLIT</div>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="font-display font-bold text-sm text-emerald-400">₦45,000</div>
-                                        <div class="text-[9px] text-slate-400">Receipt Printed &check;</div>
-                                    </div>
-                                </div>
+                        <a
+                            href="{{ route('admin.sales.create') }}"
+                            class="w-full sm:w-auto px-6 py-3.5 rounded-full bg-blue-800/60 hover:bg-blue-800 text-white font-bold text-xs uppercase tracking-wider transition border border-white/20 flex items-center justify-center gap-2"
+                        >
+                            <span>Try Walk-in POS Till</span>
+                            <span>&nearr;</span>
+                        </a>
+                    </div>
 
-                                <!-- Floating Merchant WhatsApp Notification Bubble -->
-                                <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-between text-xs text-emerald-950">
-                                    <div class="flex items-center gap-2">
-                                        <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/></svg>
-                                        <span>Customer receipt delivered to WhatsApp (08012345678)</span>
-                                    </div>
-                                    <span class="text-emerald-700 font-bold text-[10px]">Delivered</span>
+                    <!-- Micro Trust Badges -->
+                    <div class="pt-1 flex flex-wrap items-center justify-center lg:justify-start gap-3 text-[11px] font-semibold text-blue-200">
+                        <span>&check; No credit card required</span>
+                        <span>&bull;</span>
+                        <span>&check; 14-day free trial</span>
+                        <span>&bull;</span>
+                        <span>&check; Cancel anytime</span>
+                    </div>
+                </div>
+
+                <!-- Right: High-Converting Retail Dashboard Composition -->
+                <div class="lg:col-span-6 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Background Ambient Aura -->
+                        <div class="absolute -inset-3 bg-gradient-to-r from-blue-300 to-indigo-300 rounded-3xl blur-xl opacity-25"></div>
+
+                        <!-- Main Floating App Window Card -->
+                        <div class="relative bg-white rounded-3xl p-5 sm:p-6 shadow-2xl text-slate-900 space-y-4">
+                            <!-- Top Window Chrome -->
+                            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                                    <span class="text-xs font-bold text-slate-400 ml-2 font-mono">shopmanager.console &bull; Live</span>
                                 </div>
+                                <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <span>POS Terminal Online</span>
+                                </span>
+                            </div>
+
+                            <!-- Key Metrics Row -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="p-3 rounded-2xl bg-slate-50 space-y-1">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Today's Revenue</div>
+                                    <div class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">₦285,000</div>
+                                    <div class="text-[10px] text-emerald-600 font-bold">+18.4% vs yesterday</div>
+                                </div>
+                                <div class="p-3 rounded-2xl bg-slate-50 space-y-1">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Stock Valuation</div>
+                                    <div class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">₦4.2M</div>
+                                    <div class="text-[10px] text-slate-400 font-semibold">16 categories synced</div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Live Walk-in Transaction Pill -->
+                            <div class="p-3.5 rounded-2xl bg-slate-900 text-white flex items-center justify-between gap-3 shadow-md">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-xs">
+                                        POS
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-xs">Snake-Accent Leather Bag &bull; Set</div>
+                                        <div class="text-[10px] text-slate-400">Cashier: Blessing &bull; Paid via SPLIT</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-display font-bold text-xs sm:text-sm text-emerald-400">₦45,000</div>
+                                    <div class="text-[9px] text-slate-400">Receipt Printed &check;</div>
+                                </div>
+                            </div>
+
+                            <!-- Floating Merchant WhatsApp Notification Bubble -->
+                            <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-between text-xs text-emerald-950">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/></svg>
+                                    <span class="text-[11px]">Customer receipt sent via WhatsApp</span>
+                                </div>
+                                <span class="text-emerald-700 font-bold text-[10px]">Delivered</span>
                             </div>
                         </div>
                     </div>
+                </div>
 
+            </div>
+
+            <!-- Trusted Retail Partners / Logos Row (Myshoplet Reference Style) -->
+            <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+                <span class="text-[11px] font-semibold text-blue-200 uppercase tracking-wider">
+                    Trusted by retail brands &amp; connected with:
+                </span>
+                <div class="flex flex-wrap items-center justify-center gap-2.5 text-xs font-bold text-white/90">
+                    <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs border border-white/10">Paystack</span>
+                    <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs border border-white/10">Moniepoint</span>
+                    <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs border border-white/10">OPay</span>
+                    <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs border border-white/10">Flutterwave</span>
+                    <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs border border-white/10">58mm Thermal</span>
                 </div>
             </div>
 
-            <!-- Crisp Clean Wave Bottom Divider -->
-            <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none">
-                <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-10 sm:h-16 fill-white">
-                    <path d="M0,0 C150,90 350,-40 500,45 C650,130 900,10 1200,60 L1200,120 L0,120 Z"></path>
-                </svg>
-            </div>
-        </section>
+        </div>
+
+        <!-- Crisp Clean Wave Bottom Divider -->
+        <div class="w-full overflow-hidden leading-none pointer-events-none mt-2">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-8 sm:h-12 fill-white">
+                <path d="M0,0 C150,90 350,-40 500,45 C650,130 900,10 1200,60 L1200,120 L0,120 Z"></path>
+            </svg>
+        </div>
+    </div>
 
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 2: "ONE SYSTEM, NOT EIGHT APPS" (Hub & Satellites)  -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section id="features" class="py-20 sm:py-28 bg-white">
+        <section id="features" class="py-14 sm:py-20 bg-white">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
                 <!-- Section Header -->
                 <div class="text-center max-w-2xl mx-auto space-y-3">
@@ -519,7 +536,7 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 3: "SET UP IN THREE STEPS"                          -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section class="py-20 sm:py-28 bg-slate-50/60 border-y border-slate-100">
+        <section class="py-14 sm:py-20 bg-slate-50/60 border-y border-slate-100">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
                 <!-- Section Header -->
                 <div class="text-center max-w-2xl mx-auto space-y-3">
@@ -594,7 +611,7 @@
         <!-- SECTION 4: "START FREE FOR 14 DAYS, GROW AT YOUR PACE"      -->
         <!-- Warm Sand / Beige background matching myshoplet screenshot   -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section id="pricing" class="py-20 sm:py-28 bg-warm-sand">
+        <section id="pricing" class="py-14 sm:py-20 bg-warm-sand">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
                 <!-- Section Header -->
                 <div class="text-center max-w-2xl mx-auto space-y-3">
@@ -778,7 +795,7 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 5: "A REAL SHOP. FROM BROWSING TO PAID."            -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section class="py-20 sm:py-28 bg-white">
+        <section class="py-14 sm:py-20 bg-white">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
                 <div class="text-center max-w-2xl mx-auto space-y-3">
                     <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Fast Checkout Experience</span>
@@ -851,7 +868,7 @@
         <!-- SECTION 6: "WHAT VENDORS ARE SAYING" (Testimonials)         -->
         <!-- Warm Sand / Beige background matching myshoplet screenshot   -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section id="testimonials" class="py-20 sm:py-28 bg-warm-sand">
+        <section id="testimonials" class="py-14 sm:py-20 bg-warm-sand">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
                 <div class="text-center max-w-2xl mx-auto space-y-3">
                     <span class="text-xs font-bold text-blue-700 uppercase tracking-wider">Social Proof</span>
@@ -935,7 +952,7 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 7: "QUESTIONS? ANSWERED." (Interactive FAQ)         -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section id="faq" class="py-20 sm:py-28 bg-white">
+        <section id="faq" class="py-14 sm:py-20 bg-white">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
                 <div class="text-center space-y-3">
                     <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Frequently Asked Questions</span>
@@ -1031,7 +1048,7 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 8: "PRACTICAL TIPS TO GROW YOUR RETAIL SALES"       -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section class="py-20 sm:py-28 bg-white border-t border-slate-100">
+        <section class="py-14 sm:py-20 bg-white border-t border-slate-100">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
                 <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                     <div class="space-y-3">
@@ -1231,7 +1248,7 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 9: FINAL DARK CTA BANNER (myshoplet style)          -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section class="py-20 sm:py-28 bg-[#0b0f19] text-white relative overflow-hidden">
+        <section class="py-14 sm:py-20 bg-[#0b0f19] text-white relative overflow-hidden">
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 relative z-10">
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-white text-xs font-bold">
                     <span>GET STARTED IN 2 MINUTES</span>
@@ -1260,8 +1277,8 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 10: CLEAN COMPREHENSIVE FOOTER                      -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <footer class="bg-white border-t border-slate-200/80 py-16 text-slate-500 text-xs">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <footer class="bg-white border-t border-slate-200/80 py-12 text-slate-500 text-xs">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
                     <!-- Col 1: Brand Info -->
                     <div class="col-span-2 space-y-4">
