@@ -41,13 +41,14 @@ class RegisteredUserController extends Controller
     {
         $currentTenant = app(CurrentTenant::class);
 
-        // Platform SaaS Merchant Onboarding (no active tenant)
-        if (! $currentTenant->check()) {
+        // Platform SaaS Merchant Onboarding (store_name provided or no active tenant)
+        if ($request->filled('store_name') || ! $currentTenant->check()) {
             $request->validate([
                 'store_name' => ['required', 'string', 'max:255'],
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'plan' => ['nullable', 'string', 'in:starter,pro,enterprise,standard,free'],
             ]);
 
             $user = DB::transaction(function () use ($request, $currentTenant) {
@@ -66,11 +67,16 @@ class RegisteredUserController extends Controller
                     $slug = "{$baseSlug}-{$counter}";
                 }
 
+                $chosenPlan = $request->input('plan', 'standard');
+                if (! in_array($chosenPlan, ['starter', 'pro', 'enterprise', 'free', 'standard'], true)) {
+                    $chosenPlan = 'standard';
+                }
+
                 $tenant = Tenant::create([
                     'name' => $storeName,
                     'slug' => $slug,
                     'subdomain' => $slug,
-                    'plan' => 'standard',
+                    'plan' => $chosenPlan,
                     'status' => 'active',
                     'settings' => [
                         'branding' => [

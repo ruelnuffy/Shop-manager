@@ -20,7 +20,7 @@
     <form
         method="POST"
         action="{{ route('register') }}"
-        x-data="{ showPass: false, showConfirm: false, storeName: '{{ old('store_name', '') }}' }"
+        x-data="{ showPass: false, showConfirm: false, storeName: '{{ old('store_name', '') }}', plan: '{{ request('plan', old('plan', 'standard')) }}' }"
         class="space-y-4"
     >
         @csrf
@@ -51,6 +51,47 @@
                     Store URL slug: <span class="font-bold text-indigo-600" x-text="storeName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'your-store'"></span>
                 </p>
                 <x-input-error :messages="$errors->get('store_name')" class="mt-2" />
+            </div>
+
+            <!-- Starting Plan Selection -->
+            <div>
+                <x-input-label for="plan" :value="__('Select Starting Plan')" />
+                <div class="grid grid-cols-2 gap-2 mt-1">
+                    <label class="cursor-pointer border rounded-xl p-2.5 flex flex-col justify-between transition hover:border-indigo-400 bg-white" :class="plan === 'standard' ? 'border-indigo-600 bg-indigo-50/40 ring-1 ring-indigo-600' : 'border-slate-200'">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-900">14-Day Free Trial</span>
+                            <input type="radio" name="plan" value="standard" x-model="plan" class="text-indigo-600 focus:ring-indigo-500">
+                        </div>
+                        <span class="text-[10px] text-slate-500 mt-1">Full access &bull; Free forever basic</span>
+                    </label>
+
+                    <label class="cursor-pointer border rounded-xl p-2.5 flex flex-col justify-between transition hover:border-indigo-400 bg-white" :class="plan === 'starter' ? 'border-indigo-600 bg-indigo-50/40 ring-1 ring-indigo-600' : 'border-slate-200'">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-900">Starter Store</span>
+                            <input type="radio" name="plan" value="starter" x-model="plan" class="text-indigo-600 focus:ring-indigo-500">
+                        </div>
+                        <span class="text-[10px] text-emerald-700 font-semibold mt-1">₦8,000 / month</span>
+                    </label>
+
+                    <label class="cursor-pointer border rounded-xl p-2.5 flex flex-col justify-between transition hover:border-indigo-400 bg-white" :class="plan === 'pro' ? 'border-indigo-600 bg-indigo-50/40 ring-1 ring-indigo-600' : 'border-slate-200'">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-1">
+                                <span class="text-xs font-bold text-slate-900">Pro Retailer</span>
+                                <span class="text-[9px] bg-blue-100 text-blue-700 px-1 py-0.2 rounded font-extrabold uppercase">Popular</span>
+                            </div>
+                            <input type="radio" name="plan" value="pro" x-model="plan" class="text-indigo-600 focus:ring-indigo-500">
+                        </div>
+                        <span class="text-[10px] text-blue-700 font-semibold mt-1">₦18,000 / month</span>
+                    </label>
+
+                    <label class="cursor-pointer border rounded-xl p-2.5 flex flex-col justify-between transition hover:border-indigo-400 bg-white" :class="plan === 'enterprise' ? 'border-indigo-600 bg-indigo-50/40 ring-1 ring-indigo-600' : 'border-slate-200'">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-900">Enterprise Chain</span>
+                            <input type="radio" name="plan" value="enterprise" x-model="plan" class="text-indigo-600 focus:ring-indigo-500">
+                        </div>
+                        <span class="text-[10px] text-purple-700 font-semibold mt-1">₦45,000 / month</span>
+                    </label>
+                </div>
             </div>
         @endif
 

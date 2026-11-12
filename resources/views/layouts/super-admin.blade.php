@@ -112,6 +112,18 @@
                 </a>
 
                 <a
+                    href="{{ route('super-admin.users.index') }}"
+                    class="flex items-center justify-between px-3 py-2.5 rounded-lg transition {{ request()->routeIs('super-admin.users.*') ? 'bg-indigo-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}"
+                >
+                    <div class="flex items-center gap-3">
+                        <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <span>Platform Users</span>
+                    </div>
+                </a>
+
+                <a
                     href="{{ route('super-admin.tenants.create') }}"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition {{ request()->routeIs('super-admin.tenants.create') ? 'bg-indigo-600 text-white font-semibold' : 'text-indigo-600 hover:bg-indigo-50' }}"
                 >
@@ -209,6 +221,7 @@
         <div x-show="mobileMenuOpen" class="lg:hidden p-4 bg-white border-b border-slate-200 space-y-2 text-xs" style="display: none;">
             <a href="{{ route('super-admin.dashboard') }}" class="block p-2 rounded text-slate-800 hover:bg-slate-100">Platform Overview</a>
             <a href="{{ route('super-admin.tenants.index') }}" class="block p-2 rounded text-slate-800 hover:bg-slate-100">Tenant Stores</a>
+            <a href="{{ route('super-admin.users.index') }}" class="block p-2 rounded text-slate-800 hover:bg-slate-100">Platform Users</a>
             <a href="{{ route('super-admin.tenants.create') }}" class="block p-2 rounded text-indigo-600 hover:bg-indigo-50">+ Provision Store</a>
             <a href="{{ route('super-admin.export-report') }}" class="block p-2 rounded text-slate-800 hover:bg-slate-100">Export CSV</a>
             <form method="POST" action="{{ route('logout') }}">

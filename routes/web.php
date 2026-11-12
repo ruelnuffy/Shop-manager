@@ -188,6 +188,11 @@ Route::prefix('super-admin')
         Route::post('/tenants/{tenant}/admins', [SuperAdmin\TenantController::class, 'storeAdmin'])->name('tenants.admins.store');
         Route::post('/tenants/{tenant}/admins/{user}/reset-password', [SuperAdmin\TenantController::class, 'resetAdminPassword'])->name('tenants.admins.reset-password');
         Route::delete('/tenants/{tenant}/admins/{user}', [SuperAdmin\TenantController::class, 'destroyAdmin'])->name('tenants.admins.destroy');
+
+        // Platform Users Directory & Direct Masquerade
+        Route::get('/users', [SuperAdmin\UserController::class, 'index'])->name('users.index');
+        Route::post('/users/{user}/impersonate', [SuperAdmin\UserController::class, 'impersonate'])->name('users.impersonate');
+
         Route::get('/export-report', [SuperAdmin\DashboardController::class, 'exportAuditReport'])->name('export-report');
         Route::post('/clear-cache', [SuperAdmin\DashboardController::class, 'clearCache'])->name('clear-cache');
     });

@@ -22,11 +22,20 @@ class TenantController extends Controller
      */
     public function index(Request $request): View
     {
-        $query = Tenant::withCount([
+        $totalStoresCount = Tenant::count();
+        $subscribedCount = Tenant::whereIn('plan', ['starter', 'pro', 'enterprise'])->count();
+        $freeCount = Tenant::where(function ($q) {
+            $q->whereNotIn('plan', ['starter', 'pro', 'enterprise'])->orWhereNull('plan');
+        })->count();
+
+        $query = Tenant::with([
+            'users' => fn ($q) => $q->withoutTenancy()->where('role', 'admin')->latest(),
+        ])->withCount([
             'products' => fn ($q) => $q->withoutTenancy(),
             'orders' => fn ($q) => $q->withoutTenancy(),
             'staff' => fn ($q) => $q->withoutTenancy(),
             'shopLocations' => fn ($q) => $q->withoutTenancy(),
+            'users' => fn ($q) => $q->withoutTenancy(),
         ])->latest();
 
         if ($search = $request->input('search')) {
@@ -34,8 +43,23 @@ class TenantController extends Controller
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('slug', 'like', "%{$search}%")
                     ->orWhere('subdomain', 'like', "%{$search}%")
-                    ->orWhere('domain', 'like', "%{$search}%");
+                    ->orWhere('domain', 'like', "%{$search}%")
+                    ->orWhereHas('users', function ($uq) use ($search) {
+                        $uq->withoutTenancy()
+                            ->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%");
+                    });
             });
+        }
+
+        if ($tier = $request->input('tier')) {
+            if ($tier === 'subscribed') {
+                $query->whereIn('plan', ['starter', 'pro', 'enterprise']);
+            } elseif ($tier === 'free') {
+                $query->where(function ($q) {
+                    $q->whereNotIn('plan', ['starter', 'pro', 'enterprise'])->orWhereNull('plan');
+                });
+            }
         }
 
         if ($plan = $request->input('plan')) {
@@ -52,7 +76,7 @@ class TenantController extends Controller
 
         $tenants = $query->paginate(15)->withQueryString();
 
-        return view('super-admin.tenants.index', compact('tenants'));
+        return view('super-admin.tenants.index', compact('tenants', 'totalStoresCount', 'subscribedCount', 'freeCount'));
     }
 
     /**
