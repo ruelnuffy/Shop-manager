@@ -1097,9 +1097,6 @@
                     <div class="space-y-3">
                         <div class="font-bold text-slate-900 uppercase tracking-wider text-xs">Product</div>
                         <ul class="space-y-2 text-xs sm:text-sm">
-                            <li><a href="{{ route('admin.sales.create') }}" class="hover:text-blue-600 transition">Walk-in POS</a></li>
-                            <li><a href="#receipts" class="hover:text-blue-600 transition">Wireless Receipts</a></li>
-                            <li><a href="#inventory" class="hover:text-blue-600 transition">Inventory Sync</a></li>
                             <li><a href="#pricing" class="hover:text-blue-600 transition">Pricing Plans</a></li>
                         </ul>
                     </div>
@@ -1108,8 +1105,6 @@
                     <div class="space-y-3">
                         <div class="font-bold text-slate-900 uppercase tracking-wider text-xs">Resources</div>
                         <ul class="space-y-2 text-xs sm:text-sm">
-                            <li><a href="{{ route('login') }}" class="hover:text-blue-600 transition">Merchant Login</a></li>
-                            <li><a href="{{ route('register') }}" class="hover:text-blue-600 transition">Create Store</a></li>
                             <li><a href="#faq" class="hover:text-blue-600 transition">Support &amp; FAQ</a></li>
                         </ul>
                     </div>
