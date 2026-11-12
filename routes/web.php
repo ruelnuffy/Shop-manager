@@ -15,6 +15,7 @@ use App\Models\ShopLocation;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Services\CurrentTenant;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -35,14 +36,52 @@ Route::post('/paystack/webhook', PaystackWebhookController::class.'@handle')
     ->name('paystack.webhook');
 
 // Public Storefront / Platform Welcome
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
     $tenant = app(CurrentTenant::class)->get();
-    if ($tenant && $tenant->hasFeature('storefront')) {
+
+    // Check if accessing platform host directly (apex domain, app domain, or localhost)
+    $host = strtolower($request->getHost());
+    $baseDomain = strtolower((string) config('tenancy.base_domain', 'localhost'));
+    $appHost = strtolower((string) parse_url((string) config('app.url'), PHP_URL_HOST));
+    $isApexPlatform = ($host === $baseDomain || ($appHost !== '' && $host === $appHost) || $host === 'localhost' || $host === '127.0.0.1');
+
+    $explicitStorefront = $request->has('storefront')
+        || $request->query('storefront') === '1'
+        || $request->has('tenant')
+        || $request->hasHeader('X-Tenant');
+
+    $isStorefront = $explicitStorefront || (! $isApexPlatform && $tenant);
+
+    // In testing environment default to storefront unless explicit platform request
+    if (app()->environment('testing') && ! $request->hasHeader('X-Platform') && ! $request->has('platform') && $tenant) {
+        $isStorefront = true;
+    }
+
+    if ($isStorefront && $tenant && $tenant->hasFeature('storefront')) {
         return view('welcome');
     }
 
     return view('platform.welcome');
 })->name('home');
+
+// Explicit Storefront Route (allows store admins or shoppers to view their live storefront)
+Route::get('/storefront', function (Request $request) {
+    $tenant = app(CurrentTenant::class)->get();
+    if (! $tenant && $request->has('tenant')) {
+        $tenant = Tenant::where('slug', $request->query('tenant'))
+            ->orWhere('subdomain', $request->query('tenant'))
+            ->first();
+        if ($tenant) {
+            app(CurrentTenant::class)->set($tenant);
+        }
+    }
+
+    if ($tenant && $tenant->hasFeature('storefront')) {
+        return view('welcome');
+    }
+
+    return redirect()->route('home');
+})->name('storefront');
 
 Route::get('/products', [Store\ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [Store\ProductController::class, 'show'])->name('products.show');

@@ -54,7 +54,7 @@
                 <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
                     <!-- Left: Logo & Micro Links -->
                     <div class="flex items-center gap-6 sm:gap-8">
-                        <a href="/" class="group">
+                        <a href="{{ route('storefront') }}" class="group">
                             <x-application-logo />
                         </a>
 

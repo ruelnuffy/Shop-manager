@@ -96,20 +96,7 @@
                     <span>Platform Overview</span>
                 </a>
 
-                <a
-                    href="{{ route('super-admin.tenants.index') }}"
-                    class="flex items-center justify-between px-3 py-2.5 rounded-lg transition {{ request()->routeIs('super-admin.tenants.index') || request()->routeIs('super-admin.tenants.show') || request()->routeIs('super-admin.tenants.edit') ? 'bg-indigo-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}"
-                >
-                    <div class="flex items-center gap-3">
-                        <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                        <span>Tenant Stores</span>
-                    </div>
-                    <span class="px-1.5 py-0.5 rounded text-[10px] {{ request()->routeIs('super-admin.tenants.index') ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-600' }}">
-                        {{ $allStoresList->count() }}
-                    </span>
-                </a>
+
 
                 <a
                     href="{{ route('super-admin.users.index') }}"
@@ -220,7 +207,7 @@
         <!-- Mobile Drawer -->
         <div x-show="mobileMenuOpen" class="lg:hidden p-4 bg-white border-b border-slate-200 space-y-2 text-xs" style="display: none;">
             <a href="{{ route('super-admin.dashboard') }}" class="block p-2 rounded text-slate-800 hover:bg-slate-100">Platform Overview</a>
-            <a href="{{ route('super-admin.tenants.index') }}" class="block p-2 rounded text-slate-800 hover:bg-slate-100">Tenant Stores</a>
+
             <a href="{{ route('super-admin.users.index') }}" class="block p-2 rounded text-slate-800 hover:bg-slate-100">Platform Users</a>
             <a href="{{ route('super-admin.tenants.create') }}" class="block p-2 rounded text-indigo-600 hover:bg-indigo-50">+ Provision Store</a>
             <a href="{{ route('super-admin.export-report') }}" class="block p-2 rounded text-slate-800 hover:bg-slate-100">Export CSV</a>

@@ -239,4 +239,43 @@ class PhaseThreeIdentityChangeTest extends TestCase
         $jessiTenant = Tenant::where('slug', 'jessis-classiq-store')->first();
         $this->assertEquals($jessiTenant->id, session('active_tenant_id'));
     }
+
+    public function test_logged_in_store_admin_opening_platform_landing_page_renders_platform_welcome_not_storefront(): void
+    {
+        $admin = User::withoutTenancy()->where('email', 'admin@jessiclassiq.com')->first();
+        $this->assertNotNull($admin);
+
+        // When logged-in store admin visits platform landing page
+        $response = $this->actingAs($admin)
+            ->withHeaders(['X-Platform' => 'true'])
+            ->get('/');
+
+        $response->assertStatus(200);
+        $response->assertSee('ShopManager');
+        $response->assertSee('Dashboard');
+        $response->assertDontSee("Jessi's ClassiQ Store &mdash; Luxury Boutique", false);
+    }
+
+    public function test_storefront_route_renders_tenant_storefront(): void
+    {
+        $admin = User::withoutTenancy()->where('email', 'admin@jessiclassiq.com')->first();
+
+        $response = $this->actingAs($admin)
+            ->withSession(['active_tenant_id' => $admin->tenant_id])
+            ->get('/storefront');
+
+        $response->assertStatus(200);
+        $response->assertSee("Jessi's ClassiQ Store", false);
+        $response->assertSee('Clothes');
+    }
+
+    public function test_super_admin_layout_does_not_contain_tenant_stores_navigation_item(): void
+    {
+        $superAdmin = User::withoutTenancy()->where('email', 'superadmin@shopmanager.test')->first();
+
+        $response = $this->actingAs($superAdmin)->get(route('super-admin.dashboard'));
+        $response->assertStatus(200);
+        $response->assertDontSee('<span>Tenant Stores</span>', false);
+        $response->assertSee('Platform Users');
+    }
 }

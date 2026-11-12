@@ -24,7 +24,7 @@
 
                 <div class="flex items-center gap-2">
                     @if ($currentTenant && $currentTenant->hasFeature('storefront'))
-                        <a href="{{ route('home') }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-slate-700 text-xs font-semibold shadow-md shadow-slate-900/5 hover:shadow-lg transition">
+                        <a href="{{ route('storefront') }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-slate-700 text-xs font-semibold shadow-md shadow-slate-900/5 hover:shadow-lg transition">
                             <span>View Storefront</span>
                             <span class="text-slate-400">&nearr;</span>
                         </a>
