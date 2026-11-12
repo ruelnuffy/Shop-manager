@@ -6,7 +6,7 @@
     <title>cPanel & Staging Deployment Suite &bull; Jessi's ClassiQ Store</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0d0b10;
@@ -24,8 +24,8 @@
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.65);
             --text-muted: rgba(255, 255, 255, 0.4);
-            --font-display: 'Syne', sans-serif;
-            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+            --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 

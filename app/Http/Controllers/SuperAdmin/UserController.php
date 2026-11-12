@@ -18,26 +18,42 @@ class UserController extends Controller
      */
     public function index(Request $request): View
     {
-        $allUsersBase = User::withoutTenancy();
+        $adminUsersBase = User::withoutTenancy()->where('role', 'admin');
 
-        $totalUsersCount = (clone $allUsersBase)->count();
-        $adminCount = (clone $allUsersBase)->where('role', 'admin')->count();
-        $staffCount = (clone $allUsersBase)->where('role', 'staff')->count();
-        $customerCount = (clone $allUsersBase)->where('role', 'customer')->count();
+        $totalUsersCount = (clone $adminUsersBase)->count();
+        $adminCount = $totalUsersCount;
+        $staffCount = User::withoutTenancy()->where('role', 'staff')->count();
+        $customerCount = User::withoutTenancy()->where('role', 'customer')->count();
 
-        // Subscribed users: Admins/Merchants whose store is on a paid plan
-        $subscribedUsersCount = (clone $allUsersBase)->whereHas('tenant', function ($q) {
+        // Subscribed users: Store Admins whose store is on a paid plan
+        $subscribedUsersCount = (clone $adminUsersBase)->whereHas('tenant', function ($q) {
             $q->whereIn('plan', ['starter', 'pro', 'enterprise']);
         })->count();
 
-        // Free / Trial users: Users on standard/free plans or no paid plan
-        $freeUsersCount = (clone $allUsersBase)->where(function ($q) {
+        // Free / Trial users: Store Admins on standard/free plans
+        $freeUsersCount = (clone $adminUsersBase)->where(function ($q) {
             $q->whereHas('tenant', function ($tq) {
                 $tq->whereNotIn('plan', ['starter', 'pro', 'enterprise'])->orWhereNull('plan');
             })->orWhereNull('tenant_id');
-        })->where('role', '!=', 'super_admin')->count();
+        })->count();
 
-        $query = User::withoutTenancy()->with('tenant')->latest();
+        $query = User::withoutTenancy()
+            ->with(['tenant' => function ($tq) {
+                $tq->with([
+                    'users' => fn ($uq) => $uq->withoutTenancy()->whereIn('role', ['staff', 'customer']),
+                ])->withCount([
+                    'products' => fn ($q) => $q->withoutTenancy(),
+                    'orders' => fn ($q) => $q->withoutTenancy(),
+                    'staff' => fn ($q) => $q->withoutTenancy(),
+                ]);
+            }])
+            ->latest();
+
+        // Default to Store Admin accounts only (staff and customers are nested under each admin)
+        $role = $request->input('role', 'admin');
+        if ($role !== 'all') {
+            $query->where('role', $role);
+        }
 
         // Search
         if ($search = $request->input('search')) {
@@ -52,13 +68,6 @@ class UserController extends Controller
             });
         }
 
-        // Filter by Role
-        if ($role = $request->input('role')) {
-            if ($role !== 'all') {
-                $query->where('role', $role);
-            }
-        }
-
         // Filter by Subscription Tier
         if ($tier = $request->input('tier')) {
             if ($tier === 'subscribed') {
@@ -70,7 +79,7 @@ class UserController extends Controller
                     $q->whereHas('tenant', function ($tq) {
                         $tq->whereNotIn('plan', ['starter', 'pro', 'enterprise'])->orWhereNull('plan');
                     })->orWhereNull('tenant_id');
-                })->where('role', '!=', 'super_admin');
+                });
             }
         }
 

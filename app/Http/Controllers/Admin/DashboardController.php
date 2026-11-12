@@ -7,7 +7,7 @@ use App\Models\Order;
 use App\Models\ProductVariant;
 use App\Models\SalesRecord;
 use App\Models\StockMovement;
-use App\Models\Tenant;
+use App\Models\User;
 use App\Services\CurrentTenant;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
@@ -65,30 +65,41 @@ class DashboardController extends Controller
         // Recent Stock Movements
         $recentStockMovements = StockMovement::with(['variant.product', 'creator'])->latest()->take(5)->get();
 
-        // Platform Stores as Users & Subscriptions breakdown (for Store Administrators)
-        $totalStoresCount = Tenant::count();
-        $subscribedStoresCount = Tenant::whereIn('plan', ['starter', 'pro', 'enterprise'])->count();
-        $freeStoresCount = Tenant::where(function ($q) {
-            $q->whereNotIn('plan', ['starter', 'pro', 'enterprise'])->orWhereNull('plan');
+        // Platform Store Admin accounts only (staff and customers are nested under each admin)
+        $adminUsersBase = User::withoutTenancy()->where('role', 'admin');
+
+        $totalAdminUsersCount = (clone $adminUsersBase)->count();
+        $subscribedUsersCount = (clone $adminUsersBase)->whereHas('tenant', function ($q) {
+            $q->whereIn('plan', ['starter', 'pro', 'enterprise']);
+        })->count();
+        $freeUsersCount = (clone $adminUsersBase)->where(function ($q) {
+            $q->whereHas('tenant', function ($tq) {
+                $tq->whereNotIn('plan', ['starter', 'pro', 'enterprise'])->orWhereNull('plan');
+            })->orWhereNull('tenant_id');
         })->count();
 
-        $allStores = Tenant::with([
-            'users' => fn ($q) => $q->withoutTenancy()->where('role', 'admin')->latest(),
-        ])->withCount([
-            'products' => fn ($q) => $q->withoutTenancy(),
-            'orders' => fn ($q) => $q->withoutTenancy(),
-            'staff' => fn ($q) => $q->withoutTenancy(),
-            'shopLocations' => fn ($q) => $q->withoutTenancy(),
-        ])->latest()->get();
+        $storeAdmins = User::withoutTenancy()
+            ->where('role', 'admin')
+            ->with(['tenant' => function ($tq) {
+                $tq->with([
+                    'users' => fn ($uq) => $uq->withoutTenancy()->whereIn('role', ['staff', 'customer']),
+                ])->withCount([
+                    'products' => fn ($q) => $q->withoutTenancy(),
+                    'orders' => fn ($q) => $q->withoutTenancy(),
+                    'staff' => fn ($q) => $q->withoutTenancy(),
+                ]);
+            }])
+            ->latest()
+            ->get();
 
         return view('admin.dashboard', array_merge($stats, compact(
             'lowStockVariants',
             'recentOrders',
             'recentStockMovements',
-            'totalStoresCount',
-            'subscribedStoresCount',
-            'freeStoresCount',
-            'allStores'
+            'totalAdminUsersCount',
+            'subscribedUsersCount',
+            'freeUsersCount',
+            'storeAdmins'
         )));
     }
 }

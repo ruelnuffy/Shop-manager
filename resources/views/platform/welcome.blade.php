@@ -416,19 +416,7 @@
 
             </div>
 
-            <!-- Trusted Retail Partners / Logos Row (Myshoplet Reference Style) -->
-            <div class="mt-8 sm:mt-12 lg:mt-16 pt-5 sm:pt-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-                <span class="text-xs sm:text-sm font-medium text-blue-100 uppercase tracking-wider">
-                    Trusted by retail brands &amp; connected with:
-                </span>
-                <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-bold text-white">
-                    <span class="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-xs border border-white/15">Paystack</span>
-                    <span class="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-xs border border-white/15">Moniepoint</span>
-                    <span class="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-xs border border-white/15">OPay</span>
-                    <span class="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-xs border border-white/15">Flutterwave</span>
-                    <span class="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-xs border border-white/15">58mm Thermal</span>
-                </div>
-            </div>
+
 
         </div>
 

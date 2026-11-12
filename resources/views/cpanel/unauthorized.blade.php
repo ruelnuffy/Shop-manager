@@ -6,7 +6,7 @@
     <title>Deployment Gateway Access Restricted &bull; Jessi's ClassiQ Store</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Syne:wght@700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -45,7 +45,7 @@
             margin-bottom: 20px;
         }
         .title {
-            font-family: 'Syne', sans-serif;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
             font-weight: 800;
             font-size: 22px;
             margin: 0 0 10px 0;

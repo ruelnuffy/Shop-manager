@@ -13,10 +13,10 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Poppins', '"Plus Jakarta Sans"', 'Inter', ...defaultTheme.fontFamily.sans],
-                poppins: ['Poppins', ...defaultTheme.fontFamily.sans],
-                display: ['Poppins', 'Syne', '"Plus Jakarta Sans"', 'sans-serif'],
-                serif: ['"Playfair Display"', 'Georgia', 'serif'],
+                sans: ['"Plus Jakarta Sans"', 'Poppins', 'Inter', ...defaultTheme.fontFamily.sans],
+                poppins: ['Poppins', '"Plus Jakarta Sans"', ...defaultTheme.fontFamily.sans],
+                display: ['"Plus Jakarta Sans"', 'Poppins', 'Inter', ...defaultTheme.fontFamily.sans],
+                serif: ['"Plus Jakarta Sans"', 'Poppins', 'Inter', 'sans-serif'],
             },
             letterSpacing: {
                 tighter: '-0.05em',

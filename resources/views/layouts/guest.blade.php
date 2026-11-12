@@ -14,10 +14,10 @@
 
         <title>{{ $brandName }} &bull; {{ $currentTenant ? ($currentTenant->setting('branding.tagline') ?: 'Store Portal') : 'Retail & Inventory Operating System' }}</title>
 
-        <!-- Fonts -->
+        <!-- Fonts: Plus Jakarta Sans & Poppins (Sans-serif) -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -74,7 +74,7 @@
                             {{ $currentTenant->setting('branding.tagline', 'Classy Looks For Every You.') }}
                         </h1>
 
-                        <p class="font-serif italic text-lg text-brand-pink-100/90 mb-6">
+                        <p class="font-sans font-medium text-lg text-brand-pink-100/90 mb-6">
                             "Elegance is not about being noticed, it's about being remembered."
                         </p>
 

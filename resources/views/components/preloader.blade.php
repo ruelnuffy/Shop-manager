@@ -54,7 +54,7 @@
                 {{-- Typing Headline (High contrast black, large, crystal clear) --}}
                 <div style="min-height: 58px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
                     <h1
-                        style="margin: 0; font-family: 'Syne', 'Playfair Display', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 800; font-size: clamp(1.6rem, 4vw, 2.75rem); letter-spacing: -0.02em; line-height: 1.15; color: #111111; user-select: text;"
+                        style="margin: 0; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 800; font-size: clamp(1.6rem, 4vw, 2.75rem); letter-spacing: -0.02em; line-height: 1.15; color: #111111; user-select: text;"
                     >
                         <span id="jc-typed-title" style="color: #111111;"></span><span
                             id="jc-cursor"
@@ -108,7 +108,7 @@
         style="position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(to top right, #772a3e, #8e2d46, #ab3252); opacity: 1;"
     >
         <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0.07; overflow: hidden; pointer-events: none;">
-            <span style="font-family: 'Syne', sans-serif; font-weight: 900; font-size: 24vw; color: white; letter-spacing: -0.05em; line-height: 1;">JC</span>
+            <span style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 900; font-size: 24vw; color: white; letter-spacing: -0.05em; line-height: 1;">JC</span>
         </div>
     </div>
 

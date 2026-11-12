@@ -260,7 +260,7 @@
                     </div>
                 </div>
 
-                <!-- Sticky Note 8: Pastel Indigo - Stores & User Subscriptions (Admin Only) -->
+                <!-- Sticky Note 8: Pastel Indigo - Store Admin Accounts & Subscriptions (Admin Only) -->
                 <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#e0e7ff] shadow-lg shadow-indigo-900/5 hover:shadow-2xl hover:shadow-indigo-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
                     <!-- Frosted tape at top center (borderless) -->
                     <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[0.6deg] pointer-events-none"></div>
@@ -268,28 +268,28 @@
                     <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-indigo-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
 
                     <div>
-                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-800/70">Platform Directory</span>
-                        <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Stores &amp; Users</h3>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-800/70">Store Admins</span>
+                        <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Users &amp; Plans</h3>
                         <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
                             <div class="flex items-center gap-2">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                                <span><strong>{{ $subscribedStoresCount }}</strong> Subscribed Users</span>
+                                <span><strong>{{ $subscribedUsersCount }}</strong> Subscribed Users</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                <span><strong>{{ $freeStoresCount }}</strong> Free / Trial Users</span>
+                                <span><strong>{{ $freeUsersCount }}</strong> Free / Trial Users</span>
                             </div>
-                            <div class="text-slate-600 pl-3.5 text-[11px]">{{ $totalStoresCount }} total stores registered as users</div>
+                            <div class="text-slate-600 pl-3.5 text-[11px]">{{ $totalAdminUsersCount }} total store admin accounts</div>
                         </div>
                     </div>
 
                     <div class="pt-5 flex items-center justify-between">
                         <a href="{{ route('admin.stores.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-indigo-950 group-hover:text-black group-hover:underline">
-                            <span>Manage stores</span>
+                            <span>Manage admins</span>
                             <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
                         </a>
                         <a href="#stores-section" class="text-[11px] font-bold text-indigo-800 hover:text-indigo-950">
-                            Quick list &darr;
+                            View accounts &darr;
                         </a>
                     </div>
                 </div>
@@ -297,21 +297,21 @@
 
         </div>
 
-        <!-- Stores as Users Section (Admin Only) -->
+        <!-- Store Admins Directory Section (Admin Only - Staff & Customers nested under each Admin) -->
         @if(Auth::user()->isAdmin())
             <div id="stores-section" x-data="{ activeTier: 'all' }" class="bg-white rounded-2xl p-5 sm:p-7 shadow-xl shadow-slate-900/5 space-y-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
                     <div>
                         <div class="flex items-center gap-2">
-                            <h3 class="font-bold text-base text-slate-900">Stores Listed as Users</h3>
+                            <h3 class="font-bold text-base text-slate-900">Store Admin Accounts</h3>
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-50 text-emerald-700 uppercase">
-                                {{ $subscribedStoresCount }} Subscribed
+                                {{ $subscribedUsersCount }} Subscribed
                             </span>
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-50 text-amber-700 uppercase">
-                                {{ $freeStoresCount }} Free
+                                {{ $freeUsersCount }} Free
                             </span>
                         </div>
-                        <p class="text-xs text-slate-400 mt-0.5">All platform tenant stores, merchant owner users, and subscription tiers</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Primary merchant users on the platform. Staff members and customers are organized directly under each store admin.</p>
                     </div>
 
                     <!-- Quick Segment Tabs -->
@@ -322,7 +322,7 @@
                             :class="activeTier === 'all' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
                             class="px-3 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap cursor-pointer"
                         >
-                            All ({{ $totalStoresCount }})
+                            All Admins ({{ $totalAdminUsersCount }})
                         </button>
                         <button
                             type="button"
@@ -331,7 +331,7 @@
                             class="px-3 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1"
                         >
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                            <span>Subscribed ({{ $subscribedStoresCount }})</span>
+                            <span>Subscribed ({{ $subscribedUsersCount }})</span>
                         </button>
                         <button
                             type="button"
@@ -340,11 +340,11 @@
                             class="px-3 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1"
                         >
                             <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                            <span>Free Users ({{ $freeStoresCount }})</span>
+                            <span>Free Users ({{ $freeUsersCount }})</span>
                         </button>
 
                         <a href="{{ route('admin.stores.index') }}" class="px-3 py-1.5 rounded-full text-xs font-bold text-indigo-600 hover:text-indigo-800 transition whitespace-nowrap">
-                            Full View &rarr;
+                            Full Directory &rarr;
                         </a>
                     </div>
                 </div>
@@ -353,85 +353,169 @@
                     <table class="w-full text-left text-xs">
                         <thead class="bg-slate-50 text-slate-400 uppercase font-extrabold text-[10px] tracking-wider">
                             <tr>
-                                <th class="px-4 py-3">Store &amp; Merchant User</th>
-                                <th class="px-3 py-3">Slug / Domain</th>
-                                <th class="px-3 py-3">Plan &amp; Tier</th>
-                                <th class="px-3 py-3">Catalog</th>
+                                <th class="px-4 py-3">Store Admin User</th>
+                                <th class="px-3 py-3">Store &amp; Subdomain</th>
+                                <th class="px-3 py-3">Subscription Tier</th>
+                                <th class="px-3 py-3">Team &amp; Customers</th>
                                 <th class="px-3 py-3">Status</th>
                                 <th class="px-4 py-3 text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 text-slate-700">
-                            @forelse ($allStores as $store)
+                            @forelse ($storeAdmins as $adminUser)
                                 @php
-                                    $owner = $store->users->firstWhere('role', 'admin') ?? $store->users->first();
-                                    $isSubscribed = in_array($store->plan, ['starter', 'pro', 'enterprise'], true);
+                                    $tenant = $adminUser->tenant;
+                                    $isSubscribed = $tenant && in_array($tenant->plan, ['starter', 'pro', 'enterprise'], true);
                                     $tierType = $isSubscribed ? 'subscribed' : 'free';
+                                    $staffList = $tenant?->users->where('role', 'staff') ?? collect();
+                                    $customerList = $tenant?->users->where('role', 'customer') ?? collect();
                                 @endphp
                                 <tr
                                     x-show="activeTier === 'all' || activeTier === '{{ $tierType }}'"
+                                    x-data="{ showMembers: false }"
                                     class="hover:bg-slate-50/70 transition"
                                 >
+                                    <!-- Store Admin User -->
                                     <td class="px-4 py-3.5">
                                         <div class="flex items-center gap-3">
-                                            <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-xs shrink-0">
-                                                {{ strtoupper(substr($store->name, 0, 2)) }}
+                                            <div class="w-9 h-9 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                                                {{ strtoupper(substr($adminUser->name, 0, 1)) }}
                                             </div>
                                             <div>
-                                                <div class="font-bold text-slate-900">{{ $store->name }}</div>
-                                                @if ($owner)
-                                                    <div class="text-[11px] text-slate-500">
-                                                        <span class="font-semibold text-slate-700">{{ $owner->name }}</span>
-                                                        <span class="text-slate-400 font-mono text-[10px]">&bull; {{ $owner->email }}</span>
-                                                    </div>
-                                                @else
-                                                    <div class="text-[11px] text-slate-400 italic">No admin user attached</div>
-                                                @endif
+                                                <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                                                    <span>{{ $adminUser->name }}</span>
+                                                    <span class="px-1.5 py-0.2 rounded text-[10px] font-extrabold bg-indigo-50 text-indigo-700 uppercase">
+                                                        Store Admin
+                                                    </span>
+                                                </div>
+                                                <div class="text-[11px] text-slate-500 font-mono">
+                                                    {{ $adminUser->email }}
+                                                    @if($adminUser->phone)
+                                                        &bull; {{ $adminUser->phone }}
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
 
-                                    <td class="px-3 py-3.5 font-mono text-slate-600 text-[11px]">
-                                        {{ $store->slug }}
+                                    <!-- Store & Subdomain -->
+                                    <td class="px-3 py-3.5">
+                                        <div class="font-bold text-slate-800">{{ $tenant?->name ?? 'No store attached' }}</div>
+                                        <div class="text-[11px] text-slate-400 font-mono">
+                                            {{ $tenant?->slug ?? 'local' }} &bull; {{ $tenant?->subdomain ? $tenant->subdomain . '.shopmanager.test' : 'apex' }}
+                                        </div>
                                     </td>
 
+                                    <!-- Subscription Tier -->
                                     <td class="px-3 py-3.5">
                                         @if ($isSubscribed)
                                             <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-50 text-emerald-700">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                                Subscribed &bull; {{ $store->plan }}
+                                                Subscribed &bull; {{ $tenant->plan }}
                                             </span>
                                         @else
                                             <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-50 text-amber-700">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                                Free Tier &bull; {{ $store->plan ?? 'standard' }}
+                                                Free Tier &bull; {{ $tenant?->plan ?? 'standard' }}
                                             </span>
                                         @endif
                                     </td>
 
-                                    <td class="px-3 py-3.5 text-slate-600 font-medium">
-                                        {{ $store->products_count }} products &bull; {{ $store->staff_count }} staff
+                                    <!-- Team & Customers Under This Admin -->
+                                    <td class="px-3 py-3.5">
+                                        <div class="flex items-center gap-2">
+                                            <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-semibold text-[11px]">
+                                                {{ $staffList->count() }} Staff
+                                            </span>
+                                            <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-semibold text-[11px]">
+                                                {{ $customerList->count() }} Customers
+                                            </span>
+                                        </div>
+
+                                        <!-- Expandable Drawer for Staff and Customers -->
+                                        @if($staffList->isNotEmpty() || $customerList->isNotEmpty())
+                                            <div class="mt-1">
+                                                <button
+                                                    type="button"
+                                                    @click="showMembers = !showMembers"
+                                                    class="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 transition cursor-pointer flex items-center gap-0.5"
+                                                >
+                                                    <span x-text="showMembers ? 'Hide accounts ▲' : 'View under this admin ▼'"></span>
+                                                </button>
+
+                                                <div
+                                                    x-show="showMembers"
+                                                    x-collapse
+                                                    class="mt-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-[11px]"
+                                                    style="display: none;"
+                                                >
+                                                    @if($staffList->isNotEmpty())
+                                                        <div>
+                                                            <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
+                                                                Staff Tills Under This Admin:
+                                                            </div>
+                                                            <div class="space-y-1">
+                                                                @foreach($staffList as $staffUser)
+                                                                    <div class="flex items-center justify-between gap-2 p-1.5 rounded-lg bg-white border border-slate-100 shadow-2xs">
+                                                                        <div class="truncate">
+                                                                            <strong class="text-slate-800">{{ $staffUser->name }}</strong>
+                                                                            <span class="text-slate-400 font-mono text-[10px]">({{ $staffUser->email }})</span>
+                                                                        </div>
+                                                                        <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-50 text-emerald-700">Cashier</span>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
+                                                    @if($customerList->isNotEmpty())
+                                                        <div>
+                                                            <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
+                                                                Customers Under This Admin:
+                                                            </div>
+                                                            <div class="space-y-1">
+                                                                @foreach($customerList->take(4) as $custUser)
+                                                                    <div class="flex items-center justify-between gap-2 p-1 rounded-md bg-white text-slate-600">
+                                                                        <span class="truncate">{{ $custUser->name }}</span>
+                                                                        <span class="text-slate-400 font-mono text-[10px]">{{ $custUser->email }}</span>
+                                                                    </div>
+                                                                @endforeach
+                                                                @if($customerList->count() > 4)
+                                                                    <div class="text-[10px] text-slate-400 italic pl-1">
+                                                                        + {{ $customerList->count() - 4 }} more shoppers
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endif
                                     </td>
 
+                                    <!-- Status -->
                                     <td class="px-3 py-3.5">
-                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $store->status === 'active' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700' }}">
-                                            {{ $store->status }}
+                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {{ ($tenant?->status ?? 'active') === 'active' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700' }}">
+                                            {{ $tenant?->status ?? 'active' }}
                                         </span>
                                     </td>
 
+                                    <!-- Action -->
                                     <td class="px-4 py-3.5 text-right">
-                                        <a
-                                            href="{{ url('/admin?tenant=' . $store->slug) }}"
-                                            class="px-2.5 py-1 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold transition shadow-xs inline-flex items-center gap-1"
-                                        >
-                                            <span>Switch &nearr;</span>
-                                        </a>
+                                        @if($tenant)
+                                            <a
+                                                href="{{ url('/admin?tenant=' . $tenant->slug) }}"
+                                                class="px-2.5 py-1 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold transition shadow-xs inline-flex items-center gap-1"
+                                            >
+                                                <span>Switch &nearr;</span>
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
                                     <td colspan="6" class="px-4 py-8 text-center text-slate-400">
-                                        No stores found.
+                                        No store admin accounts found.
                                     </td>
                                 </tr>
                             @endforelse

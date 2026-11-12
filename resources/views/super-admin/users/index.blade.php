@@ -190,8 +190,10 @@
                     @forelse ($users as $user)
                         @php
                             $isSubscribed = $user->tenant && in_array($user->tenant->plan, ['starter', 'pro', 'enterprise']);
+                            $staffList = $user->tenant?->users->where('role', 'staff') ?? collect();
+                            $customerList = $user->tenant?->users->where('role', 'customer') ?? collect();
                         @endphp
-                        <tr class="hover:bg-slate-50/80 transition">
+                        <tr x-data="{ showTeam: false }" class="hover:bg-slate-50/80 transition">
                             <!-- User & Contact -->
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
@@ -203,9 +205,11 @@
                                             <span>{{ $user->name }}</span>
                                             @if ($user->isSuperAdmin())
                                                 <span class="px-1.5 py-0.2 rounded text-[9px] bg-rose-100 text-rose-700 font-extrabold uppercase">Platform Super</span>
+                                            @elseif ($user->isAdmin())
+                                                <span class="px-1.5 py-0.2 rounded text-[9px] bg-indigo-50 text-indigo-700 font-extrabold uppercase">Store Admin</span>
                                             @endif
                                         </div>
-                                        <div class="text-[11px] text-slate-500">
+                                        <div class="text-[11px] text-slate-500 font-mono">
                                             {{ $user->email }}
                                             @if($user->phone)
                                                 &bull; <span class="text-slate-400 font-mono">{{ $user->phone }}</span>
@@ -213,6 +217,65 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                @if($staffList->isNotEmpty() || $customerList->isNotEmpty())
+                                    <div class="mt-2 pl-12">
+                                        <button
+                                            type="button"
+                                            @click="showTeam = !showTeam"
+                                            class="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 transition cursor-pointer flex items-center gap-1"
+                                        >
+                                            <span x-text="showTeam ? 'Hide Team &amp; Customers ▲' : 'View Staff ({{ $staffList->count() }}) &amp; Customers ({{ $customerList->count() }}) ▼'"></span>
+                                        </button>
+
+                                        <div
+                                            x-show="showTeam"
+                                            x-collapse
+                                            class="mt-2 p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2 text-[11px]"
+                                            style="display: none;"
+                                        >
+                                            @if($staffList->isNotEmpty())
+                                                <div>
+                                                    <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                                                        Staff Tills Under This Admin:
+                                                    </div>
+                                                    <div class="space-y-1">
+                                                        @foreach($staffList as $stf)
+                                                            <div class="flex items-center justify-between gap-2 p-1.5 rounded-lg bg-white border border-slate-100">
+                                                                <span class="font-semibold text-slate-800">{{ $stf->name }} <span class="font-mono text-[10px] text-slate-400">({{ $stf->email }})</span></span>
+                                                                <form method="POST" action="{{ route('super-admin.users.impersonate', $stf) }}" class="inline">
+                                                                    @csrf
+                                                                    <button type="submit" class="text-[10px] font-bold text-emerald-600 hover:text-emerald-800">Till &nearr;</button>
+                                                                </form>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            @if($customerList->isNotEmpty())
+                                                <div>
+                                                    <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                                                        Customers Under This Admin ({{ $customerList->count() }}):
+                                                    </div>
+                                                    <div class="space-y-1 max-h-32 overflow-y-auto">
+                                                        @foreach($customerList->take(6) as $cst)
+                                                            <div class="flex items-center justify-between text-slate-600 p-1 bg-white rounded">
+                                                                <span>{{ $cst->name }}</span>
+                                                                <span class="text-slate-400 font-mono text-[10px]">{{ $cst->email }}</span>
+                                                            </div>
+                                                        @endforeach
+                                                        @if($customerList->count() > 6)
+                                                            <div class="text-[10px] text-slate-400 italic">
+                                                                + {{ $customerList->count() - 6 }} more customers
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
                             </td>
 
                             <!-- Role -->

@@ -341,18 +341,17 @@ class PhaseThreeAdminTest extends TestCase
 
     public function test_admin_can_view_stores_and_subscription_tiers_on_dashboard_and_directory(): void
     {
-        // 1. Admin sees stores and subscription breakdown on /admin dashboard
+        // 1. Admin sees store admins and subscription breakdown on /admin dashboard
         $response = $this->actingAs($this->admin)->get('/admin');
         $response->assertStatus(200);
-        $response->assertSee('Stores &amp; Users', false);
-        $response->assertSee('Stores Listed as Users');
+        $response->assertSee('Store Admin Accounts');
         $response->assertSee('Subscribed Users');
         $response->assertSee('Free');
 
         // 2. Admin can visit dedicated /admin/stores directory
         $directoryResponse = $this->actingAs($this->admin)->get('/admin/stores');
         $directoryResponse->assertStatus(200);
-        $directoryResponse->assertSee('Merchant Stores Listed as Users');
+        $directoryResponse->assertSee('Store Admin Accounts');
         $directoryResponse->assertSee('Subscribed Users');
         $directoryResponse->assertSee('Free &amp; Trial Users', false);
 

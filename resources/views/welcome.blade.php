@@ -15,10 +15,10 @@
         @endphp
         <title>{{ $brandName }} &mdash; {{ $brandTagline }}</title>
 
-        <!-- Modern Luxury Google Fonts: Syne, Plus Jakarta Sans, Playfair Display -->
+        <!-- Google Fonts: Plus Jakarta Sans & Poppins (Sans-serif) -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="{{ $resolvedLogo }}">

@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex items-center gap-2">
             <h1 class="font-display font-extrabold text-lg text-slate-900 tracking-tight">
-                Stores &amp; User Subscriptions
+                Store Admin Users &amp; Subscriptions
             </h1>
-            <span class="text-xs text-slate-400 font-medium hidden sm:inline">&bull; Merchant Directory</span>
+            <span class="text-xs text-slate-400 font-medium hidden sm:inline">&bull; Merchants &amp; Teams</span>
         </div>
     </x-slot>
 
@@ -12,12 +12,12 @@
         <!-- Top Header & Actions -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-0.5">Platform Stores Directory</span>
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-0.5">Platform Merchants Directory</span>
                 <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 tracking-tight">
-                    Merchant Stores Listed as Users
+                    Store Admin Accounts
                 </h2>
                 <p class="text-xs text-slate-500 mt-1">
-                    Manage stores, merchant user accounts, and track subscribed vs free tier merchants.
+                    Store administrators are the primary accounts on the platform. Staff cashiers and customer shoppers are organized directly under each admin.
                 </p>
             </div>
 
@@ -35,12 +35,12 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div class="bg-white rounded-2xl p-5 shadow-lg shadow-slate-900/5 flex items-center justify-between">
                 <div>
-                    <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">All Stores &amp; Users</span>
-                    <div class="text-3xl font-extrabold text-slate-900 mt-1">{{ number_format($totalStoresCount) }}</div>
-                    <span class="text-[11px] text-slate-500 mt-0.5 block">Total merchant accounts</span>
+                    <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Store Admin Users</span>
+                    <div class="text-3xl font-extrabold text-slate-900 mt-1">{{ number_format($totalAdminUsersCount) }}</div>
+                    <span class="text-[11px] text-slate-500 mt-0.5 block">Total merchant owner accounts</span>
                 </div>
                 <div class="w-11 h-11 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-lg shadow-xs">
-                    🏪
+                    👤
                 </div>
             </div>
 
@@ -48,7 +48,7 @@
                 <div>
                     <span class="text-[10px] font-extrabold text-emerald-600 uppercase tracking-wider block">Subscribed Users</span>
                     <div class="text-3xl font-extrabold text-emerald-600 mt-1">{{ number_format($subscribedCount) }}</div>
-                    <span class="text-[11px] text-emerald-600 font-medium mt-0.5 block">Starter, Pro, &amp; Enterprise</span>
+                    <span class="text-[11px] text-emerald-600 font-medium mt-0.5 block">Active paid plans (Starter, Pro, Enterprise)</span>
                 </div>
                 <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg shadow-xs">
                     💳
@@ -77,7 +77,7 @@
                 href="{{ route('admin.stores.index', array_merge(request()->except(['page', 'tier']), ['tier' => 'all'])) }}"
                 class="px-4 py-2 rounded-full text-xs font-bold transition whitespace-nowrap {{ $currentTier === 'all' ? 'bg-slate-900 text-white shadow-md shadow-slate-950/15' : 'bg-white text-slate-700 hover:bg-slate-100 shadow-sm' }}"
             >
-                All Stores &amp; Users ({{ $totalStoresCount }})
+                All Store Admins ({{ $totalAdminUsersCount }})
             </a>
 
             <a
@@ -111,7 +111,7 @@
                     type="text"
                     name="search"
                     value="{{ request('search') }}"
-                    placeholder="Search by store name, slug, merchant owner, or email..."
+                    placeholder="Search by store admin name, email, phone, or store name..."
                     class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border-none text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition"
                 />
             </div>
@@ -157,58 +157,60 @@
             </div>
         </form>
 
-        <!-- Stores as Users Table -->
+        <!-- Store Admins Directory Table (Staff & Customers nested under each Admin) -->
         <div class="bg-white rounded-2xl shadow-xl shadow-slate-900/5 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
                     <thead class="bg-slate-50 text-slate-400 uppercase font-extrabold text-[10px] tracking-wider">
                         <tr>
-                            <th class="px-6 py-4">Store &amp; Merchant Owner</th>
-                            <th class="px-4 py-4">Domain / Slug</th>
-                            <th class="px-4 py-4">Subscription &amp; Plan</th>
-                            <th class="px-4 py-4">Catalog &amp; Team</th>
+                            <th class="px-6 py-4">Store Admin User</th>
+                            <th class="px-4 py-4">Store &amp; Subdomain</th>
+                            <th class="px-4 py-4">Subscription Tier</th>
+                            <th class="px-4 py-4">Team &amp; Customers</th>
                             <th class="px-4 py-4">Status</th>
                             <th class="px-6 py-4 text-right">Switch / Open</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 text-slate-700">
-                        @forelse ($stores as $store)
+                        @forelse ($storeAdmins as $adminUser)
                             @php
-                                $owner = $store->users->firstWhere('role', 'admin') ?? $store->users->first();
-                                $isSubscribed = in_array($store->plan, ['starter', 'pro', 'enterprise'], true);
+                                $tenant = $adminUser->tenant;
+                                $isSubscribed = $tenant && in_array($tenant->plan, ['starter', 'pro', 'enterprise'], true);
+                                $staffList = $tenant?->users->where('role', 'staff') ?? collect();
+                                $customerList = $tenant?->users->where('role', 'customer') ?? collect();
                             @endphp
-                            <tr class="hover:bg-slate-50/70 transition">
-                                <!-- Store & Merchant Owner -->
+                            <tr
+                                x-data="{ showMembers: false }"
+                                class="hover:bg-slate-50/70 transition"
+                            >
+                                <!-- Store Admin User -->
                                 <td class="px-6 py-4.5">
-                                    <div class="flex items-start gap-3.5">
-                                        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-xs shadow-xs shrink-0 mt-0.5">
-                                            {{ strtoupper(substr($store->name, 0, 2)) }}
+                                    <div class="flex items-center gap-3.5">
+                                        <div class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-extrabold text-xs shadow-xs shrink-0">
+                                            {{ strtoupper(substr($adminUser->name, 0, 1)) }}
                                         </div>
-                                        <div class="min-w-0">
-                                            <div class="font-extrabold text-slate-900 text-sm">
-                                                {{ $store->name }}
+                                        <div>
+                                            <div class="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">
+                                                <span>{{ $adminUser->name }}</span>
+                                                <span class="px-1.5 py-0.2 rounded text-[10px] font-extrabold bg-indigo-50 text-indigo-700 uppercase">
+                                                    Store Admin
+                                                </span>
                                             </div>
-                                            <div class="text-[11px] text-slate-400 truncate max-w-[240px]">
-                                                {{ $store->setting('branding.tagline', 'Retail Workspace') }}
+                                            <div class="text-[11px] text-slate-500 font-mono">
+                                                {{ $adminUser->email }}
+                                                @if($adminUser->phone)
+                                                    &bull; {{ $adminUser->phone }}
+                                                @endif
                                             </div>
-                                            @if ($owner)
-                                                <div class="flex items-center gap-1.5 mt-1 text-[11px] text-slate-600">
-                                                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0"></span>
-                                                    <span class="font-bold text-slate-800">{{ $owner->name }}</span>
-                                                    <span class="text-slate-400 font-mono text-[10px]">&bull; {{ $owner->email }}</span>
-                                                </div>
-                                            @else
-                                                <div class="text-[11px] text-slate-400 italic mt-1">No admin attached</div>
-                                            @endif
                                         </div>
                                     </div>
                                 </td>
 
-                                <!-- Domain / Slug -->
+                                <!-- Store & Subdomain -->
                                 <td class="px-4 py-4.5">
-                                    <div class="font-mono text-slate-900 font-bold">{{ $store->slug }}</div>
+                                    <div class="font-bold text-slate-900 text-sm">{{ $tenant?->name ?? 'No store attached' }}</div>
                                     <div class="text-[11px] text-slate-400 font-mono">
-                                        {{ $store->domain ?: ($store->subdomain ? $store->subdomain . '.shopmanager.test' : 'local') }}
+                                        {{ $tenant?->slug ?? 'local' }} &bull; {{ $tenant?->subdomain ? $tenant->subdomain . '.shopmanager.test' : 'apex' }}
                                     </div>
                                 </td>
 
@@ -217,58 +219,121 @@
                                     @if ($isSubscribed)
                                         <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-50 text-emerald-700">
                                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                            <span>Subscribed &bull; {{ $store->plan }}</span>
+                                            <span>Subscribed &bull; {{ $tenant->plan }}</span>
                                         </div>
                                     @else
                                         <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-50 text-amber-700">
                                             <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                            <span>Free Tier &bull; {{ $store->plan ?? 'standard' }}</span>
+                                            <span>Free Tier &bull; {{ $tenant?->plan ?? 'standard' }}</span>
                                         </div>
                                     @endif
 
                                     <div class="flex items-center gap-1 text-[10px] text-slate-500">
-                                        @if ($store->hasFeature('storefront'))
+                                        @if ($tenant?->hasFeature('storefront'))
                                             <span class="px-1.5 py-0.2 rounded bg-slate-100 font-medium">Storefront</span>
                                         @endif
-                                        @if ($store->hasFeature('payroll'))
+                                        @if ($tenant?->hasFeature('payroll'))
                                             <span class="px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-700 font-medium">Payroll</span>
                                         @endif
                                     </div>
                                 </td>
 
-                                <!-- Catalog & Team -->
+                                <!-- Staff & Customers Under This Admin -->
                                 <td class="px-4 py-4.5">
-                                    <div class="font-bold text-slate-900">{{ $store->products_count }} Products</div>
-                                    <div class="text-[11px] text-slate-500">
-                                        {{ $store->shop_locations_count }} Outlets &bull; {{ $store->staff_count }} Staff
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-semibold text-[11px]">
+                                            {{ $staffList->count() }} Staff
+                                        </span>
+                                        <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-semibold text-[11px]">
+                                            {{ $customerList->count() }} Customers
+                                        </span>
                                     </div>
+
+                                    @if($staffList->isNotEmpty() || $customerList->isNotEmpty())
+                                        <div class="mt-1.5">
+                                            <button
+                                                type="button"
+                                                @click="showMembers = !showMembers"
+                                                class="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 transition cursor-pointer flex items-center gap-0.5"
+                                            >
+                                                <span x-text="showMembers ? 'Hide accounts ▲' : 'View under this admin ▼'"></span>
+                                            </button>
+
+                                            <div
+                                                x-show="showMembers"
+                                                x-collapse
+                                                class="mt-2 p-3 rounded-xl bg-slate-50 border border-slate-100 space-y-2.5 text-[11px]"
+                                                style="display: none;"
+                                            >
+                                                @if($staffList->isNotEmpty())
+                                                    <div>
+                                                        <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
+                                                            Staff Tills Under This Admin:
+                                                        </div>
+                                                        <div class="space-y-1">
+                                                            @foreach($staffList as $staffUser)
+                                                                <div class="flex items-center justify-between gap-2 p-1.5 rounded-lg bg-white border border-slate-100 shadow-2xs">
+                                                                    <div class="truncate">
+                                                                        <strong class="text-slate-800">{{ $staffUser->name }}</strong>
+                                                                        <span class="text-slate-400 font-mono text-[10px]">({{ $staffUser->email }})</span>
+                                                                    </div>
+                                                                    <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-50 text-emerald-700">Cashier</span>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                @endif
+
+                                                @if($customerList->isNotEmpty())
+                                                    <div>
+                                                        <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
+                                                            Customers Under This Admin:
+                                                        </div>
+                                                        <div class="space-y-1">
+                                                            @foreach($customerList->take(5) as $custUser)
+                                                                <div class="flex items-center justify-between gap-2 p-1.5 rounded-md bg-white text-slate-600">
+                                                                    <span class="truncate font-medium">{{ $custUser->name }}</span>
+                                                                    <span class="text-slate-400 font-mono text-[10px]">{{ $custUser->email }}</span>
+                                                                </div>
+                                                            @endforeach
+                                                            @if($customerList->count() > 5)
+                                                                <div class="text-[10px] text-slate-400 italic pl-1">
+                                                                    + {{ $customerList->count() - 5 }} more registered shoppers
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
                                 </td>
 
                                 <!-- Status -->
                                 <td class="px-4 py-4.5">
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider {{ $store->status === 'active' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700' }}">
-                                        <span class="w-1.5 h-1.5 rounded-full {{ $store->status === 'active' ? 'bg-emerald-500' : 'bg-rose-500' }}"></span>
-                                        {{ $store->status }}
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider {{ ($tenant?->status ?? 'active') === 'active' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700' }}">
+                                        <span class="w-1.5 h-1.5 rounded-full {{ ($tenant?->status ?? 'active') === 'active' ? 'bg-emerald-500' : 'bg-rose-500' }}"></span>
+                                        {{ $tenant?->status ?? 'active' }}
                                     </span>
                                 </td>
 
                                 <!-- Actions -->
                                 <td class="px-6 py-4.5 text-right">
-                                    <div class="flex items-center justify-end gap-1.5">
+                                    @if($tenant)
                                         <a
-                                            href="{{ url('/admin?tenant=' . $store->slug) }}"
+                                            href="{{ url('/admin?tenant=' . $tenant->slug) }}"
                                             class="px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-xs inline-flex items-center gap-1"
                                             title="Open this store's console"
                                         >
-                                            <span>Open &nearr;</span>
+                                            <span>Switch &nearr;</span>
                                         </a>
-                                    </div>
+                                    @endif
                                 </td>
                             </tr>
                         @empty
                             <tr>
                                 <td colspan="6" class="px-6 py-12 text-center text-slate-400">
-                                    No stores or merchants found matching your filter criteria.
+                                    No store admin accounts found matching your filter criteria.
                                 </td>
                             </tr>
                         @endforelse
@@ -276,9 +341,9 @@
                 </table>
             </div>
 
-            @if ($stores->hasPages())
+            @if ($storeAdmins->hasPages())
                 <div class="p-4 border-t border-slate-100 bg-slate-50">
-                    {{ $stores->links() }}
+                    {{ $storeAdmins->links() }}
                 </div>
             @endif
         </div>
