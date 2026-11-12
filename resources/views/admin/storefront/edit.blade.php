@@ -41,63 +41,68 @@
         </div>
     @endif
 
-    <!-- Navigation Tabs -->
-    <div class="bg-white rounded-2xl p-2 border border-slate-200/80 shadow-xs">
-        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
-            <!-- Tab 1: Contact -->
-            <button
-                type="button"
-                @click="activeTab = 'contact'"
-                :class="activeTab === 'contact' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
-                class="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition cursor-pointer shrink-0"
-            >
-                <span class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-extrabold" :class="activeTab === 'contact' ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-700'">1</span>
-                <span>💬 WhatsApp &amp; Contact</span>
-            </button>
+    <!-- Segmented Control Tab Bar (Apple / iOS Style Pill Tabs) -->
+    <div class="flex justify-center w-full">
+        <div class="w-full max-w-4xl bg-[#eaedf2] p-1 rounded-2xl border border-slate-200/90 shadow-xs">
+            <div class="flex items-center justify-between overflow-x-auto scrollbar-none">
+                <!-- Tab 1: Contact -->
+                <button
+                    type="button"
+                    @click="activeTab = 'contact'"
+                    :class="activeTab === 'contact' ? 'bg-white text-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.08)] font-semibold' : 'text-slate-600 hover:text-slate-900 font-medium'"
+                    class="flex-1 min-w-[110px] py-2 px-3 sm:px-4 rounded-xl text-xs sm:text-sm text-center transition-all duration-150 cursor-pointer select-none whitespace-nowrap"
+                >
+                    Contact &amp; WhatsApp
+                </button>
 
-            <!-- Tab 2: Store Details & Host -->
-            <button
-                type="button"
-                @click="activeTab = 'details'"
-                :class="activeTab === 'details' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
-                class="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition cursor-pointer shrink-0"
-            >
-                <span class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-extrabold" :class="activeTab === 'details' ? 'bg-purple-500 text-white' : 'bg-slate-100 text-slate-700'">2</span>
-                <span>🏷️ Store Details &amp; Host</span>
-            </button>
+                <div class="h-4 w-px bg-slate-300/80 shrink-0 transition-opacity" :class="(activeTab === 'contact' || activeTab === 'details') ? 'opacity-0' : 'opacity-100'"></div>
 
-            <!-- Tab 3: Hero -->
-            <button
-                type="button"
-                @click="activeTab = 'hero'"
-                :class="activeTab === 'hero' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
-                class="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition cursor-pointer shrink-0"
-            >
-                <span class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-extrabold" :class="activeTab === 'hero' ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-700'">3</span>
-                <span>🖼️ Main Welcome Picture</span>
-            </button>
+                <!-- Tab 2: Store Details -->
+                <button
+                    type="button"
+                    @click="activeTab = 'details'"
+                    :class="activeTab === 'details' ? 'bg-white text-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.08)] font-semibold' : 'text-slate-600 hover:text-slate-900 font-medium'"
+                    class="flex-1 min-w-[110px] py-2 px-3 sm:px-4 rounded-xl text-xs sm:text-sm text-center transition-all duration-150 cursor-pointer select-none whitespace-nowrap"
+                >
+                    Store Details
+                </button>
 
-            <!-- Tab 4: Featured -->
-            <button
-                type="button"
-                @click="activeTab = 'featured'"
-                :class="activeTab === 'featured' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
-                class="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition cursor-pointer shrink-0"
-            >
-                <span class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-extrabold" :class="activeTab === 'featured' ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-700'">4</span>
-                <span>⭐ Featured Highlights</span>
-            </button>
+                <div class="h-4 w-px bg-slate-300/80 shrink-0 transition-opacity" :class="(activeTab === 'details' || activeTab === 'hero') ? 'opacity-0' : 'opacity-100'"></div>
 
-            <!-- Tab 5: Story & Colors -->
-            <button
-                type="button"
-                @click="activeTab = 'branding'"
-                :class="activeTab === 'branding' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
-                class="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition cursor-pointer shrink-0"
-            >
-                <span class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-extrabold" :class="activeTab === 'branding' ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-700'">5</span>
-                <span>🎨 About Us &amp; Colors</span>
-            </button>
+                <!-- Tab 3: Welcome Picture -->
+                <button
+                    type="button"
+                    @click="activeTab = 'hero'"
+                    :class="activeTab === 'hero' ? 'bg-white text-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.08)] font-semibold' : 'text-slate-600 hover:text-slate-900 font-medium'"
+                    class="flex-1 min-w-[110px] py-2 px-3 sm:px-4 rounded-xl text-xs sm:text-sm text-center transition-all duration-150 cursor-pointer select-none whitespace-nowrap"
+                >
+                    Welcome Picture
+                </button>
+
+                <div class="h-4 w-px bg-slate-300/80 shrink-0 transition-opacity" :class="(activeTab === 'hero' || activeTab === 'featured') ? 'opacity-0' : 'opacity-100'"></div>
+
+                <!-- Tab 4: Featured Items -->
+                <button
+                    type="button"
+                    @click="activeTab = 'featured'"
+                    :class="activeTab === 'featured' ? 'bg-white text-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.08)] font-semibold' : 'text-slate-600 hover:text-slate-900 font-medium'"
+                    class="flex-1 min-w-[110px] py-2 px-3 sm:px-4 rounded-xl text-xs sm:text-sm text-center transition-all duration-150 cursor-pointer select-none whitespace-nowrap"
+                >
+                    Featured Items
+                </button>
+
+                <div class="h-4 w-px bg-slate-300/80 shrink-0 transition-opacity" :class="(activeTab === 'featured' || activeTab === 'branding') ? 'opacity-0' : 'opacity-100'"></div>
+
+                <!-- Tab 5: About & Colors -->
+                <button
+                    type="button"
+                    @click="activeTab = 'branding'"
+                    :class="activeTab === 'branding' ? 'bg-white text-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.08)] font-semibold' : 'text-slate-600 hover:text-slate-900 font-medium'"
+                    class="flex-1 min-w-[110px] py-2 px-3 sm:px-4 rounded-xl text-xs sm:text-sm text-center transition-all duration-150 cursor-pointer select-none whitespace-nowrap"
+                >
+                    About &amp; Colors
+                </button>
+            </div>
         </div>
     </div>
 
