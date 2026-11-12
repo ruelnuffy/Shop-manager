@@ -6,6 +6,7 @@ use App\Http\Controllers\ImpersonationController;
 use App\Http\Controllers\PaystackWebhookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Store;
+use App\Http\Controllers\StoreDirectoryController;
 use App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\WalletController;
 use App\Http\Middleware\EnsureUserIsAdmin;
@@ -39,6 +40,9 @@ Route::post('/paystack/webhook', PaystackWebhookController::class.'@handle')
 Route::get('/', function () {
     return view('platform.welcome');
 })->name('home');
+
+// Registered Stores & Boutiques Directory
+Route::get('/stores', [StoreDirectoryController::class, 'index'])->name('stores.index');
 
 // Storefront Route (Storefront will be on a separate folder/subsystem)
 Route::get('/storefront', function (Request $request) {
