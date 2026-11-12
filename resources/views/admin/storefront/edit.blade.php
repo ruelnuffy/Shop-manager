@@ -55,14 +55,254 @@
             $feat1 = $featuring[0] ?? [];
             $feat2 = $featuring[1] ?? [];
             $feat3 = $featuring[2] ?? [];
+
+            // Contact & Concierge Chat
+            $whatsappNumber = old('whatsapp_number', data_get($contact, 'whatsapp', $tenant->whatsappNumber()));
+            $whatsappMessage = old('whatsapp_message', data_get($contact, 'whatsapp_message', $tenant->whatsappGreeting()));
+            $customerCarePhone = old('customer_care_phone', data_get($contact, 'phone', $tenant->customerCarePhone()));
+            $customerCareEmail = old('customer_care_email', data_get($contact, 'email', $tenant->customerCareEmail()));
+            $chatLabel = old('chat_label', data_get($contact, 'chat_label', $tenant->conciergeChatLabel()));
+            $chatEnabled = old('chat_enabled', data_get($contact, 'chat_enabled', $tenant->isConciergeChatEnabled()));
+            $storeAddress = old('address', data_get($contact, 'address', $tenant->storefrontAddress()));
+            $openingHours = old('opening_hours', data_get($contact, 'opening_hours', $tenant->storefrontOpeningHours()));
+
+            // Editorial Badges & Storefront Lead
+            $seasonBadge = old('season_badge', data_get($storefront, 'season_badge', $tenant->seasonBadge()));
+            $locationBadge = old('location_badge', data_get($storefront, 'location_badge', $tenant->locationBadge()));
+            $leadName = old('lead_name', data_get($storefront, 'lead_name', $tenant->leadName()));
+            $leadRole = old('lead_role', data_get($storefront, 'lead_role', $tenant->leadRole()));
+            $leadStatus = old('lead_status', data_get($storefront, 'lead_status', $tenant->leadStatus()));
+            $aboutText = old('about_text', data_get($storefront, 'about_text', $tenant->aboutText()));
         @endphp
 
-        <!-- Section 1: Hero Showcase & Visual Image -->
+        <!-- Section 1: Live Concierge, WhatsApp & Customer Care -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
+            <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                        <span>1. Live Concierge, WhatsApp &amp; Customer Care</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-0.5">
+                        Manage your customer messaging channels, instant WhatsApp order inquiries, and customer care lines.
+                    </p>
+                </div>
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
+                    <svg class="w-4 h-4 fill-current text-emerald-600 shrink-0" viewBox="0 0 24 24"><path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.98-.276-.1-.476-.15-.677.15-.2.301-.777.98-.953 1.18-.175.201-.351.226-.652.075-.301-.15-1.272-.469-2.423-1.496-.896-.799-1.501-1.786-1.677-2.087-.175-.301-.019-.464.132-.614.136-.135.301-.351.451-.527.15-.175.201-.301.301-.502.1-.2.05-.376-.025-.526-.075-.15-.677-1.631-.928-2.238-.244-.59-.492-.51-.677-.52l-.577-.01c-.2 0-.526.075-.802.376s-1.053 1.028-1.053 2.507c0 1.48 1.078 2.908 1.229 3.109.15.2 2.121 3.238 5.138 4.542.718.31 1.278.496 1.715.635.722.23 1.378.197 1.898.12.579-.087 1.78-.727 2.03-1.43.251-.703.251-1.304.176-1.43-.076-.126-.276-.201-.577-.351zM12.04 2C6.527 2 2.05 6.477 2.05 11.99c0 1.82.49 3.528 1.344 5.003L2 22l5.143-1.348A9.94 9.94 0 0012.04 22c5.513 0 9.99-4.477 9.99-9.99A9.99 9.99 0 0012.04 2z"/></svg>
+                    <span>Instant Customer Messaging</span>
+                </div>
+            </div>
+
+            <!-- Floating Pill & Toggle -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <label class="inline-flex items-center gap-2 cursor-pointer">
+                        <input
+                            type="checkbox"
+                            name="chat_enabled"
+                            value="1"
+                            {{ $chatEnabled ? 'checked' : '' }}
+                            class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer"
+                        />
+                        <span class="text-xs font-bold text-slate-900">Enable Floating Concierge / WhatsApp Chat Pill</span>
+                    </label>
+                    <p class="text-[11px] text-slate-500">
+                        When enabled, shoppers see a floating WhatsApp support pill in the bottom right corner of their screen.
+                    </p>
+                </div>
+
+                <div class="sm:w-64">
+                    <label class="block text-[11px] font-bold text-slate-700 mb-1">Floating Pill Label</label>
+                    <input
+                        type="text"
+                        name="chat_label"
+                        value="{{ $chatLabel }}"
+                        placeholder="e.g. Jos Concierge, Chat with Us"
+                        class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-emerald-500"
+                    />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- WhatsApp Number -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                        WhatsApp Business Number
+                        <span class="text-slate-400 font-normal">(for wa.me links &amp; instant orders)</span>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                            <svg class="w-4 h-4 text-emerald-600 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.98-.276-.1-.476-.15-.677.15-.2.301-.777.98-.953 1.18-.175.201-.351.226-.652.075-.301-.15-1.272-.469-2.423-1.496-.896-.799-1.501-1.786-1.677-2.087-.175-.301-.019-.464.132-.614.136-.135.301-.351.451-.527.15-.175.201-.301.301-.502.1-.2.05-.376-.025-.526-.075-.15-.677-1.631-.928-2.238-.244-.59-.492-.51-.677-.52l-.577-.01c-.2 0-.526.075-.802.376s-1.053 1.028-1.053 2.507c0 1.48 1.078 2.908 1.229 3.109.15.2 2.121 3.238 5.138 4.542.718.31 1.278.496 1.715.635.722.23 1.378.197 1.898.12.579-.087 1.78-.727 2.03-1.43.251-.703.251-1.304.176-1.43-.076-.126-.276-.201-.577-.351zM12.04 2C6.527 2 2.05 6.477 2.05 11.99c0 1.82.49 3.528 1.344 5.003L2 22l5.143-1.348A9.94 9.94 0 0012.04 22c5.513 0 9.99-4.477 9.99-9.99A9.99 9.99 0 0012.04 2z"/></svg>
+                        </div>
+                        <input
+                            type="text"
+                            name="whatsapp_number"
+                            value="{{ $whatsappNumber }}"
+                            placeholder="e.g. +234 906 949 8376 or 09069498376"
+                            class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 font-mono"
+                        />
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1">Accepts Nigerian local (090...) or international format (+234...). Cleaned automatically for wa.me links.</p>
+                </div>
+
+                <!-- Customer Care Phone -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                        Customer Care Phone Line
+                        <span class="text-slate-400 font-normal">(displayed on footer &amp; location)</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="customer_care_phone"
+                        value="{{ $customerCarePhone }}"
+                        placeholder="e.g. +234 906 949 8376"
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 font-mono"
+                    />
+                    <p class="text-[11px] text-slate-400 mt-1">Formatted phone number shown on the website footer and support badges.</p>
+                </div>
+
+                <!-- Customer Care Support Email -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Customer Care Support Email</label>
+                    <input
+                        type="email"
+                        name="customer_care_email"
+                        value="{{ $customerCareEmail }}"
+                        placeholder="e.g. support@yourbrand.com"
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-emerald-500"
+                    />
+                </div>
+
+                <!-- Store Opening Hours -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Store Opening Hours &amp; Days</label>
+                    <input
+                        type="text"
+                        name="opening_hours"
+                        value="{{ $openingHours }}"
+                        placeholder="e.g. Open Mon – Sat, 9:00 AM – 7:00 PM"
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-emerald-500"
+                    />
+                </div>
+
+                <!-- WhatsApp Default Message -->
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                        WhatsApp Greeting / Default Inquiry Message
+                    </label>
+                    <input
+                        type="text"
+                        name="whatsapp_message"
+                        value="{{ $whatsappMessage }}"
+                        placeholder="e.g. Hello, I would like to inquire about your boutique collection."
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-emerald-500"
+                    />
+                    <p class="text-[11px] text-slate-400 mt-1">The pre-filled text in your shopper's WhatsApp app when they tap to chat with your store.</p>
+                </div>
+
+                <!-- Physical Store Address -->
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Physical Flagship Atelier / Store Address</label>
+                    <input
+                        type="text"
+                        name="address"
+                        value="{{ $storeAddress }}"
+                        placeholder="e.g. Across Chrisbest Plaza, West of Mines, Jos, Plateau State, Nigeria"
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-emerald-500"
+                    />
+                    <p class="text-[11px] text-slate-400 mt-1">Displayed in the boutique footer and location guide for walk-in shoppers.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Editorial Badges & Boutique Lead -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
+                    <span>2. Editorial Badges &amp; Boutique Lead Byline</span>
+                </h2>
+                <p class="text-xs text-slate-400 mt-0.5">
+                    Customize the luxury editorial badges, store pre-headline, and stylist/lead byline above your hero showcase.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Season Badge -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                        Season / Collection Badge
+                        <span class="text-slate-400 font-normal">(Pink Pill Badge)</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="season_badge"
+                        value="{{ $seasonBadge }}"
+                        placeholder="e.g. SS / 2026 Collection, Fall Atelier Drop"
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-purple-500"
+                    />
+                </div>
+
+                <!-- Location Badge -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                        Flagship / City Badge
+                        <span class="text-slate-400 font-normal">(Grey Pill Badge)</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="location_badge"
+                        value="{{ $locationBadge }}"
+                        placeholder="e.g. Flagship Atelier • West of Mines, Jos"
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-purple-500"
+                    />
+                </div>
+
+                <!-- Lead Name -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Boutique Lead / Stylist Name</label>
+                    <input
+                        type="text"
+                        name="lead_name"
+                        value="{{ $leadName }}"
+                        placeholder="e.g. Jessi O., Amara K."
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-purple-500"
+                    />
+                </div>
+
+                <!-- Lead Role -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Lead Role / Designation</label>
+                    <input
+                        type="text"
+                        name="lead_role"
+                        value="{{ $leadRole }}"
+                        placeholder="e.g. Lead, Creative Director, Founder"
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-purple-500"
+                    />
+                </div>
+
+                <!-- Live Status -->
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Live Atelier Status Line</label>
+                    <input
+                        type="text"
+                        name="lead_status"
+                        value="{{ $leadStatus }}"
+                        placeholder="e.g. Jos Atelier Open, Walk-in Fitting Available, Online & Delivering"
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-purple-500"
+                    />
+                    <p class="text-[11px] text-slate-400 mt-1">Displays alongside an animated pulsing indicator to show customers you are open for business.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Hero Showcase & Visual Image -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
             <div class="border-b border-slate-100 pb-4">
                 <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
-                    <span>1. Main Hero Visual Showcase</span>
+                    <span>3. Main Hero Visual Showcase</span>
                 </h2>
                 <p class="text-xs text-slate-400 mt-0.5">
                     This is the centerpiece hero visual your shoppers see first at the top of your boutique homepage.
@@ -156,14 +396,14 @@
             </div>
         </div>
 
-        <!-- Section 2: Featuring Images & Highlight Tiles -->
+        <!-- Section 4: Featuring Images & Highlight Tiles -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
             <div class="border-b border-slate-100 pb-4">
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
-                            <span>2. Featuring Images &amp; Promo Highlights</span>
+                            <span>4. Featuring Images &amp; Promo Highlights</span>
                         </h2>
                         <p class="text-xs text-slate-400 mt-0.5">
                             Showcase 3 signature promotional features, category spotlights, or seasonal drops directly on your storefront.
@@ -421,16 +661,30 @@
             </div>
         </div>
 
-        <!-- Section 3: Brand Identity & Palette -->
+        <!-- Section 5: Brand Identity & Boutique Narrative -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
             <div class="border-b border-slate-100 pb-4">
                 <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                    <span>3. Brand Identity &amp; Accent Palette</span>
+                    <span>5. Boutique Narrative &amp; Brand Styling</span>
                 </h2>
                 <p class="text-xs text-slate-400 mt-0.5">
-                    Colors and typography accents applied throughout your storefront template and order slips.
+                    Colors and narrative story applied throughout your boutique footer, about sections, and checkout slips.
                 </p>
+            </div>
+
+            <!-- About / Narrative Bio -->
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">
+                    Store / Atelier Narrative Bio
+                    <span class="text-slate-400 font-normal">(displayed in your website footer under the logo)</span>
+                </label>
+                <textarea
+                    name="about_text"
+                    rows="3"
+                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-amber-500 leading-relaxed"
+                    placeholder="Enter the craftsmanship story and bio of your brand..."
+                >{{ $aboutText }}</textarea>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

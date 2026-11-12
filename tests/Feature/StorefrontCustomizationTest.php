@@ -121,4 +121,51 @@ class StorefrontCustomizationTest extends TestCase
         $rawRelativePath = str_replace('/storage/', '', $heroPath);
         Storage::disk('public')->assertExists($rawRelativePath);
     }
+
+    public function test_store_admin_can_update_customer_care_whatsapp_and_editorial_badges(): void
+    {
+        $response = $this->actingAs($this->admin)->put('/admin/storefront-customization', [
+            'whatsapp_number' => '+234 801 234 5678',
+            'whatsapp_message' => 'VIP Concierge: I would like personal assistance.',
+            'customer_care_phone' => '+234 801 234 5678',
+            'customer_care_email' => 'concierge@luxuryboutique.ng',
+            'chat_label' => 'VIP Concierge',
+            'chat_enabled' => 1,
+            'address' => 'Victoria Island Fashion Boulevard, Suite 10, Lagos',
+            'opening_hours' => 'Mon - Sun, 10:00 AM - 9:00 PM',
+
+            'season_badge' => 'Pre-Fall 2026 Collection',
+            'location_badge' => 'Flagship Salon • Victoria Island',
+            'lead_name' => 'Amara K.',
+            'lead_role' => 'Principal Stylist',
+            'lead_status' => 'Private Styling Room Open',
+            'about_text' => 'Bespoke high fashion and private leather salon curated for discerning clients.',
+        ]);
+
+        $response->assertRedirect(route('admin.storefront.edit'));
+        $this->tenant->refresh();
+
+        $this->assertEquals('2348012345678', $this->tenant->whatsappNumber());
+        $this->assertEquals('+234 801 234 5678', $this->tenant->customerCarePhone());
+        $this->assertEquals('VIP Concierge', $this->tenant->conciergeChatLabel());
+        $this->assertTrue($this->tenant->isConciergeChatEnabled());
+        $this->assertEquals('Pre-Fall 2026 Collection', $this->tenant->seasonBadge());
+        $this->assertEquals('Flagship Salon • Victoria Island', $this->tenant->locationBadge());
+        $this->assertEquals('Amara K.', $this->tenant->leadName());
+        $this->assertEquals('Principal Stylist', $this->tenant->leadRole());
+        $this->assertEquals('Private Styling Room Open', $this->tenant->leadStatus());
+
+        // Verify live storefront reflects these management updates
+        $storefront = $this->actingAs($this->admin)->get('/storefront');
+        $storefront->assertStatus(200);
+        $storefront->assertSee('2348012345678');
+        $storefront->assertSee('VIP Concierge');
+        $storefront->assertSee('+234 801 234 5678');
+        $storefront->assertSee('Pre-Fall 2026 Collection');
+        $storefront->assertSee('Flagship Salon • Victoria Island');
+        $storefront->assertSee('Amara K.');
+        $storefront->assertSee('Principal Stylist');
+        $storefront->assertSee('Private Styling Room Open');
+        $storefront->assertSee('Bespoke high fashion and private leather salon curated for discerning clients.');
+    }
 }

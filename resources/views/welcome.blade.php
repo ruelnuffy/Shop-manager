@@ -18,6 +18,23 @@
             $heroSubtitle = $currentTenant ? $currentTenant->setting('storefront.hero_subtitle', $brandTagline) : $brandTagline;
             $heroBadge = $currentTenant ? $currentTenant->setting('storefront.hero_badge', 'Physical Boutique Experience') : 'Physical Boutique Experience';
             $storefrontFeaturing = $currentTenant ? $currentTenant->setting('storefront.featuring', []) : [];
+
+            // Dynamic Customer Care, Chats & Editorial Badges
+            $whatsappNum = $currentTenant ? $currentTenant->whatsappNumber() : '2349069498376';
+            $whatsappMsg = $currentTenant ? $currentTenant->whatsappGreeting() : "Hello {$brandName}, I'd like to inquire about your boutique collection";
+            $whatsappUrl = 'https://wa.me/' . $whatsappNum . '?text=' . rawurlencode($whatsappMsg);
+            $customerCarePhone = $currentTenant ? $currentTenant->customerCarePhone() : '+234 906 949 8376';
+            $customerCareEmail = $currentTenant ? $currentTenant->customerCareEmail() : 'support@shopmanager.test';
+            $conciergeChatLabel = $currentTenant ? $currentTenant->conciergeChatLabel() : 'Jos Concierge';
+            $isConciergeEnabled = $currentTenant ? $currentTenant->isConciergeChatEnabled() : true;
+            $storefrontAddress = $currentTenant ? $currentTenant->storefrontAddress() : 'Across Chrisbest Plaza, West of Mines, Jos, Plateau State, Nigeria';
+            $storefrontOpeningHours = $currentTenant ? $currentTenant->storefrontOpeningHours() : 'Open Mon – Sat';
+            $seasonBadge = $currentTenant ? $currentTenant->seasonBadge() : 'SS / 2026 Collection';
+            $locationBadge = $currentTenant ? $currentTenant->locationBadge() : 'Flagship Atelier • West of Mines, Jos';
+            $leadName = $currentTenant ? $currentTenant->leadName() : 'Jessi O.';
+            $leadRole = $currentTenant ? $currentTenant->leadRole() : 'Lead';
+            $leadStatus = $currentTenant ? $currentTenant->leadStatus() : 'Jos Atelier Open';
+            $aboutText = $currentTenant ? $currentTenant->aboutText() : 'High-fashion atelier and boutique brand based across Chrisbest Plaza in West of Mines, Jos, Plateau State. Specializing in silk dresses, artisan leather handbags, and handcrafted footwear.';
         @endphp
         <title>{{ $brandName }} &mdash; {{ $brandTagline }}</title>
 
@@ -138,12 +155,16 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <!-- Editorial Pill Badges -->
                     <div class="flex items-center justify-center flex-wrap gap-2 mb-4 sm:mb-6">
-                        <span class="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold tracking-wider uppercase bg-brand-pink-50 text-brand-pink-800 border border-brand-pink-200">
-                            SS / 2026 Collection
-                        </span>
-                        <span class="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold tracking-wider uppercase bg-[#f4f4f4] text-brand-charcoal/80 border border-black/5">
-                            Flagship Atelier &bull; West of Mines, Jos
-                        </span>
+                        @if ($seasonBadge)
+                            <span class="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold tracking-wider uppercase bg-brand-pink-50 text-brand-pink-800 border border-brand-pink-200">
+                                {{ $seasonBadge }}
+                            </span>
+                        @endif
+                        @if ($locationBadge)
+                            <span class="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold tracking-wider uppercase bg-[#f4f4f4] text-brand-charcoal/80 border border-black/5">
+                                {{ $locationBadge }}
+                            </span>
+                        @endif
                     </div>
 
                     <!-- Statement Oversized Title -->
@@ -154,18 +175,26 @@
 
                     <!-- Creator / Boutique Byline -->
                     <div class="flex items-center justify-center gap-3 sm:gap-4 mt-4 sm:mt-6 text-xs text-brand-charcoal/70">
-                        <div class="flex items-center gap-2">
-                            <div class="w-6 h-6 rounded-full bg-black text-white text-[10px] font-bold flex items-center justify-center">
-                                J
+                        @if ($leadName)
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-black text-white text-[10px] font-bold flex items-center justify-center">
+                                    {{ strtoupper(substr($leadName, 0, 1)) }}
+                                </div>
+                                <span class="font-semibold text-brand-charcoal">{{ $leadName }}</span>
+                                @if ($leadRole)
+                                    <span class="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-black/5 font-bold text-brand-charcoal/60">{{ $leadRole }}</span>
+                                @endif
                             </div>
-                            <span class="font-semibold text-brand-charcoal">Jessi O.</span>
-                            <span class="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-black/5 font-bold text-brand-charcoal/60">Lead</span>
-                        </div>
-                        <span class="text-black/20">&bull;</span>
-                        <div class="flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span class="font-medium">Jos Atelier Open</span>
-                        </div>
+                        @endif
+                        @if ($leadName && $leadStatus)
+                            <span class="text-black/20">&bull;</span>
+                        @endif
+                        @if ($leadStatus)
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span class="font-medium">{{ $leadStatus }}</span>
+                            </div>
+                        @endif
                     </div>
 
                     <!-- Hero Visual Showcase with Custom Hero Image or Real Boutique Video Player -->
@@ -761,7 +790,7 @@
                 </div>
                 <span class="text-[9px] font-bold uppercase tracking-wider">Bag</span>
             </a>
-            <a href="https://wa.me/2349069498376?text=Hello%20Jessi's%20ClassiQ,%20I'd%20like%20to%20inquire%20about%20your%20boutique%20collection" target="_blank" class="flex flex-col items-center gap-0.5 text-emerald-600 hover:text-emerald-700 transition">
+            <a href="{{ $whatsappUrl }}" target="_blank" class="flex flex-col items-center gap-0.5 text-emerald-600 hover:text-emerald-700 transition">
                 <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.98-.276-.1-.476-.15-.677.15-.2.301-.777.98-.953 1.18-.175.201-.351.226-.652.075-.301-.15-1.272-.469-2.423-1.496-.896-.799-1.501-1.786-1.677-2.087-.175-.301-.019-.464.132-.614.136-.135.301-.351.451-.527.15-.175.201-.301.301-.502.1-.2.05-.376-.025-.526-.075-.15-.677-1.631-.928-2.238-.244-.59-.492-.51-.677-.52l-.577-.01c-.2 0-.526.075-.802.376s-1.053 1.028-1.053 2.507c0 1.48 1.078 2.908 1.229 3.109.15.2 2.121 3.238 5.138 4.542.718.31 1.278.496 1.715.635.722.23 1.378.197 1.898.12.579-.087 1.78-.727 2.03-1.43.251-.703.251-1.304.176-1.43-.076-.126-.276-.201-.577-.351zM12.04 2C6.527 2 2.05 6.477 2.05 11.99c0 1.82.49 3.528 1.344 5.003L2 22l5.143-1.348A9.94 9.94 0 0012.04 22c5.513 0 9.99-4.477 9.99-9.99A9.99 9.99 0 0012.04 2z"/></svg>
                 <span class="text-[9px] font-bold uppercase tracking-wider">WhatsApp</span>
             </a>
@@ -769,10 +798,12 @@
 
         <!-- DESKTOP CONCIERGE FLOATING BUTTONS (>= 768px) -->
         <aside class="hidden md:flex fixed bottom-8 right-8 z-40 items-center gap-3">
-            <a href="https://wa.me/2349069498376?text=Hello%20Jessi's%20ClassiQ,%20I'd%20like%20to%20inquire%20about%20your%20boutique%20collection" target="_blank" class="px-4 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-2xl shadow-emerald-600/30 transition duration-150 group" title="Chat on WhatsApp (+234 906 949 8376)">
-                <svg class="w-4 h-4 fill-current group-hover:scale-110 transition-transform" viewBox="0 0 24 24"><path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.98-.276-.1-.476-.15-.677.15-.2.301-.777.98-.953 1.18-.175.201-.351.226-.652.075-.301-.15-1.272-.469-2.423-1.496-.896-.799-1.501-1.786-1.677-2.087-.175-.301-.019-.464.132-.614.136-.135.301-.351.451-.527.15-.175.201-.301.301-.502.1-.2.05-.376-.025-.526-.075-.15-.677-1.631-.928-2.238-.244-.59-.492-.51-.677-.52l-.577-.01c-.2 0-.526.075-.802.376s-1.053 1.028-1.053 2.507c0 1.48 1.078 2.908 1.229 3.109.15.2 2.121 3.238 5.138 4.542.718.31 1.278.496 1.715.635.722.23 1.378.197 1.898.12.579-.087 1.78-.727 2.03-1.43.251-.703.251-1.304.176-1.43-.076-.126-.276-.201-.577-.351zM12.04 2C6.527 2 2.05 6.477 2.05 11.99c0 1.82.49 3.528 1.344 5.003L2 22l5.143-1.348A9.94 9.94 0 0012.04 22c5.513 0 9.99-4.477 9.99-9.99A9.99 9.99 0 0012.04 2z"/></svg>
-                <span>Jos Concierge</span>
-            </a>
+            @if ($isConciergeEnabled)
+                <a href="{{ $whatsappUrl }}" target="_blank" class="px-4 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-2xl shadow-emerald-600/30 transition duration-150 group" title="Chat on WhatsApp ({{ $customerCarePhone }})">
+                    <svg class="w-4 h-4 fill-current group-hover:scale-110 transition-transform" viewBox="0 0 24 24"><path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.98-.276-.1-.476-.15-.677.15-.2.301-.777.98-.953 1.18-.175.201-.351.226-.652.075-.301-.15-1.272-.469-2.423-1.496-.896-.799-1.501-1.786-1.677-2.087-.175-.301-.019-.464.132-.614.136-.135.301-.351.451-.527.15-.175.201-.301.301-.502.1-.2.05-.376-.025-.526-.075-.15-.677-1.631-.928-2.238-.244-.59-.492-.51-.677-.52l-.577-.01c-.2 0-.526.075-.802.376s-1.053 1.028-1.053 2.507c0 1.48 1.078 2.908 1.229 3.109.15.2 2.121 3.238 5.138 4.542.718.31 1.278.496 1.715.635.722.23 1.378.197 1.898.12.579-.087 1.78-.727 2.03-1.43.251-.703.251-1.304.176-1.43-.076-.126-.276-.201-.577-.351zM12.04 2C6.527 2 2.05 6.477 2.05 11.99c0 1.82.49 3.528 1.344 5.003L2 22l5.143-1.348A9.94 9.94 0 0012.04 22c5.513 0 9.99-4.477 9.99-9.99A9.99 9.99 0 0012.04 2z"/></svg>
+                    <span>{{ $conciergeChatLabel }}</span>
+                </a>
+            @endif
             <a href="#" class="w-10 h-10 rounded-full bg-black/90 hover:bg-black text-white flex items-center justify-center transition duration-150 shadow-xl" title="Back to top">
                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
@@ -787,7 +818,7 @@
                     <div class="md:col-span-2 space-y-3">
                         <x-application-logo class="h-14 sm:h-16 md:h-18" />
                         <p class="text-xs text-brand-charcoal/60 max-w-sm leading-relaxed mt-3">
-                            High-fashion atelier and boutique brand based across Chrisbest Plaza in West of Mines, Jos, Plateau State. Specializing in silk dresses, artisan leather handbags, and handcrafted footwear.
+                            {{ $aboutText }}
                         </p>
                     </div>
                     <div>
@@ -809,23 +840,22 @@
                     <div>
                         <h4 class="font-bold text-xs uppercase tracking-widest text-brand-charcoal/50 mb-3">Location & Care</h4>
                         <p class="text-brand-charcoal/60 leading-relaxed font-medium">
-                            Across Chrisbest Plaza, West of Mines<br>
-                            Jos, Plateau State, Nigeria<br>
-                            Open Mon &ndash; Sat
+                            {!! nl2br(e($storefrontAddress)) !!}<br>
+                            {{ $storefrontOpeningHours }}
                         </p>
                         <a
-                            href="https://wa.me/2349069498376?text=Hello%20Jessi's%20ClassiQ,%20I'd%20like%20to%20inquire%20about%20your%20boutique%20collection"
+                            href="{{ $whatsappUrl }}"
                             target="_blank"
                             class="inline-flex items-center gap-1.5 mt-2.5 text-emerald-700 hover:text-emerald-800 font-bold text-xs transition"
                         >
                             <svg class="w-3.5 h-3.5 fill-current shrink-0 text-emerald-600" viewBox="0 0 24 24"><path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.98-.276-.1-.476-.15-.677.15-.2.301-.777.98-.953 1.18-.175.201-.351.226-.652.075-.301-.15-1.272-.469-2.423-1.496-.896-.799-1.501-1.786-1.677-2.087-.175-.301-.019-.464.132-.614.136-.135.301-.351.451-.527.15-.175.201-.301.301-.502.1-.2.05-.376-.025-.526-.075-.15-.677-1.631-.928-2.238-.244-.59-.492-.51-.677-.52l-.577-.01c-.2 0-.526.075-.802.376s-1.053 1.028-1.053 2.507c0 1.48 1.078 2.908 1.229 3.109.15.2 2.121 3.238 5.138 4.542.718.31 1.278.496 1.715.635.722.23 1.378.197 1.898.12.579-.087 1.78-.727 2.03-1.43.251-.703.251-1.304.176-1.43-.076-.126-.276-.201-.577-.351zM12.04 2C6.527 2 2.05 6.477 2.05 11.99c0 1.82.49 3.528 1.344 5.003L2 22l5.143-1.348A9.94 9.94 0 0012.04 22c5.513 0 9.99-4.477 9.99-9.99A9.99 9.99 0 0012.04 2z"/></svg>
-                            <span>WhatsApp: +234 906 949 8376</span>
+                            <span>WhatsApp: {{ $customerCarePhone }}</span>
                         </a>
                     </div>
                 </div>
 
                 <div class="pt-8 border-t border-black/[0.06] flex flex-col sm:flex-row items-center justify-between text-[11px] text-brand-charcoal/50">
-                    <p>&copy; {{ date('Y') }} Jessi's ClassiQ Store. All rights reserved.</p>
+                    <p>&copy; {{ date('Y') }} {{ $brandName }}. All rights reserved.</p>
                     <p class="mt-2 sm:mt-0 font-medium">Curated Boutique Platform &bull; Secured with Paystack</p>
                 </div>
             </div>

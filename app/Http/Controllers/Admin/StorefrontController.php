@@ -25,8 +25,9 @@ class StorefrontController extends Controller
 
         $branding = $tenant->setting('branding', []);
         $storefront = $tenant->setting('storefront', []);
+        $contact = $tenant->setting('contact', []);
 
-        return view('admin.storefront.edit', compact('tenant', 'branding', 'storefront'));
+        return view('admin.storefront.edit', compact('tenant', 'branding', 'storefront', 'contact'));
     }
 
     /**
@@ -49,6 +50,24 @@ class StorefrontController extends Controller
 
             'logo_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:5120',
             'logo_url' => 'nullable|string|max:1000',
+
+            // Customer care, chats & WhatsApp concierge
+            'whatsapp_number' => 'nullable|string|max:50',
+            'whatsapp_message' => 'nullable|string|max:500',
+            'customer_care_phone' => 'nullable|string|max:50',
+            'customer_care_email' => 'nullable|string|max:255',
+            'chat_label' => 'nullable|string|max:100',
+            'chat_enabled' => 'nullable',
+            'address' => 'nullable|string|max:500',
+            'opening_hours' => 'nullable|string|max:255',
+
+            // Store badges & lead byline
+            'season_badge' => 'nullable|string|max:100',
+            'location_badge' => 'nullable|string|max:150',
+            'lead_name' => 'nullable|string|max:100',
+            'lead_role' => 'nullable|string|max:50',
+            'lead_status' => 'nullable|string|max:100',
+            'about_text' => 'nullable|string|max:2000',
 
             // Hero section customization
             'hero_title' => 'nullable|string|max:255',
@@ -109,7 +128,52 @@ class StorefrontController extends Controller
             data_set($settings, 'branding.logo_url', $request->input('logo_url'));
         }
 
-        // 2. Hero Section
+        // 2. Customer Care, WhatsApp & Concierge Chat
+        if ($request->has('whatsapp_number')) {
+            data_set($settings, 'contact.whatsapp', $request->input('whatsapp_number'));
+        }
+        if ($request->has('whatsapp_message')) {
+            data_set($settings, 'contact.whatsapp_message', $request->input('whatsapp_message'));
+        }
+        if ($request->has('customer_care_phone')) {
+            data_set($settings, 'contact.phone', $request->input('customer_care_phone'));
+        }
+        if ($request->has('customer_care_email')) {
+            data_set($settings, 'contact.email', $request->input('customer_care_email'));
+        }
+        if ($request->has('chat_label')) {
+            data_set($settings, 'contact.chat_label', $request->input('chat_label'));
+        }
+        data_set($settings, 'contact.chat_enabled', $request->boolean('chat_enabled', true));
+
+        if ($request->has('address')) {
+            data_set($settings, 'contact.address', $request->input('address'));
+        }
+        if ($request->has('opening_hours')) {
+            data_set($settings, 'contact.opening_hours', $request->input('opening_hours'));
+        }
+
+        // 3. Editorial Badges & Store Byline
+        if ($request->has('season_badge')) {
+            data_set($settings, 'storefront.season_badge', $request->input('season_badge'));
+        }
+        if ($request->has('location_badge')) {
+            data_set($settings, 'storefront.location_badge', $request->input('location_badge'));
+        }
+        if ($request->has('lead_name')) {
+            data_set($settings, 'storefront.lead_name', $request->input('lead_name'));
+        }
+        if ($request->has('lead_role')) {
+            data_set($settings, 'storefront.lead_role', $request->input('lead_role'));
+        }
+        if ($request->has('lead_status')) {
+            data_set($settings, 'storefront.lead_status', $request->input('lead_status'));
+        }
+        if ($request->has('about_text')) {
+            data_set($settings, 'storefront.about_text', $request->input('about_text'));
+        }
+
+        // 4. Hero Section
         if ($request->has('hero_title')) {
             data_set($settings, 'storefront.hero_title', $request->input('hero_title'));
         }

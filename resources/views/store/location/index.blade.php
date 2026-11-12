@@ -1,4 +1,12 @@
 <x-app-layout>
+    @php
+        $tenant = app(\App\Services\CurrentTenant::class)->get();
+        $tenantWhatsapp = $tenant ? $tenant->whatsappNumber() : '2349069498376';
+        $tenantPhone = $tenant ? $tenant->customerCarePhone() : '+234 906 949 8376';
+        $tenantBrand = $tenant ? $tenant->setting('branding.name', $tenant->name) : 'Boutique';
+        $locationMsg = "Hello {$tenantBrand}, I'd like to inquire about visiting your store location.";
+        $locationWhatsappUrl = 'https://wa.me/' . $tenantWhatsapp . '?text=' . rawurlencode($locationMsg);
+    @endphp
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
@@ -191,9 +199,9 @@
                             <span x-text="locationError"></span>
                         </div>
 
-                        <a href="https://wa.me/2349069498376?text=Hello%20Jessi's%20ClassiQ,%20I'd%20like%20to%20inquire%20about%20visiting%20the%20Jos%20boutique" target="_blank" class="w-full py-3 px-4 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-sm">
+                        <a href="{{ $locationWhatsappUrl }}" target="_blank" class="w-full py-3 px-4 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-sm">
                             <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24"><path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.98-.276-.1-.476-.15-.677.15-.2.301-.777.98-.953 1.18-.175.201-.351.226-.652.075-.301-.15-1.272-.469-2.423-1.496-.896-.799-1.501-1.786-1.677-2.087-.175-.301-.019-.464.132-.614.136-.135.301-.351.451-.527.15-.175.201-.301.301-.502.1-.2.05-.376-.025-.526-.075-.15-.677-1.631-.928-2.238-.244-.59-.492-.51-.677-.52l-.577-.01c-.2 0-.526.075-.802.376s-1.053 1.028-1.053 2.507c0 1.48 1.078 2.908 1.229 3.109.15.2 2.121 3.238 5.138 4.542.718.31 1.278.496 1.715.635.722.23 1.378.197 1.898.12.579-.087 1.78-.727 2.03-1.43.251-.703.251-1.304.176-1.43-.076-.126-.276-.201-.577-.351zM12.04 2C6.527 2 2.05 6.477 2.05 11.99c0 1.82.49 3.528 1.344 5.003L2 22l5.143-1.348A9.94 9.94 0 0012.04 22c5.513 0 9.99-4.477 9.99-9.99A9.99 9.99 0 0012.04 2z"/></svg>
-                            <span>WhatsApp Support: +234 906 949 8376</span>
+                            <span>WhatsApp Support: {{ $tenantPhone }}</span>
                         </a>
 
                         <div class="grid grid-cols-2 gap-3 pt-1">

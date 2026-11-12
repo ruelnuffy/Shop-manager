@@ -49,6 +49,126 @@ class Tenant extends Model
         return (bool) $this->setting("features.{$feature}", false);
     }
 
+    /**
+     * WhatsApp phone number formatted for wa.me link (digits only).
+     */
+    public function whatsappNumber(): string
+    {
+        $num = (string) $this->setting('contact.whatsapp', $this->setting('contact.phone', '2349069498376'));
+        $clean = preg_replace('/[^0-9]/', '', $num);
+        if (str_starts_with($clean, '0') && strlen($clean) === 11) {
+            $clean = '234'.substr($clean, 1);
+        }
+
+        return $clean ?: '2349069498376';
+    }
+
+    /**
+     * WhatsApp default greeting message.
+     */
+    public function whatsappGreeting(): string
+    {
+        $brand = (string) $this->setting('branding.name', $this->name);
+
+        return (string) $this->setting('contact.whatsapp_message', "Hello {$brand}, I'd like to inquire about your boutique collection");
+    }
+
+    /**
+     * Customer care phone number for display.
+     */
+    public function customerCarePhone(): string
+    {
+        return (string) $this->setting('contact.phone', '+234 906 949 8376');
+    }
+
+    /**
+     * Customer care support email.
+     */
+    public function customerCareEmail(): string
+    {
+        return (string) $this->setting('contact.email', 'support@jessiclassiq.com');
+    }
+
+    /**
+     * Floating concierge chat pill label.
+     */
+    public function conciergeChatLabel(): string
+    {
+        return (string) $this->setting('contact.chat_label', 'Jos Concierge');
+    }
+
+    /**
+     * Is concierge chat enabled on the storefront?
+     */
+    public function isConciergeChatEnabled(): bool
+    {
+        return (bool) $this->setting('contact.chat_enabled', true);
+    }
+
+    /**
+     * Physical store address for footer and location display.
+     */
+    public function storefrontAddress(): string
+    {
+        return (string) $this->setting('contact.address', 'Across Chrisbest Plaza, West of Mines, Jos, Plateau State, Nigeria');
+    }
+
+    /**
+     * Store opening hours / working days.
+     */
+    public function storefrontOpeningHours(): string
+    {
+        return (string) $this->setting('contact.opening_hours', 'Open Mon – Sat');
+    }
+
+    /**
+     * Season / Collection editorial badge.
+     */
+    public function seasonBadge(): string
+    {
+        return (string) $this->setting('storefront.season_badge', 'SS / 2026 Collection');
+    }
+
+    /**
+     * Location / Flagship editorial badge.
+     */
+    public function locationBadge(): string
+    {
+        return (string) $this->setting('storefront.location_badge', 'Flagship Atelier • West of Mines, Jos');
+    }
+
+    /**
+     * Store lead / stylist name.
+     */
+    public function leadName(): string
+    {
+        return (string) $this->setting('storefront.lead_name', 'Jessi O.');
+    }
+
+    /**
+     * Store lead role / title.
+     */
+    public function leadRole(): string
+    {
+        return (string) $this->setting('storefront.lead_role', 'Lead');
+    }
+
+    /**
+     * Store live status line.
+     */
+    public function leadStatus(): string
+    {
+        return (string) $this->setting('storefront.lead_status', 'Jos Atelier Open');
+    }
+
+    /**
+     * Brand story / About paragraph.
+     */
+    public function aboutText(): string
+    {
+        return (string) $this->setting('storefront.about_text', 'High-fashion atelier and boutique brand based across Chrisbest Plaza in West of Mines, Jos, Plateau State. Specializing in silk dresses, artisan leather handbags, and handcrafted footwear.');
+    }
+
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
