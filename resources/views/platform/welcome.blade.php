@@ -1091,9 +1091,6 @@
                         <p class="text-xs sm:text-sm text-slate-500 max-w-sm leading-relaxed">
                             The modern retail POS and multi-store inventory operating system for African boutiques, fashion merchants, and walk-in retailers.
                         </p>
-                        <div class="text-xs text-slate-400">
-                            Powered by Paystack &bull; Wireless 58mm Thermal Ready
-                        </div>
                     </div>
 
                     <!-- Col 2: Product -->
