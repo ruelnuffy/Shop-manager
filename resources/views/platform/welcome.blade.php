@@ -63,7 +63,6 @@
                 <!-- Desktop Navigation Links (iOS segmented style) -->
                 <nav class="hidden lg:flex items-center gap-1 p-1 bg-slate-100/70 rounded-full border border-slate-200/50 text-sm font-semibold text-slate-600">
                     <a href="#features" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">Features</a>
-                    <a href="#pos" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">Walk-in POS</a>
                     <a href="#pricing" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">Pricing</a>
                     <a href="#testimonials" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">Reviews</a>
                     <a href="#faq" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">FAQ</a>
@@ -147,22 +146,7 @@
                         <span class="text-slate-300 group-hover:text-slate-500 font-bold">&rsaquo;</span>
                     </a>
 
-                    <a
-                        onclick="toggleShopMobileMenu(event, false)"
-                        href="#pos"
-                        class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
-                    >
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-105 transition-transform">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-sm font-bold text-slate-900">Walk-in POS Till</div>
-                                <div class="text-xs text-slate-500">Fast checkout &amp; thermal slips</div>
-                            </div>
-                        </div>
-                        <span class="text-slate-300 group-hover:text-slate-500 font-bold">&rsaquo;</span>
-                    </a>
+
 
                     <a
                         onclick="toggleShopMobileMenu(event, false)"
