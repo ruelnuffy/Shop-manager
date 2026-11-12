@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Services\CurrentTenant;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -14,6 +15,8 @@ class StoreDirectoryTest extends TestCase
     {
         parent::setUp();
         $this->seed(DatabaseSeeder::class);
+        // Explicitly enable HTTP request context so BelongsToTenant scope is enforced
+        app(CurrentTenant::class)->setHttpRequestContext(true);
     }
 
     public function test_public_can_view_stores_directory_page(): void

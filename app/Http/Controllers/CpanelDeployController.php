@@ -137,6 +137,16 @@ class CpanelDeployController extends Controller
                     $output = Artisan::output();
                     break;
 
+                case 'read_log':
+                    $logFile = storage_path('logs/laravel.log');
+                    if (file_exists($logFile)) {
+                        $lines = file($logFile);
+                        $output = implode('', array_slice($lines, -100));
+                    } else {
+                        $output = 'No laravel.log file found.';
+                    }
+                    break;
+
                 case 'all':
                     Artisan::call('migrate', ['--force' => true]);
                     $output .= "=== 1. MIGRATIONS ===\n".Artisan::output()."\n";

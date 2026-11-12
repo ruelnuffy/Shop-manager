@@ -17,7 +17,10 @@ class StoreDirectoryController extends Controller
 
         $storesQuery = Tenant::query()
             ->where('status', 'active')
-            ->withCount(['products', 'categories']);
+            ->withCount([
+                'products' => fn ($query) => $query->withoutGlobalScope('tenant'),
+                'categories' => fn ($query) => $query->withoutGlobalScope('tenant'),
+            ]);
 
         if ($search !== '') {
             $storesQuery->where(function ($q) use ($search) {
