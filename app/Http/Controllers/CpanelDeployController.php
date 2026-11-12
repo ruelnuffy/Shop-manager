@@ -78,12 +78,30 @@ class CpanelDeployController extends Controller
                     break;
 
                 case 'list_users':
-                    $users = DB::table('users')->select('id', 'name', 'email', 'role', 'created_at')->get();
+                    $users = DB::table('users')->select('id', 'name', 'email', 'role', 'tenant_id', 'created_at')->get();
                     $output = json_encode($users, JSON_PRETTY_PRINT);
+                    break;
+
+                case 'testadmin_info':
+                    $user = DB::table('users')->where('email', 'testadmin@shopmanager.test')->first();
+                    $tenants = DB::table('tenants')->get();
+                    $userTenantProducts = $user && $user->tenant_id ? DB::table('products')->where('tenant_id', $user->tenant_id)->get(['id', 'name', 'base_price', 'tenant_id']) : [];
+                    $allProducts = DB::table('products')->count();
+                    $output = json_encode([
+                        'user' => $user,
+                        'tenants' => $tenants,
+                        'user_tenant_products' => $userTenantProducts,
+                        'all_products_count' => $allProducts,
+                    ], JSON_PRETTY_PRINT);
                     break;
 
                 case 'seed':
                     Artisan::call('db:seed', ['--force' => true]);
+                    $output = Artisan::output();
+                    break;
+
+                case 'seed_testadmin_products':
+                    Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\TestStoreDataSeeder', '--force' => true]);
                     $output = Artisan::output();
                     break;
 
