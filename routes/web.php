@@ -163,6 +163,9 @@ Route::prefix('admin')
             Route::post('/payroll/disburse', [Admin\PayrollController::class, 'disburse'])->name('payroll.disburse');
             Route::post('/payroll/retry/{salaryPayment}', [Admin\PayrollController::class, 'retry'])->name('payroll.retry');
             Route::post('/payroll/verify/{salaryPayment}', [Admin\PayrollController::class, 'verifyStatus'])->name('payroll.verify');
+
+            // Stores as Users & Subscriptions Directory
+            Route::get('/stores', [Admin\StoreController::class, 'index'])->name('stores.index');
         });
     });
 

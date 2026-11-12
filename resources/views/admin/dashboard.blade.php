@@ -259,9 +259,187 @@
                         </a>
                     </div>
                 </div>
+
+                <!-- Sticky Note 8: Pastel Indigo - Stores & User Subscriptions (Admin Only) -->
+                <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#e0e7ff] shadow-lg shadow-indigo-900/5 hover:shadow-2xl hover:shadow-indigo-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
+                    <!-- Frosted tape at top center (borderless) -->
+                    <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[0.6deg] pointer-events-none"></div>
+                    <!-- Folded dog-ear corner -->
+                    <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-indigo-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-800/70">Platform Directory</span>
+                        <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Stores &amp; Users</h3>
+                        <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
+                            <div class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                                <span><strong>{{ $subscribedStoresCount }}</strong> Subscribed Users</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                <span><strong>{{ $freeStoresCount }}</strong> Free / Trial Users</span>
+                            </div>
+                            <div class="text-slate-600 pl-3.5 text-[11px]">{{ $totalStoresCount }} total stores registered as users</div>
+                        </div>
+                    </div>
+
+                    <div class="pt-5 flex items-center justify-between">
+                        <a href="{{ route('admin.stores.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-indigo-950 group-hover:text-black group-hover:underline">
+                            <span>Manage stores</span>
+                            <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                        </a>
+                        <a href="#stores-section" class="text-[11px] font-bold text-indigo-800 hover:text-indigo-950">
+                            Quick list &darr;
+                        </a>
+                    </div>
+                </div>
             @endif
 
         </div>
+
+        <!-- Stores as Users Section (Admin Only) -->
+        @if(Auth::user()->isAdmin())
+            <div id="stores-section" x-data="{ activeTier: 'all' }" class="bg-white rounded-2xl p-5 sm:p-7 shadow-xl shadow-slate-900/5 space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-bold text-base text-slate-900">Stores Listed as Users</h3>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-50 text-emerald-700 uppercase">
+                                {{ $subscribedStoresCount }} Subscribed
+                            </span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-50 text-amber-700 uppercase">
+                                {{ $freeStoresCount }} Free
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-0.5">All platform tenant stores, merchant owner users, and subscription tiers</p>
+                    </div>
+
+                    <!-- Quick Segment Tabs -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto">
+                        <button
+                            type="button"
+                            @click="activeTier = 'all'"
+                            :class="activeTier === 'all' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
+                            class="px-3 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap cursor-pointer"
+                        >
+                            All ({{ $totalStoresCount }})
+                        </button>
+                        <button
+                            type="button"
+                            @click="activeTier = 'subscribed'"
+                            :class="activeTier === 'subscribed' ? 'bg-emerald-600 text-white' : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'"
+                            class="px-3 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1"
+                        >
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            <span>Subscribed ({{ $subscribedStoresCount }})</span>
+                        </button>
+                        <button
+                            type="button"
+                            @click="activeTier = 'free'"
+                            :class="activeTier === 'free' ? 'bg-amber-600 text-white' : 'bg-amber-50 text-amber-700 hover:bg-amber-100'"
+                            class="px-3 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1"
+                        >
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                            <span>Free Users ({{ $freeStoresCount }})</span>
+                        </button>
+
+                        <a href="{{ route('admin.stores.index') }}" class="px-3 py-1.5 rounded-full text-xs font-bold text-indigo-600 hover:text-indigo-800 transition whitespace-nowrap">
+                            Full View &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-400 uppercase font-extrabold text-[10px] tracking-wider">
+                            <tr>
+                                <th class="px-4 py-3">Store &amp; Merchant User</th>
+                                <th class="px-3 py-3">Slug / Domain</th>
+                                <th class="px-3 py-3">Plan &amp; Tier</th>
+                                <th class="px-3 py-3">Catalog</th>
+                                <th class="px-3 py-3">Status</th>
+                                <th class="px-4 py-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            @forelse ($allStores as $store)
+                                @php
+                                    $owner = $store->users->firstWhere('role', 'admin') ?? $store->users->first();
+                                    $isSubscribed = in_array($store->plan, ['starter', 'pro', 'enterprise'], true);
+                                    $tierType = $isSubscribed ? 'subscribed' : 'free';
+                                @endphp
+                                <tr
+                                    x-show="activeTier === 'all' || activeTier === '{{ $tierType }}'"
+                                    class="hover:bg-slate-50/70 transition"
+                                >
+                                    <td class="px-4 py-3.5">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                                                {{ strtoupper(substr($store->name, 0, 2)) }}
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-slate-900">{{ $store->name }}</div>
+                                                @if ($owner)
+                                                    <div class="text-[11px] text-slate-500">
+                                                        <span class="font-semibold text-slate-700">{{ $owner->name }}</span>
+                                                        <span class="text-slate-400 font-mono text-[10px]">&bull; {{ $owner->email }}</span>
+                                                    </div>
+                                                @else
+                                                    <div class="text-[11px] text-slate-400 italic">No admin user attached</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="px-3 py-3.5 font-mono text-slate-600 text-[11px]">
+                                        {{ $store->slug }}
+                                    </td>
+
+                                    <td class="px-3 py-3.5">
+                                        @if ($isSubscribed)
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-50 text-emerald-700">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                                Subscribed &bull; {{ $store->plan }}
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-50 text-amber-700">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                                Free Tier &bull; {{ $store->plan ?? 'standard' }}
+                                            </span>
+                                        @endif
+                                    </td>
+
+                                    <td class="px-3 py-3.5 text-slate-600 font-medium">
+                                        {{ $store->products_count }} products &bull; {{ $store->staff_count }} staff
+                                    </td>
+
+                                    <td class="px-3 py-3.5">
+                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $store->status === 'active' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700' }}">
+                                            {{ $store->status }}
+                                        </span>
+                                    </td>
+
+                                    <td class="px-4 py-3.5 text-right">
+                                        <a
+                                            href="{{ url('/admin?tenant=' . $store->slug) }}"
+                                            class="px-2.5 py-1 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold transition shadow-xs inline-flex items-center gap-1"
+                                        >
+                                            <span>Switch &nearr;</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="px-4 py-8 text-center text-slate-400">
+                                        No stores found.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        @endif
 
         <!-- Gentle Low Stock Notice (If Any Items Need Restock - Borderless with Soft Shadow) -->
         @if ($lowStockVariants->count() > 0)

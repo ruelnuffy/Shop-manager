@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\ProductVariant;
 use App\Models\SalesRecord;
 use App\Models\StockMovement;
+use App\Models\Tenant;
 use App\Services\CurrentTenant;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
@@ -64,10 +65,30 @@ class DashboardController extends Controller
         // Recent Stock Movements
         $recentStockMovements = StockMovement::with(['variant.product', 'creator'])->latest()->take(5)->get();
 
+        // Platform Stores as Users & Subscriptions breakdown (for Store Administrators)
+        $totalStoresCount = Tenant::count();
+        $subscribedStoresCount = Tenant::whereIn('plan', ['starter', 'pro', 'enterprise'])->count();
+        $freeStoresCount = Tenant::where(function ($q) {
+            $q->whereNotIn('plan', ['starter', 'pro', 'enterprise'])->orWhereNull('plan');
+        })->count();
+
+        $allStores = Tenant::with([
+            'users' => fn ($q) => $q->withoutTenancy()->where('role', 'admin')->latest(),
+        ])->withCount([
+            'products' => fn ($q) => $q->withoutTenancy(),
+            'orders' => fn ($q) => $q->withoutTenancy(),
+            'staff' => fn ($q) => $q->withoutTenancy(),
+            'shopLocations' => fn ($q) => $q->withoutTenancy(),
+        ])->latest()->get();
+
         return view('admin.dashboard', array_merge($stats, compact(
             'lowStockVariants',
             'recentOrders',
-            'recentStockMovements'
+            'recentStockMovements',
+            'totalStoresCount',
+            'subscribedStoresCount',
+            'freeStoresCount',
+            'allStores'
         )));
     }
 }
