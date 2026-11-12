@@ -274,4 +274,68 @@ class PhaseThreeAdminTest extends TestCase
         $this->assertMatchesRegularExpression('/^text\/csv;\s*charset=utf-8$/i', $csvExport->headers->get('Content-Type'));
         $this->assertStringContainsString('attachment; filename="jessi_sales_report_', $csvExport->headers->get('Content-Disposition'));
     }
+
+    public function test_staff_cannot_create_edit_update_or_delete_products(): void
+    {
+        $product = Product::firstOrFail();
+
+        // 1. Staff can view the products catalog in read-only mode
+        $indexResponse = $this->actingAs($this->staff)->get('/admin/products');
+        $indexResponse->assertStatus(200);
+        $indexResponse->assertDontSee('+ Add New Product');
+        $indexResponse->assertSee('Read Only');
+
+        // 2. Staff cannot access the create product page
+        $createResponse = $this->actingAs($this->staff)->get('/admin/products/create');
+        $createResponse->assertStatus(403);
+
+        // 3. Staff cannot store a new product
+        $storeResponse = $this->actingAs($this->staff)->post('/admin/products', [
+            'name' => 'Illegal Staff Product',
+            'category_id' => $product->category_id,
+            'base_price' => 5000,
+        ]);
+        $storeResponse->assertStatus(403);
+
+        // 4. Staff cannot access the edit product page
+        $editResponse = $this->actingAs($this->staff)->get("/admin/products/{$product->id}/edit");
+        $editResponse->assertStatus(403);
+
+        // 5. Staff cannot update a product
+        $updateResponse = $this->actingAs($this->staff)->put("/admin/products/{$product->id}", [
+            'name' => 'Hacked Name',
+            'category_id' => $product->category_id,
+            'base_price' => 1000,
+            'status' => 'active',
+        ]);
+        $updateResponse->assertStatus(403);
+
+        // 6. Staff cannot delete a product
+        $deleteResponse = $this->actingAs($this->staff)->delete("/admin/products/{$product->id}");
+        $deleteResponse->assertStatus(403);
+    }
+
+    public function test_staff_cannot_adjust_stock(): void
+    {
+        $variant = ProductVariant::firstOrFail();
+        $originalStock = $variant->stock_quantity;
+
+        // 1. Staff can view stock audit log in read-only mode
+        $stockIndexResponse = $this->actingAs($this->staff)->get('/admin/stock');
+        $stockIndexResponse->assertStatus(200);
+        $stockIndexResponse->assertSee('Read Only');
+        $stockIndexResponse->assertDontSee('Record Stock Adjustment');
+
+        // 2. Staff cannot submit stock adjustments
+        $adjustResponse = $this->actingAs($this->staff)->post('/admin/stock/adjust', [
+            'variant_id' => $variant->id,
+            'type' => 'in',
+            'quantity' => 10,
+            'reason' => 'restock',
+        ]);
+        $adjustResponse->assertStatus(403);
+
+        // Verify stock quantity did not change
+        $this->assertEquals($originalStock, $variant->fresh()->stock_quantity);
+    }
 }

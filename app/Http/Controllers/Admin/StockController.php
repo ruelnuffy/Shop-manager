@@ -34,6 +34,10 @@ class StockController extends Controller
 
     public function adjust(Request $request): RedirectResponse
     {
+        if (! Auth::user()?->isAdmin()) {
+            abort(403, 'Unauthorized. Stock adjustments are restricted to store administrators.');
+        }
+
         $request->validate([
             'variant_id' => 'required|exists:product_variants,id',
             'type' => 'required|in:in,out,adjustment',

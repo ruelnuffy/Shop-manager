@@ -10,57 +10,72 @@
     </x-slot>
 
     <div class="space-y-8">
-        <!-- Quick Stock Adjustment Card -->
-        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-black/[0.06] shadow-sm space-y-6">
-            <h2 class="font-display font-bold text-lg uppercase tracking-tight text-brand-charcoal pb-4 border-b border-black/[0.06]">
-                Record Stock Adjustment
-            </h2>
+        @if(Auth::user()->isAdmin())
+            <!-- Quick Stock Adjustment Card (Admin Only) -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-black/[0.06] shadow-sm space-y-6">
+                <h2 class="font-display font-bold text-lg uppercase tracking-tight text-brand-charcoal pb-4 border-b border-black/[0.06]">
+                    Record Stock Adjustment
+                </h2>
 
-            <form method="POST" action="{{ route('admin.stock.adjust') }}" class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
-                @csrf
-                <div class="sm:col-span-4">
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/70 mb-1">Product Variant *</label>
-                    <select name="variant_id" required class="w-full px-3 py-2 bg-[#f4f4f4] border-transparent focus:bg-white focus:border-black/20 rounded-xl text-xs">
-                        <option value="">Select Variant (Current Stock)</option>
-                        @foreach ($allVariants as $v)
-                            <option value="{{ $v->id }}">
-                                {{ $v->product->name }} &bull; {{ $v->size }}/{{ $v->color }} (Stock: {{ $v->stock_quantity }})
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+                <form method="POST" action="{{ route('admin.stock.adjust') }}" class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
+                    @csrf
+                    <div class="sm:col-span-4">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/70 mb-1">Product Variant *</label>
+                        <select name="variant_id" required class="w-full px-3 py-2 bg-[#f4f4f4] border-transparent focus:bg-white focus:border-black/20 rounded-xl text-xs">
+                            <option value="">Select Variant (Current Stock)</option>
+                            @foreach ($allVariants as $v)
+                                <option value="{{ $v->id }}">
+                                    {{ $v->product->name }} &bull; {{ $v->size }}/{{ $v->color }} (Stock: {{ $v->stock_quantity }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <div class="sm:col-span-2">
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/70 mb-1">Action *</label>
-                    <select name="type" required class="w-full px-3 py-2 bg-[#f4f4f4] border-transparent focus:bg-white focus:border-black/20 rounded-xl text-xs">
-                        <option value="in">Add (+ Restock)</option>
-                        <option value="out">Remove (- Damage/Loss)</option>
-                        <option value="adjustment">Set Exact Stock</option>
-                    </select>
-                </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/70 mb-1">Action *</label>
+                        <select name="type" required class="w-full px-3 py-2 bg-[#f4f4f4] border-transparent focus:bg-white focus:border-black/20 rounded-xl text-xs">
+                            <option value="in">Add (+ Restock)</option>
+                            <option value="out">Remove (- Damage/Loss)</option>
+                            <option value="adjustment">Set Exact Stock</option>
+                        </select>
+                    </div>
 
-                <div class="sm:col-span-2">
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/70 mb-1">Quantity *</label>
-                    <input type="number" min="1" name="quantity" required placeholder="Qty" class="w-full px-3 py-2 bg-[#f4f4f4] border-transparent focus:bg-white focus:border-black/20 rounded-xl text-xs">
-                </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/70 mb-1">Quantity *</label>
+                        <input type="number" min="1" name="quantity" required placeholder="Qty" class="w-full px-3 py-2 bg-[#f4f4f4] border-transparent focus:bg-white focus:border-black/20 rounded-xl text-xs">
+                    </div>
 
-                <div class="sm:col-span-2">
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/70 mb-1">Reason *</label>
-                    <select name="reason" required class="w-full px-3 py-2 bg-[#f4f4f4] border-transparent focus:bg-white focus:border-black/20 rounded-xl text-xs">
-                        <option value="restock">New Stock Delivery</option>
-                        <option value="manual_audit">Inventory Audit Correction</option>
-                        <option value="damage">Damaged Item</option>
-                        <option value="return">Customer Return</option>
-                    </select>
-                </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/70 mb-1">Reason *</label>
+                        <select name="reason" required class="w-full px-3 py-2 bg-[#f4f4f4] border-transparent focus:bg-white focus:border-black/20 rounded-xl text-xs">
+                            <option value="restock">New Stock Delivery</option>
+                            <option value="manual_audit">Inventory Audit Correction</option>
+                            <option value="damage">Damaged Item</option>
+                            <option value="return">Customer Return</option>
+                        </select>
+                    </div>
 
-                <div class="sm:col-span-2">
-                    <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider transition">
-                        Apply Adjust
-                    </button>
+                    <div class="sm:col-span-2">
+                        <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider transition">
+                            Apply Adjust
+                        </button>
+                    </div>
+                </form>
+            </div>
+        @else
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs flex items-center justify-between gap-3 text-xs text-slate-600">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </span>
+                    <div>
+                        <div class="font-bold text-slate-900">Inventory Logs &amp; Movements (View Only)</div>
+                        <div class="text-[11px] text-slate-400">Stock quantity adjustments and audit corrections are restricted to store administrators.</div>
+                    </div>
                 </div>
-            </form>
-        </div>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 uppercase tracking-wider shrink-0">Read Only</span>
+            </div>
+        @endif
 
         <!-- Audit Movements Log Table -->
         <div class="bg-white rounded-3xl border border-black/[0.06] shadow-sm overflow-hidden">

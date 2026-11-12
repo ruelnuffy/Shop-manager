@@ -43,6 +43,10 @@ class ProductController extends Controller
 
     public function create(): View
     {
+        if (! Auth::user()?->isAdmin()) {
+            abort(403, 'Unauthorized. Adding products is restricted to store administrators.');
+        }
+
         $tenantId = app(CurrentTenant::class)->id();
         if ($tenantId && Category::where('tenant_id', $tenantId)->count() === 0) {
             $defaultCategories = ['General', 'Clothing', 'Shoes', 'Accessories', 'Bags'];
@@ -64,6 +68,10 @@ class ProductController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        if (! Auth::user()?->isAdmin()) {
+            abort(403, 'Unauthorized. Adding products is restricted to store administrators.');
+        }
+
         $tenantId = app(CurrentTenant::class)->id();
 
         if ($request->filled('new_category_name') || (! is_numeric($request->input('category_id')) && $request->filled('category_id'))) {
@@ -191,6 +199,10 @@ class ProductController extends Controller
 
     public function edit(Product $product): View
     {
+        if (! Auth::user()?->isAdmin()) {
+            abort(403, 'Unauthorized. Editing products is restricted to store administrators.');
+        }
+
         $categories = Category::all();
         $product->load('variants');
 
@@ -199,6 +211,10 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product): RedirectResponse
     {
+        if (! Auth::user()?->isAdmin()) {
+            abort(403, 'Unauthorized. Editing products is restricted to store administrators.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
@@ -263,6 +279,10 @@ class ProductController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
+        if (! Auth::user()?->isAdmin()) {
+            abort(403, 'Unauthorized. Deleting products is restricted to store administrators.');
+        }
+
         $product->delete();
 
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');

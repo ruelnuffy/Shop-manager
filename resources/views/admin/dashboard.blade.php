@@ -128,12 +128,14 @@
 
                 <div class="pt-5 flex items-center justify-between">
                     <a href="{{ route('admin.products.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-rose-950 group-hover:text-black group-hover:underline">
-                        <span>Manage catalog</span>
+                        <span>{{ Auth::user()->isAdmin() ? 'Manage catalog' : 'View catalog' }}</span>
                         <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
                     </a>
-                    <a href="{{ route('admin.products.create') }}" class="text-[11px] font-bold text-rose-800 hover:text-rose-950">
-                        + Add Item
-                    </a>
+                    @if(Auth::user()->isAdmin())
+                        <a href="{{ route('admin.products.create') }}" class="text-[11px] font-bold text-rose-800 hover:text-rose-950">
+                            + Add Item
+                        </a>
+                    @endif
                 </div>
             </div>
 

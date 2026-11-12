@@ -117,10 +117,12 @@ Route::prefix('admin')
     ->middleware(['auth', EnsureUserIsAdminOrStaff::class])
     ->group(function () {
         Route::get('/', [Admin\DashboardController::class, 'index'])->name('dashboard');
-        Route::resource('products', Admin\ProductController::class);
 
+        // Products: Index/Catalog viewable by Admin & Staff
+        Route::get('/products', [Admin\ProductController::class, 'index'])->name('products.index');
+
+        // Stock: Audit log viewable by Admin & Staff
         Route::get('/stock', [Admin\StockController::class, 'index'])->name('stock.index');
-        Route::post('/stock/adjust', [Admin\StockController::class, 'adjust'])->name('stock.adjust');
 
         Route::get('/orders', [Admin\OrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{order}', [Admin\OrderController::class, 'show'])->name('orders.show');
@@ -141,8 +143,20 @@ Route::prefix('admin')
         Route::get('/ocr-imports/{batch}/review', [Admin\OcrImportController::class, 'review'])->name('ocr.review');
         Route::post('/ocr-imports/{batch}/commit', [Admin\OcrImportController::class, 'commit'])->name('ocr.commit');
 
-        // Staff & Payroll Management (Admin Only)
+        // Protected Store Management: Products mutation, Stock adjustments, Staff & Payroll (Admin Only)
         Route::middleware(EnsureUserIsAdmin::class)->group(function () {
+            // Product Modification
+            Route::get('/products/create', [Admin\ProductController::class, 'create'])->name('products.create');
+            Route::post('/products', [Admin\ProductController::class, 'store'])->name('products.store');
+            Route::get('/products/{product}/edit', [Admin\ProductController::class, 'edit'])->name('products.edit');
+            Route::put('/products/{product}', [Admin\ProductController::class, 'update'])->name('products.update');
+            Route::patch('/products/{product}', [Admin\ProductController::class, 'update']);
+            Route::delete('/products/{product}', [Admin\ProductController::class, 'destroy'])->name('products.destroy');
+
+            // Stock Adjustments
+            Route::post('/stock/adjust', [Admin\StockController::class, 'adjust'])->name('stock.adjust');
+
+            // Staff & Payroll Management
             Route::resource('staff', Admin\StaffController::class);
             Route::post('/impersonate-staff', [ImpersonationController::class, 'adminEnterStaff'])->name('impersonate-staff');
             Route::get('/payroll', [Admin\PayrollController::class, 'index'])->name('payroll.index');

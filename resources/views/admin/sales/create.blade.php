@@ -338,9 +338,11 @@
                         <p class="text-xs text-slate-500 max-w-sm mx-auto">
                             Add products with active inventory to begin ringing up sales at the counter.
                         </p>
-                        <a href="{{ route('admin.products.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 text-white text-xs font-bold shadow-md">
-                            + Add New Product
-                        </a>
+                        @if(Auth::user()->isAdmin())
+                            <a href="{{ route('admin.products.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 text-white text-xs font-bold shadow-md">
+                                + Add New Product
+                            </a>
+                        @endif
                     </div>
                 @endif
             </div>

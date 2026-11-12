@@ -6,9 +6,11 @@
                     Curated Catalog &amp; Collections ({{ $products->total() }})
                 </h1>
             </div>
-            <a href="{{ route('admin.products.create') }}" class="px-5 py-2.5 rounded-full bg-slate-900 text-white hover:bg-indigo-600 text-xs font-bold uppercase tracking-wider transition shadow-sm">
-                + Add New Product
-            </a>
+            @if(Auth::user()->isAdmin())
+                <a href="{{ route('admin.products.create') }}" class="px-5 py-2.5 rounded-full bg-slate-900 text-white hover:bg-indigo-600 text-xs font-bold uppercase tracking-wider transition shadow-sm">
+                    + Add New Product
+                </a>
+            @endif
         </div>
     </x-slot>
 
@@ -70,9 +72,13 @@
                                     <div class="flex items-center gap-3">
                                         <img src="{{ asset($prod->featured_image) }}" class="w-10 h-12 object-cover rounded-lg bg-[#f3f3f3]">
                                         <div>
-                                            <a href="{{ route('admin.products.edit', $prod->id) }}" class="font-bold text-brand-charcoal hover:underline">
-                                                {{ $prod->name }}
-                                            </a>
+                                            @if(Auth::user()->isAdmin())
+                                                <a href="{{ route('admin.products.edit', $prod->id) }}" class="font-bold text-brand-charcoal hover:underline">
+                                                    {{ $prod->name }}
+                                                </a>
+                                            @else
+                                                <span class="font-bold text-brand-charcoal">{{ $prod->name }}</span>
+                                            @endif
                                             <div class="text-[11px] text-brand-charcoal/50">{{ $prod->variants->count() }} variants</div>
                                         </div>
                                     </div>
@@ -91,16 +97,20 @@
                                     </span>
                                 </td>
                                 <td class="p-4 pr-6 text-right space-x-2">
-                                    <a href="{{ route('admin.products.edit', $prod->id) }}" class="text-xs font-bold text-brand-charcoal hover:underline">
-                                        Edit
-                                    </a>
-                                    <form method="POST" action="{{ route('admin.products.destroy', $prod->id) }}" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this product?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-xs font-bold text-red-600 hover:underline">
-                                            Delete
-                                        </button>
-                                    </form>
+                                    @if(Auth::user()->isAdmin())
+                                        <a href="{{ route('admin.products.edit', $prod->id) }}" class="text-xs font-bold text-brand-charcoal hover:underline">
+                                            Edit
+                                        </a>
+                                        <form method="POST" action="{{ route('admin.products.destroy', $prod->id) }}" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-xs font-bold text-red-600 hover:underline">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span class="text-[11px] text-slate-400 font-medium">Read Only</span>
+                                    @endif
                                 </td>
                             </tr>
                         @empty
