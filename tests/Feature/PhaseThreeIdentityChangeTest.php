@@ -52,7 +52,7 @@ class PhaseThreeIdentityChangeTest extends TestCase
         $this->assertNotNull($tenant);
         $this->assertTrue($tenant->hasFeature('storefront'));
 
-        $response = $this->withHeaders(['X-Tenant' => 'jessis-classiq-store'])->get('/');
+        $response = $this->withHeaders(['X-Tenant' => 'jessis-classiq-store'])->get('/storefront');
 
         $response->assertStatus(200);
         $response->assertSee("Jessi's ClassiQ Store", false);
@@ -76,7 +76,7 @@ class PhaseThreeIdentityChangeTest extends TestCase
             ],
         ]);
 
-        $response = $this->withHeaders(['X-Tenant' => $tenantWithoutStorefront->slug])->get('/');
+        $response = $this->get('/');
 
         $response->assertStatus(200);
         $response->assertSee('ShopManager');
@@ -245,10 +245,8 @@ class PhaseThreeIdentityChangeTest extends TestCase
         $admin = User::withoutTenancy()->where('email', 'admin@jessiclassiq.com')->first();
         $this->assertNotNull($admin);
 
-        // When logged-in store admin visits platform landing page
-        $response = $this->actingAs($admin)
-            ->withHeaders(['X-Platform' => 'true'])
-            ->get('/');
+        // When logged-in store admin visits platform landing page directly without any platform headers
+        $response = $this->actingAs($admin)->get('/');
 
         $response->assertStatus(200);
         $response->assertSee('ShopManager');

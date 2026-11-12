@@ -22,7 +22,7 @@ class PhaseOneFoundationTest extends TestCase
 
     public function test_welcome_page_renders_with_brand_identity(): void
     {
-        $response = $this->get('/');
+        $response = $this->get('/storefront');
 
         $response->assertStatus(200);
         $response->assertSee('Jessi&#039;s ClassiQ Store', false);

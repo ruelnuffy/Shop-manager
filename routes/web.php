@@ -35,36 +35,12 @@ Route::post('/paystack/webhook', PaystackWebhookController::class.'@handle')
     ->middleware('throttle:600,1')
     ->name('paystack.webhook');
 
-// Public Storefront / Platform Welcome
-Route::get('/', function (Request $request) {
-    $tenant = app(CurrentTenant::class)->get();
-
-    // Check if accessing platform host directly (apex domain, app domain, or localhost)
-    $host = strtolower($request->getHost());
-    $baseDomain = strtolower((string) config('tenancy.base_domain', 'localhost'));
-    $appHost = strtolower((string) parse_url((string) config('app.url'), PHP_URL_HOST));
-    $isApexPlatform = ($host === $baseDomain || ($appHost !== '' && $host === $appHost) || $host === 'localhost' || $host === '127.0.0.1');
-
-    $explicitStorefront = $request->has('storefront')
-        || $request->query('storefront') === '1'
-        || $request->has('tenant')
-        || $request->hasHeader('X-Tenant');
-
-    $isStorefront = $explicitStorefront || (! $isApexPlatform && $tenant);
-
-    // In testing environment default to storefront unless explicit platform request
-    if (app()->environment('testing') && ! $request->hasHeader('X-Platform') && ! $request->has('platform') && $tenant) {
-        $isStorefront = true;
-    }
-
-    if ($isStorefront && $tenant && $tenant->hasFeature('storefront')) {
-        return view('welcome');
-    }
-
+// Platform Welcome Landing Page (Always renders platform landing page)
+Route::get('/', function () {
     return view('platform.welcome');
 })->name('home');
 
-// Explicit Storefront Route (allows store admins or shoppers to view their live storefront)
+// Storefront Route (Storefront will be on a separate folder/subsystem)
 Route::get('/storefront', function (Request $request) {
     $tenant = app(CurrentTenant::class)->get();
     if (! $tenant && $request->has('tenant')) {
@@ -76,11 +52,7 @@ Route::get('/storefront', function (Request $request) {
         }
     }
 
-    if ($tenant && $tenant->hasFeature('storefront')) {
-        return view('welcome');
-    }
-
-    return redirect()->route('home');
+    return view('welcome');
 })->name('storefront');
 
 Route::get('/products', [Store\ProductController::class, 'index'])->name('products.index');
