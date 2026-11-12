@@ -339,7 +339,7 @@ class PhaseThreeAdminTest extends TestCase
         $this->assertEquals($originalStock, $variant->fresh()->stock_quantity);
     }
 
-    public function test_admin_can_view_stores_and_subscription_tiers_on_dashboard_and_directory(): void
+    public function test_admin_can_view_stores_and_subscription_tiers_on_dashboard(): void
     {
         // 1. Admin sees store admins and subscription breakdown on /admin dashboard
         $response = $this->actingAs($this->admin)->get('/admin');
@@ -348,15 +348,8 @@ class PhaseThreeAdminTest extends TestCase
         $response->assertSee('Subscribed Users');
         $response->assertSee('Free');
 
-        // 2. Admin can visit dedicated /admin/stores directory
+        // 2. Dedicated /admin/stores page is removed (404)
         $directoryResponse = $this->actingAs($this->admin)->get('/admin/stores');
-        $directoryResponse->assertStatus(200);
-        $directoryResponse->assertSee('Store Admin Accounts');
-        $directoryResponse->assertSee('Subscribed Users');
-        $directoryResponse->assertSee('Free &amp; Trial Users', false);
-
-        // 3. Staff cannot access stores directory
-        $staffResponse = $this->actingAs($this->staff)->get('/admin/stores');
-        $staffResponse->assertStatus(403);
+        $directoryResponse->assertStatus(404);
     }
 }

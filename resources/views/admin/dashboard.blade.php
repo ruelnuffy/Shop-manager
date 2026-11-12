@@ -284,12 +284,9 @@
                     </div>
 
                     <div class="pt-5 flex items-center justify-between">
-                        <a href="{{ route('admin.stores.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-indigo-950 group-hover:text-black group-hover:underline">
-                            <span>Manage admins</span>
-                            <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
-                        </a>
-                        <a href="#stores-section" class="text-[11px] font-bold text-indigo-800 hover:text-indigo-950">
-                            View accounts &darr;
+                        <a href="#stores-section" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-indigo-950 group-hover:text-black group-hover:underline">
+                            <span>View accounts</span>
+                            <span class="transition-transform group-hover:translate-y-0.5">&darr;</span>
                         </a>
                     </div>
                 </div>
@@ -343,9 +340,7 @@
                             <span>Free Users ({{ $freeUsersCount }})</span>
                         </button>
 
-                        <a href="{{ route('admin.stores.index') }}" class="px-3 py-1.5 rounded-full text-xs font-bold text-indigo-600 hover:text-indigo-800 transition whitespace-nowrap">
-                            Full Directory &rarr;
-                        </a>
+
                     </div>
                 </div>
 
