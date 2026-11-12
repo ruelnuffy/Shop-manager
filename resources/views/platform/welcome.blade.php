@@ -66,7 +66,6 @@
                     <a href="#pricing" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">Pricing</a>
                     <a href="#testimonials" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">Reviews</a>
                     <a href="#faq" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">FAQ</a>
-                    <a href="#stores" class="px-3.5 py-1.5 rounded-full hover:text-slate-950 hover:bg-white transition">Stores</a>
                 </nav>
 
                 <!-- Auth & Dynamic Action Cluster -->
@@ -199,22 +198,7 @@
                         <span class="text-slate-300 group-hover:text-slate-500 font-bold">&rsaquo;</span>
                     </a>
 
-                    <a
-                        onclick="toggleShopMobileMenu(event, false)"
-                        href="#stores"
-                        class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-100/80 active:bg-slate-200/70 transition group"
-                    >
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center group-hover:scale-105 transition-transform">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-sm font-bold text-slate-900">Live Boutiques</div>
-                                <div class="text-xs text-slate-500">Explore active client shops</div>
-                            </div>
-                        </div>
-                        <span class="text-slate-300 group-hover:text-slate-500 font-bold">&rsaquo;</span>
-                    </a>
+
                 </div>
 
                 <!-- Mobile Action CTA Row -->
@@ -1020,114 +1004,7 @@
             </div>
         </section>
 
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        <!-- SECTION 8: "PRACTICAL TIPS TO GROW YOUR RETAIL SALES"       -->
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        <section class="py-16 sm:py-24 bg-white border-t border-slate-100">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                    <div class="space-y-3 sm:space-y-4">
-                        <span class="text-xs sm:text-sm font-bold text-blue-600 uppercase tracking-wider">Retail Insights &amp; Guides</span>
-                        <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-slate-950 tracking-tight">
-                            Practical tips to grow your online &amp; retail sales
-                        </h2>
-                        <p class="text-sm sm:text-base text-slate-600 max-w-xl">
-                            Field-tested playbooks, cashier management tips, and retail inventory strategies from fast-growing merchants.
-                        </p>
-                    </div>
-                    <a href="#pricing" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-700 transition">
-                        <span>Read all guides</span>
-                        <span>&rarr;</span>
-                    </a>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Guide 1 -->
-                    <article class="group rounded-3xl bg-slate-50/70 border border-slate-100 overflow-hidden hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 flex flex-col justify-between">
-                        <div class="p-6 sm:p-7 space-y-4">
-                            <div class="h-44 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 p-6 flex flex-col justify-between text-white relative overflow-hidden">
-                                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider">
-                                    <span class="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-xs">Retail Ops</span>
-                                    <span>5 min read</span>
-                                </div>
-                                <div class="font-display font-extrabold text-lg sm:text-xl leading-snug">
-                                    Balancing cash &amp; bank transfer drawers without missing money
-                                </div>
-                            </div>
-                            <div class="space-y-2">
-                                <span class="text-xs text-slate-400 font-medium">Updated 3 days ago</span>
-                                <h3 class="font-bold text-base sm:text-lg text-slate-900 group-hover:text-blue-600 transition leading-snug">
-                                    How Lagos boutiques use daily closeout Z-reports to audit cashiers
-                                </h3>
-                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                                    Step-by-step cashier shifts handoff: separating transfer notifications from cash at register closing.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="px-6 pb-6 pt-2 text-xs sm:text-sm font-bold text-blue-600 flex items-center gap-1">
-                            <span>Read article</span>
-                            <span>&rarr;</span>
-                        </div>
-                    </article>
-
-                    <!-- Guide 2 -->
-                    <article class="group rounded-3xl bg-slate-50/70 border border-slate-100 overflow-hidden hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 flex flex-col justify-between">
-                        <div class="p-6 sm:p-7 space-y-4">
-                            <div class="h-44 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 p-6 flex flex-col justify-between text-white relative overflow-hidden">
-                                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider">
-                                    <span class="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-xs">Customer Loyalty</span>
-                                    <span>4 min read</span>
-                                </div>
-                                <div class="font-display font-extrabold text-lg sm:text-xl leading-snug">
-                                    Converting 1-time walk-ins into repeat buyers via WhatsApp
-                                </div>
-                            </div>
-                            <div class="space-y-2">
-                                <span class="text-xs text-slate-400 font-medium">Updated this week</span>
-                                <h3 class="font-bold text-base sm:text-lg text-slate-900 group-hover:text-blue-600 transition leading-snug">
-                                    Why digital receipts on WhatsApp outperform paper slips for VIP re-engagement
-                                </h3>
-                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                                    Capture genuine phone numbers at POS checkout and follow up with tailored restock announcements.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="px-6 pb-6 pt-2 text-xs sm:text-sm font-bold text-blue-600 flex items-center gap-1">
-                            <span>Read article</span>
-                            <span>&rarr;</span>
-                        </div>
-                    </article>
-
-                    <!-- Guide 3 -->
-                    <article class="group rounded-3xl bg-slate-50/70 border border-slate-100 overflow-hidden hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 flex flex-col justify-between">
-                        <div class="p-6 sm:p-7 space-y-4">
-                            <div class="h-44 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 p-6 flex flex-col justify-between text-white relative overflow-hidden">
-                                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider">
-                                    <span class="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-xs">Hardware Setup</span>
-                                    <span>3 min read</span>
-                                </div>
-                                <div class="font-display font-extrabold text-lg sm:text-xl leading-snug">
-                                    Setting up wireless 58mm thermal printers in under 3 minutes
-                                </div>
-                            </div>
-                            <div class="space-y-2">
-                                <span class="text-xs text-slate-400 font-medium">Hardware Guide</span>
-                                <h3 class="font-bold text-base sm:text-lg text-slate-900 group-hover:text-blue-600 transition leading-snug">
-                                    The ultimate guide to Bluetooth thermal receipt printing on Android &amp; iOS
-                                </h3>
-                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                                    Tested on Goojprt PT-210, MPT-II, and Netum mini printers with no special ink or ribbons needed.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="px-6 pb-6 pt-2 text-xs sm:text-sm font-bold text-blue-600 flex items-center gap-1">
-                            <span>Read article</span>
-                            <span>&rarr;</span>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
 
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 9: COMMERCIAL PROMO OFFER (50% Off / Migration)     -->
@@ -1164,61 +1041,7 @@
             </div>
         </section>
 
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        <!-- SECTION 10: ACTIVE STORES DIRECTORY (Quick Launch)          -->
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        @php
-            $activeStores = \App\Models\Tenant::where('status', 'active')->latest()->get();
-        @endphp
-        <section id="stores" class="py-16 bg-slate-50 border-t border-slate-100">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
-                    <div>
-                        <h2 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">Connected Stores &amp; Boutiques</h2>
-                        <p class="text-xs sm:text-sm text-slate-500">Launch a live store console or customer-facing boutique storefront.</p>
-                    </div>
-                    <a href="{{ route('register') }}" class="text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-700 transition">
-                        + Onboard New Store
-                    </a>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    @forelse ($activeStores as $store)
-                        <div class="p-5 sm:p-6 rounded-3xl bg-white shadow-md shadow-slate-900/5 flex flex-col justify-between gap-4 border border-slate-100">
-                            <div class="flex items-start justify-between gap-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-extrabold text-sm shadow-sm">
-                                        {{ strtoupper(substr($store->name, 0, 2)) }}
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-slate-900 text-base leading-tight">{{ $store->name }}</h3>
-                                        <span class="text-xs text-slate-400 font-mono">{{ $store->slug }}</span>
-                                    </div>
-                                </div>
-                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700">
-                                    Live Store
-                                </span>
-                            </div>
-
-                            <div class="flex items-center gap-2 pt-2 border-t border-slate-100">
-                                @if ($store->hasFeature('storefront'))
-                                    <a href="{{ url('/?tenant=' . $store->slug) }}" class="flex-1 py-2.5 px-3 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold text-center transition">
-                                        Storefront &nearr;
-                                    </a>
-                                @endif
-                                <a href="{{ url('/admin?tenant=' . $store->slug) }}" class="flex-1 py-2.5 px-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-bold text-center transition shadow-xs">
-                                    Admin Console &rarr;
-                                </a>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="col-span-2 text-center py-8 text-xs sm:text-sm text-slate-400">
-                            No stores created yet. Click "+ Onboard New Store" to get started.
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-        </section>
 
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 11: FINAL DARK CTA BANNER                           -->
@@ -1291,7 +1114,6 @@
                             <li><a href="{{ route('login') }}" class="hover:text-blue-600 transition">Merchant Login</a></li>
                             <li><a href="{{ route('register') }}" class="hover:text-blue-600 transition">Create Store</a></li>
                             <li><a href="#faq" class="hover:text-blue-600 transition">Support &amp; FAQ</a></li>
-                            <li><a href="#stores" class="hover:text-blue-600 transition">Active Boutiques</a></li>
                         </ul>
                     </div>
 
