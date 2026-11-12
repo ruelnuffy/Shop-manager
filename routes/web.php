@@ -42,14 +42,28 @@ Route::get('/', function () {
 
 // Storefront Route (Storefront will be on a separate folder/subsystem)
 Route::get('/storefront', function (Request $request) {
-    $tenant = app(CurrentTenant::class)->get();
-    if (! $tenant && $request->has('tenant')) {
+    $tenant = null;
+
+    if ($request->has('tenant')) {
         $tenant = Tenant::where('slug', $request->query('tenant'))
             ->orWhere('subdomain', $request->query('tenant'))
             ->first();
-        if ($tenant) {
-            app(CurrentTenant::class)->set($tenant);
-        }
+    }
+
+    if (! $tenant && Auth::check() && Auth::user()->tenant_id) {
+        $tenant = Tenant::find(Auth::user()->tenant_id);
+    }
+
+    if (! $tenant && session()->has('tenant_id')) {
+        $tenant = Tenant::find(session('tenant_id'));
+    }
+
+    if (! $tenant) {
+        $tenant = app(CurrentTenant::class)->get() ?: Tenant::first();
+    }
+
+    if ($tenant) {
+        app(CurrentTenant::class)->set($tenant);
     }
 
     return view('welcome');
@@ -175,6 +189,9 @@ Route::prefix('admin')
             Route::post('/payroll/retry/{salaryPayment}', [Admin\PayrollController::class, 'retry'])->name('payroll.retry');
             Route::post('/payroll/verify/{salaryPayment}', [Admin\PayrollController::class, 'verifyStatus'])->name('payroll.verify');
 
+            // Storefront Template Customization (Hero & Featuring Images)
+            Route::get('/storefront-customization', [Admin\StorefrontController::class, 'edit'])->name('storefront.edit');
+            Route::put('/storefront-customization', [Admin\StorefrontController::class, 'update'])->name('storefront.update');
         });
     });
 

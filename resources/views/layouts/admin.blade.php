@@ -114,6 +114,12 @@
                 </a>
 
                 @if(Auth::user()->isAdmin())
+                    <a
+                        href="{{ route('admin.storefront.edit') }}"
+                        class="px-3.5 py-1.5 rounded-full transition {{ request()->routeIs('admin.storefront.*') ? 'bg-slate-900 text-white font-bold shadow-md shadow-slate-900/10' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
+                    >
+                        STOREFRONT
+                    </a>
 
 
                     <a
@@ -241,6 +247,7 @@
             <a href="{{ route('admin.stock.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Stock Inventory</a>
             <a href="{{ route('admin.ocr.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Scan Receipts</a>
             @if(Auth::user()->isAdmin())
+                <a href="{{ route('admin.storefront.edit') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 font-bold shadow-xs">Storefront &amp; Hero</a>
 
                 <a href="{{ route('admin.reports.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Sales Reports</a>
                 <a href="{{ route('admin.staff.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Staff &amp; Team</a>
@@ -288,7 +295,11 @@
             </div>
         @endif
 
-        {{ $slot }}
+        @isset($slot)
+            {{ $slot }}
+        @else
+            @yield('content')
+        @endisset
     </main>
 
 </body>

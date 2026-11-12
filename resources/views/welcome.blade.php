@@ -12,6 +12,12 @@
             $accentColor = $currentTenant ? $currentTenant->setting('branding.palette.accent', '#e8d8c8') : '#e8d8c8';
             $logoUrl = $currentTenant ? $currentTenant->setting('branding.logo_url') : null;
             $resolvedLogo = $logoUrl ? ((str_starts_with($logoUrl, 'http://') || str_starts_with($logoUrl, 'https://')) ? $logoUrl : asset($logoUrl)) : asset('images/logo.png');
+
+            $customHeroImage = $currentTenant ? $currentTenant->setting('storefront.hero_image') : null;
+            $heroTitle = $currentTenant ? $currentTenant->setting('storefront.hero_title', $brandName) : $brandName;
+            $heroSubtitle = $currentTenant ? $currentTenant->setting('storefront.hero_subtitle', $brandTagline) : $brandTagline;
+            $heroBadge = $currentTenant ? $currentTenant->setting('storefront.hero_badge', 'Physical Boutique Experience') : 'Physical Boutique Experience';
+            $storefrontFeaturing = $currentTenant ? $currentTenant->setting('storefront.featuring', []) : [];
         @endphp
         <title>{{ $brandName }} &mdash; {{ $brandTagline }}</title>
 
@@ -162,7 +168,7 @@
                         </div>
                     </div>
 
-                    <!-- Hero Visual Showcase with Real Boutique Video Player -->
+                    <!-- Hero Visual Showcase with Custom Hero Image or Real Boutique Video Player -->
                     <div class="mt-8 sm:mt-14 max-w-5xl mx-auto" x-data="{
                         currentVideo: '{{ asset('videos/shop/boutique-shelves-showcase.mp4') }}',
                         videoTitle: 'Handcrafted Designer Bags & Atelier Showcase',
@@ -194,100 +200,211 @@
                             });
                         }
                     }">
-                        <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-black border border-black/[0.08] shadow-2xl shadow-black/10 aspect-[16/10] sm:aspect-[21/9] group">
-                            <!-- Background Video -->
-                            <video
-                                x-ref="heroVideo"
-                                :src="currentVideo"
-                                poster="{{ asset('images/shop/boutique-shelves-showcase.png') }}"
-                                class="w-full h-full object-cover object-center"
-                                autoplay
-                                muted
-                                loop
-                                playsinline
-                            ></video>
+                        @if ($customHeroImage)
+                            <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-black border border-black/[0.08] shadow-2xl shadow-black/10 aspect-[16/10] sm:aspect-[21/9] group">
+                                <img
+                                    src="{{ str_starts_with($customHeroImage, 'http') ? $customHeroImage : asset($customHeroImage) }}"
+                                    alt="{{ $heroTitle }}"
+                                    class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none"></div>
 
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent pointer-events-none"></div>
-
-                            <!-- Top Controls & Status -->
-                            <div class="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between z-20">
-                                <div class="flex items-center gap-2">
+                                <div class="absolute top-3 sm:top-4 left-3 sm:left-4 z-20">
                                     <span class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-black/75 backdrop-blur-md text-white border border-white/15 shadow-sm">
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                                        Real Boutique Footage
+                                        {{ $heroBadge }}
                                     </span>
                                 </div>
 
-                                <!-- Sound & Pause buttons -->
-                                <div class="flex items-center gap-1.5 sm:gap-2">
-                                    <button
-                                        type="button"
-                                        @click="togglePlay()"
-                                        class="p-1.5 sm:p-2 rounded-full bg-black/70 hover:bg-black/90 text-white backdrop-blur-md border border-white/20 transition duration-150 text-xs flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8"
-                                        :title="isPlaying ? 'Pause' : 'Play'"
+                                <div class="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6 text-white text-left z-20 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                                    <div>
+                                        <span class="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase font-bold text-brand-pink-200 block mb-0.5 sm:mb-1">
+                                            {{ $heroSubtitle }}
+                                        </span>
+                                        <h3 class="font-display font-extrabold text-base sm:text-2xl md:text-3xl uppercase tracking-tight text-white drop-shadow-md">
+                                            {{ $heroTitle }}
+                                        </h3>
+                                    </div>
+                                    <a
+                                        href="{{ route('products.index') }}"
+                                        class="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white text-black hover:bg-brand-pink hover:text-white text-xs font-bold uppercase tracking-wider transition duration-150 shadow-md shrink-0 w-fit"
                                     >
-                                        <svg x-show="isPlaying" class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
-                                        </svg>
-                                        <svg x-show="!isPlaying" class="w-3 h-3 sm:w-3.5 sm:h-3.5 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M8 5v14l11-7z"/>
-                                        </svg>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        @click="toggleMute()"
-                                        class="p-1.5 sm:p-2 rounded-full bg-black/70 hover:bg-black/90 text-white backdrop-blur-md border border-white/20 transition duration-150 text-xs flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8"
-                                        :title="isMuted ? 'Unmute' : 'Mute'"
-                                    >
-                                        <svg x-show="isMuted" class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
-                                        </svg>
-                                        <svg x-show="!isMuted" class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                                        </svg>
-                                    </button>
+                                        <span>Shop Collection</span>
+                                        <span>&rarr;</span>
+                                    </a>
+                                </div>
+                            </div>
+                        @else
+                            <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-black border border-black/[0.08] shadow-2xl shadow-black/10 aspect-[16/10] sm:aspect-[21/9] group">
+                                <!-- Background Video -->
+                                <video
+                                    x-ref="heroVideo"
+                                    :src="currentVideo"
+                                    poster="{{ asset('images/shop/boutique-shelves-showcase.png') }}"
+                                    class="w-full h-full object-cover object-center"
+                                    autoplay
+                                    muted
+                                    loop
+                                    playsinline
+                                ></video>
+
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent pointer-events-none"></div>
+
+                                <!-- Top Controls & Status -->
+                                <div class="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between z-20">
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-black/75 backdrop-blur-md text-white border border-white/15 shadow-sm">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                                            Real Boutique Footage
+                                        </span>
+                                    </div>
+
+                                    <!-- Sound & Pause buttons -->
+                                    <div class="flex items-center gap-1.5 sm:gap-2">
+                                        <button
+                                            type="button"
+                                            @click="togglePlay()"
+                                            class="p-1.5 sm:p-2 rounded-full bg-black/70 hover:bg-black/90 text-white backdrop-blur-md border border-white/20 transition duration-150 text-xs flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8"
+                                            :title="isPlaying ? 'Pause' : 'Play'"
+                                        >
+                                            <svg x-show="isPlaying" class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                                            </svg>
+                                            <svg x-show="!isPlaying" class="w-3 h-3 sm:w-3.5 sm:h-3.5 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            @click="toggleMute()"
+                                            class="p-1.5 sm:p-2 rounded-full bg-black/70 hover:bg-black/90 text-white backdrop-blur-md border border-white/20 transition duration-150 text-xs flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8"
+                                            :title="isMuted ? 'Unmute' : 'Mute'"
+                                        >
+                                            <svg x-show="isMuted" class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                                            </svg>
+                                            <svg x-show="!isMuted" class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Bottom Title Overlay (Clean, Never Collides) -->
+                                <div class="absolute bottom-3 sm:bottom-5 left-3 sm:left-6 right-3 sm:right-6 text-white text-left z-20 pointer-events-none">
+                                    <span class="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase font-bold text-brand-pink-200 block mb-0.5 sm:mb-1">
+                                        Physical Boutique Experience
+                                    </span>
+                                    <h3 class="font-display font-extrabold text-sm sm:text-xl uppercase tracking-tight text-white drop-shadow-md truncate" x-text="videoTitle">
+                                        Handcrafted Designer Bags &amp; Atelier Showcase
+                                    </h3>
                                 </div>
                             </div>
 
-                            <!-- Bottom Title Overlay (Clean, Never Collides) -->
-                            <div class="absolute bottom-3 sm:bottom-5 left-3 sm:left-6 right-3 sm:right-6 text-white text-left z-20 pointer-events-none">
-                                <span class="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase font-bold text-brand-pink-200 block mb-0.5 sm:mb-1">
-                                    Physical Boutique Experience
-                                </span>
-                                <h3 class="font-display font-extrabold text-sm sm:text-xl uppercase tracking-tight text-white drop-shadow-md truncate" x-text="videoTitle">
-                                    Handcrafted Designer Bags &amp; Atelier Showcase
-                                </h3>
+                            <!-- Clean Switcher Tabs Immediately Under Player -->
+                            <div class="flex items-center justify-center gap-2 mt-3 sm:mt-4 flex-wrap">
+                                <button
+                                    type="button"
+                                    @click="switchClip('{{ asset('videos/shop/boutique-shelves-showcase.mp4') }}', 'Handcrafted Designer Bags & Atelier Showcase')"
+                                    class="px-3.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition duration-150 border cursor-pointer"
+                                    :class="currentVideo.includes('boutique-shelves') ? 'bg-black text-white border-black shadow-sm' : 'bg-white text-brand-charcoal hover:bg-black/5 border-black/10'"
+                                >
+                                    Boutique Shelves
+                                </button>
+                                <button
+                                    type="button"
+                                    @click="switchClip('{{ asset('videos/shop/boutique-interior-tour.mp4') }}', 'Flagship Studio & Display Salon')"
+                                    class="px-3.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition duration-150 border cursor-pointer"
+                                    :class="currentVideo.includes('interior-tour') ? 'bg-black text-white border-black shadow-sm' : 'bg-white text-brand-charcoal hover:bg-black/5 border-black/10'"
+                                >
+                                    Studio Tour
+                                </button>
+                                <button
+                                    type="button"
+                                    @click="switchClip('{{ asset('videos/shop/boutique-lights-apparel.mp4') }}', 'Apparel Lounge & Evening Silks')"
+                                    class="px-3.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition duration-150 border cursor-pointer"
+                                    :class="currentVideo.includes('lights-apparel') ? 'bg-black text-white border-black shadow-sm' : 'bg-white text-brand-charcoal hover:bg-black/5 border-black/10'"
+                                >
+                                    Apparel Lounge
+                                </button>
                             </div>
-                        </div>
+                        @endif
+                    </div>
+                </div>
+            </section>
 
-                        <!-- Clean Switcher Tabs Immediately Under Player -->
-                        <div class="flex items-center justify-center gap-2 mt-3 sm:mt-4 flex-wrap">
-                            <button
-                                type="button"
-                                @click="switchClip('{{ asset('videos/shop/boutique-shelves-showcase.mp4') }}', 'Handcrafted Designer Bags & Atelier Showcase')"
-                                class="px-3.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition duration-150 border cursor-pointer"
-                                :class="currentVideo.includes('boutique-shelves') ? 'bg-black text-white border-black shadow-sm' : 'bg-white text-brand-charcoal hover:bg-black/5 border-black/10'"
-                            >
-                                Boutique Shelves
-                            </button>
-                            <button
-                                type="button"
-                                @click="switchClip('{{ asset('videos/shop/boutique-interior-tour.mp4') }}', 'Flagship Studio & Display Salon')"
-                                class="px-3.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition duration-150 border cursor-pointer"
-                                :class="currentVideo.includes('interior-tour') ? 'bg-black text-white border-black shadow-sm' : 'bg-white text-brand-charcoal hover:bg-black/5 border-black/10'"
-                            >
-                                Studio Tour
-                            </button>
-                            <button
-                                type="button"
-                                @click="switchClip('{{ asset('videos/shop/boutique-lights-apparel.mp4') }}', 'Apparel Lounge & Evening Silks')"
-                                class="px-3.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition duration-150 border cursor-pointer"
-                                :class="currentVideo.includes('lights-apparel') ? 'bg-black text-white border-black shadow-sm' : 'bg-white text-brand-charcoal hover:bg-black/5 border-black/10'"
-                            >
-                                Apparel Lounge
-                            </button>
+            <!-- CURATED FEATURING HIGHLIGHTS (Configurable by Store Admin) -->
+            @php
+                $hasCustomFeaturing = !empty(array_filter(array_column($storefrontFeaturing, 'image')));
+                if (!$hasCustomFeaturing && empty($storefrontFeaturing)) {
+                    $storefrontFeaturing = [
+                        [
+                            'image' => asset('images/categories/bags.png'),
+                            'title' => 'Handcrafted Bags',
+                            'subtitle' => 'Artisanal leather & gold padlocks crafted in atelier',
+                            'badge' => 'Featured 01',
+                            'link' => route('products.index'),
+                        ],
+                        [
+                            'image' => asset('images/categories/clothes.png'),
+                            'title' => 'Apparel & Silks',
+                            'subtitle' => 'Statement cuts and ready-to-wear runway silhouettes',
+                            'badge' => 'Featured 02',
+                            'link' => route('products.index'),
+                        ],
+                        [
+                            'image' => asset('images/categories/shoes.png'),
+                            'title' => 'Luxury Footwear',
+                            'subtitle' => 'Refined Italian profile stiletto heels and mules',
+                            'badge' => 'Featured 03',
+                            'link' => route('products.index'),
+                        ],
+                    ];
+                }
+            @endphp
+            <section class="py-12 sm:py-16 bg-white border-b border-black/[0.06]">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between mb-8 border-b border-black/[0.06] pb-4">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-[0.2em] text-brand-charcoal/50">Storefront Highlights</span>
+                            <h2 class="font-display font-extrabold text-2xl sm:text-4xl uppercase tracking-tight text-brand-charcoal mt-1">
+                                Featured Collections
+                            </h2>
                         </div>
+                        <a href="{{ route('products.index') }}" class="text-xs font-bold uppercase tracking-wider text-brand-charcoal hover:text-brand-pink transition">
+                            View All &rarr;
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                        @foreach ($storefrontFeaturing as $idx => $feat)
+                            @if (!empty($feat['image']) || !empty($feat['title']))
+                                <a href="{{ $feat['link'] ?? route('products.index') }}" class="group relative rounded-2xl overflow-hidden bg-slate-900 border border-black/10 shadow-lg hover:shadow-2xl transition duration-500 aspect-[4/3] flex flex-col justify-end p-5 sm:p-6">
+                                    <img
+                                        src="{{ str_starts_with($feat['image'] ?? '', 'http') ? $feat['image'] : asset($feat['image'] ?? 'images/categories/bags.png') }}"
+                                        alt="{{ $feat['title'] ?? 'Feature' }}"
+                                        class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition duration-700 opacity-80 group-hover:opacity-95"
+                                    />
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                                    <div class="relative z-10 text-white space-y-1">
+                                        @if (!empty($feat['badge']))
+                                            <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/20 backdrop-blur-md text-white border border-white/20 mb-1">
+                                                {{ $feat['badge'] }}
+                                            </span>
+                                        @endif
+                                        <h3 class="font-display font-extrabold text-xl sm:text-2xl uppercase tracking-tight text-white group-hover:text-brand-pink transition">
+                                            {{ $feat['title'] }}
+                                        </h3>
+                                        @if (!empty($feat['subtitle']))
+                                            <p class="text-xs text-white/70 line-clamp-2">
+                                                {{ $feat['subtitle'] }}
+                                            </p>
+                                        @endif
+                                    </div>
+                                </a>
+                            @endif
+                        @endforeach
                     </div>
                 </div>
             </section>
