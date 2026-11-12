@@ -29,6 +29,20 @@
                             <span class="text-slate-400">&nearr;</span>
                         </a>
                     @endif
+
+                    @if (Auth::user()->isAdmin() && !session()->has('impersonator_id'))
+                        <form method="POST" action="{{ route('admin.impersonate-staff') }}" class="inline">
+                            @csrf
+                            <button
+                                type="submit"
+                                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-md shadow-emerald-950/15 hover:shadow-lg transition cursor-pointer"
+                                title="Login directly to Staff Walk-In POS Till"
+                            >
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                                <span>Login to Staff Dashboard &nearr;</span>
+                            </button>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>

@@ -24,16 +24,29 @@
 
         <!-- Quick Store Actions -->
         <div class="flex items-center gap-2.5 flex-wrap">
-            <form method="POST" action="{{ route('super-admin.tenants.enter', $tenant) }}">
+            <form method="POST" action="{{ route('super-admin.tenants.impersonate-admin', $tenant) }}">
                 @csrf
                 <button
                     type="submit"
                     class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider transition shadow-sm flex items-center gap-1.5 cursor-pointer"
                 >
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    <span>Masquerade Console &nearr;</span>
+                    <span>Masquerade Admin &nearr;</span>
+                </button>
+            </form>
+
+            <form method="POST" action="{{ route('super-admin.tenants.impersonate-staff', $tenant) }}">
+                @csrf
+                <button
+                    type="submit"
+                    class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider transition shadow-sm flex items-center gap-1.5 cursor-pointer"
+                >
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                    <span>Masquerade Staff Till &nearr;</span>
                 </button>
             </form>
 

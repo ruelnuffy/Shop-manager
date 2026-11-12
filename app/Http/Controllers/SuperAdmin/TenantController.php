@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ImpersonationController;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Tenant;
@@ -404,10 +405,8 @@ class TenantController extends Controller
     /**
      * Seamlessly impersonate / enter the tenant store as admin.
      */
-    public function enter(Tenant $tenant): RedirectResponse
+    public function enter(Request $request, Tenant $tenant): RedirectResponse
     {
-        session(['active_tenant_id' => $tenant->id]);
-
-        return redirect()->to('/admin?tenant='.$tenant->slug);
+        return app(ImpersonationController::class)->superAdminEnterAdmin($request, $tenant);
     }
 }

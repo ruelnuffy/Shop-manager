@@ -25,6 +25,31 @@
     class="font-sans antialiased bg-[#fbfcfe] text-slate-900 min-h-screen selection:bg-slate-900 selection:text-white flex flex-col"
 >
 
+    <!-- Impersonation / Masquerade Notification Banner -->
+    @if (session()->has('impersonator_id'))
+        <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white border-b border-indigo-700/50 px-4 sm:px-6 py-2.5 text-xs sticky top-0 z-[60] shadow-md flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2.5 flex-wrap">
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-400 text-amber-950 shadow-xs">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-900 animate-pulse"></span>
+                    {{ session('impersonator_role') === 'super_admin' ? 'Super Admin Masquerade' : 'Staff View Active' }}
+                </span>
+                <span class="text-slate-200">
+                    Operating as <strong>{{ Auth::user()->name }}</strong> ({{ ucfirst(Auth::user()->role) }}) &bull; <span class="text-indigo-300 font-semibold">{{ $storeName }}</span>
+                </span>
+            </div>
+            <form method="POST" action="{{ route('impersonate.leave') }}" class="inline">
+                @csrf
+                <button
+                    type="submit"
+                    class="px-3 py-1 rounded-full bg-white hover:bg-slate-100 text-indigo-950 font-extrabold text-[11px] uppercase tracking-wider transition shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
+                >
+                    <span>&larr;</span>
+                    <span>Return to {{ session('impersonator_role') === 'super_admin' ? 'Super Admin Cockpit' : 'Admin Dashboard' }}</span>
+                </button>
+            </form>
+        </div>
+    @endif
+
     <!-- ═══════════════════════════════════════════════════════════ -->
     <!-- FLOATING TOP PILL NAVIGATION (Desktop >= 768px)             -->
     <!-- Borderless with soft modern ambient shadow                  -->
@@ -131,6 +156,19 @@
                     </a>
                 @endif
 
+                @if (Auth::user()->isAdmin() && !session()->has('impersonator_id'))
+                    <form method="POST" action="{{ route('admin.impersonate-staff') }}" class="inline">
+                        @csrf
+                        <button
+                            type="submit"
+                            class="px-3 py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-700 text-[11px] font-bold uppercase tracking-wider transition shadow-xs flex items-center gap-1 cursor-pointer"
+                            title="Switch directly to Staff Till view"
+                        >
+                            <span>Staff Till &nearr;</span>
+                        </button>
+                    </form>
+                @endif
+
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
                     <button
@@ -204,6 +242,14 @@
                 <a href="{{ route('admin.reports.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Sales Reports</a>
                 <a href="{{ route('admin.staff.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Staff &amp; Team</a>
                 <a href="{{ route('admin.payroll.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Salaries &amp; Payroll</a>
+                @if (!session()->has('impersonator_id'))
+                    <form method="POST" action="{{ route('admin.impersonate-staff') }}">
+                        @csrf
+                        <button type="submit" class="w-full text-left p-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold shadow-xs">
+                            Login as Staff &nearr;
+                        </button>
+                    </form>
+                @endif
             @endif
         </div>
     </div>

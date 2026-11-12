@@ -95,10 +95,11 @@ class ResolveTenant
     {
         $host = strtolower($request->getHost());
         $baseDomain = strtolower((string) config('tenancy.base_domain', 'localhost'));
+        $appHost = strtolower((string) parse_url((string) config('app.url'), PHP_URL_HOST));
         $reserved = config('tenancy.reserved_subdomains', ['www', 'app', 'admin', 'api', 'mail', 'billing', 'support', 'status']);
 
-        // Check if host matches base domain, localhost, or standard loopback IP
-        if ($host === $baseDomain || $host === 'localhost' || $host === '127.0.0.1') {
+        // Check if host matches base domain, app host, localhost, or standard loopback IP
+        if ($host === $baseDomain || ($appHost !== '' && $host === $appHost) || $host === 'localhost' || $host === '127.0.0.1') {
             return true;
         }
 

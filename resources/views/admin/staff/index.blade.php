@@ -156,6 +156,15 @@
                                     @endif
                                 </td>
                                 <td class="py-3.5 px-4 pr-6 text-right space-x-3">
+                                    @if ($staff->is_active)
+                                        <form method="POST" action="{{ route('admin.impersonate-staff', ['user_id' => $staff->user_id]) }}" class="inline-block">
+                                            @csrf
+                                            <button type="submit" class="text-xs font-semibold text-emerald-600 hover:text-emerald-800 transition cursor-pointer" title="Login directly as {{ $staff->user->name }}">
+                                                Login as Staff &nearr;
+                                            </button>
+                                        </form>
+                                    @endif
+
                                     <a href="{{ route('admin.staff.edit', $staff->id) }}" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition">
                                         Edit
                                     </a>

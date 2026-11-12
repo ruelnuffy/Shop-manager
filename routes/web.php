@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\CpanelDeployController;
+use App\Http\Controllers\ImpersonationController;
 use App\Http\Controllers\PaystackWebhookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Store;
@@ -143,12 +144,16 @@ Route::prefix('admin')
         // Staff & Payroll Management (Admin Only)
         Route::middleware(EnsureUserIsAdmin::class)->group(function () {
             Route::resource('staff', Admin\StaffController::class);
+            Route::post('/impersonate-staff', [ImpersonationController::class, 'adminEnterStaff'])->name('impersonate-staff');
             Route::get('/payroll', [Admin\PayrollController::class, 'index'])->name('payroll.index');
             Route::post('/payroll/disburse', [Admin\PayrollController::class, 'disburse'])->name('payroll.disburse');
             Route::post('/payroll/retry/{salaryPayment}', [Admin\PayrollController::class, 'retry'])->name('payroll.retry');
             Route::post('/payroll/verify/{salaryPayment}', [Admin\PayrollController::class, 'verifyStatus'])->name('payroll.verify');
         });
     });
+
+// Impersonation Exit Route (Accessible to anyone currently masquerading)
+Route::post('/impersonate/leave', [ImpersonationController::class, 'leave'])->middleware('auth')->name('impersonate.leave');
 
 // Platform Super Admin Control Plane
 Route::prefix('super-admin')
@@ -164,6 +169,8 @@ Route::prefix('super-admin')
         Route::put('/tenants/{tenant}', [SuperAdmin\TenantController::class, 'update'])->name('tenants.update');
         Route::post('/tenants/{tenant}/toggle-status', [SuperAdmin\TenantController::class, 'toggleStatus'])->name('tenants.toggle-status');
         Route::post('/tenants/{tenant}/enter', [SuperAdmin\TenantController::class, 'enter'])->name('tenants.enter');
+        Route::post('/tenants/{tenant}/impersonate-admin', [ImpersonationController::class, 'superAdminEnterAdmin'])->name('tenants.impersonate-admin');
+        Route::post('/tenants/{tenant}/impersonate-staff', [ImpersonationController::class, 'superAdminEnterStaff'])->name('tenants.impersonate-staff');
         Route::post('/tenants/{tenant}/admins', [SuperAdmin\TenantController::class, 'storeAdmin'])->name('tenants.admins.store');
         Route::post('/tenants/{tenant}/admins/{user}/reset-password', [SuperAdmin\TenantController::class, 'resetAdminPassword'])->name('tenants.admins.reset-password');
         Route::delete('/tenants/{tenant}/admins/{user}', [SuperAdmin\TenantController::class, 'destroyAdmin'])->name('tenants.admins.destroy');

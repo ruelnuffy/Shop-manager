@@ -139,15 +139,28 @@
 
                             <!-- Actions -->
                             <td class="px-6 py-4.5 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <form method="POST" action="{{ route('super-admin.tenants.enter', $tenant) }}">
+                                <div class="flex items-center justify-end gap-1.5 flex-wrap">
+                                    <form method="POST" action="{{ route('super-admin.tenants.impersonate-admin', $tenant) }}">
                                         @csrf
                                         <button
                                             type="submit"
-                                            class="px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 text-xs font-semibold transition flex items-center gap-1 cursor-pointer"
-                                            title="Enter Store Admin Console"
+                                            class="px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 text-xs font-semibold transition flex items-center gap-1 cursor-pointer"
+                                            title="Login directly as Store Admin"
                                         >
-                                            <span>Console &nearr;</span>
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                            <span>Admin &nearr;</span>
+                                        </button>
+                                    </form>
+
+                                    <form method="POST" action="{{ route('super-admin.tenants.impersonate-staff', $tenant) }}">
+                                        @csrf
+                                        <button
+                                            type="submit"
+                                            class="px-2.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-700 text-xs font-semibold transition flex items-center gap-1 cursor-pointer"
+                                            title="Login directly as Staff / POS Till"
+                                        >
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                                            <span>Staff Till &nearr;</span>
                                         </button>
                                     </form>
 
