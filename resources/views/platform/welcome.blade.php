@@ -364,92 +364,91 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 2: "ONE SYSTEM, NOT EIGHT APPS" (Hub & Satellites)  -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section id="features" class="pt-12 sm:pt-16 lg:pt-20 pb-16 sm:pb-24 bg-white">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+        <section id="features" class="pt-14 sm:pt-20 pb-20 sm:pb-28 bg-white">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 sm:space-y-16">
                 <!-- Section Header -->
-                <div class="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4">
-                    <span class="text-xs sm:text-sm font-bold text-blue-600 uppercase tracking-wider">Unified Architecture</span>
-                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-slate-950 tracking-tight">
-                        One system, not eight apps
+                <div class="text-center max-w-xl mx-auto space-y-4">
+                    <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-slate-950 tracking-tight">
+                        Everything your shop needs
                     </h2>
-                    <p class="text-base sm:text-lg text-slate-600 leading-relaxed">
-                        Stop juggling WhatsApp messages, physical paper ledgers, separate card swipe machines, and complex spreadsheets. {{ config('app.platform_name', 'ShopManager') }} connects your entire retail ecosystem into one unified workspace.
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                        No more paper books or confusing apps. Run your whole business from one place.
                     </p>
                 </div>
 
-                <!-- Interactive Orbit Satellite Grid Layout -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 pt-4">
+                <!-- Simple 8-Card Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-7">
 
-                    <!-- Satellite 1: Walk-In POS -->
+                    <!-- 1: Record Sales Fast -->
                     <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
                         <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center mx-auto">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                         </div>
-                        <h3 class="font-bold text-base sm:text-lg text-slate-900">Walk-in POS Till</h3>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Fast barcode &amp; tap checkout on any device.</p>
+                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Record Sales Fast</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Sell quickly to walk-in buyers on any phone.</p>
                     </div>
 
-                    <!-- Satellite 2: Wireless Receipts -->
+                    <!-- 2: Print Paper Receipts -->
                     <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
                         <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
                         </div>
-                        <h3 class="font-bold text-base sm:text-lg text-slate-900">Wireless 58mm Slips</h3>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Direct Bluetooth mobile thermal printing.</p>
+                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Print Paper Slips</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Print receipts with a small Bluetooth printer.</p>
                     </div>
 
-                    <!-- Satellite 3: WhatsApp Receipts -->
+                    <!-- 3: WhatsApp Receipts -->
                     <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
                         <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center mx-auto">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                         </div>
-                        <h3 class="font-bold text-base sm:text-lg text-slate-900">WhatsApp Receipts</h3>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Instant customer receipts formatted in 1 tap.</p>
+                        <h3 class="font-bold text-sm sm:text-base text-slate-900">WhatsApp Receipts</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Send receipts straight to your buyer's WhatsApp.</p>
                     </div>
 
-                    <!-- Satellite 4: Real-time Stock Sync -->
+                    <!-- 4: Track Your Goods -->
                     <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
                         <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center mx-auto">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                         </div>
-                        <h3 class="font-bold text-base sm:text-lg text-slate-900">Inventory Sync</h3>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Automatic deduction across all channels.</p>
+                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Track Your Goods</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Always know what is left in your shop.</p>
                     </div>
 
-                    <!-- Satellite 5: Split Payments -->
+                    <!-- 5: Cash & Transfer -->
                     <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
                         <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mx-auto">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
                         </div>
-                        <h3 class="font-bold text-base sm:text-lg text-slate-900">Split Payments</h3>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Collect partly in Cash &amp; partly by Transfer.</p>
+                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Cash &amp; Transfer</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Take half cash and half transfer on one sale.</p>
                     </div>
 
-                    <!-- Satellite 6: Daily Z-Reports -->
+                    <!-- 6: Daily Sales Total -->
                     <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
                         <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center mx-auto">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         </div>
-                        <h3 class="font-bold text-base sm:text-lg text-slate-900">Daily Closeout Z-Report</h3>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">1-click register balancing at end of shift.</p>
+                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Daily Sales Total</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">See all money made at the end of each day.</p>
                     </div>
 
-                    <!-- Satellite 7: Paystack Integration -->
+                    <!-- 7: Online Shop -->
                     <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
                         <div class="w-12 h-12 rounded-2xl bg-cyan-100 text-cyan-700 flex items-center justify-center mx-auto">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M3 14h18m-9-4v8m-7 4h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                         </div>
-                        <h3 class="font-bold text-base sm:text-lg text-slate-900">Paystack Checkout</h3>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Instant cards &amp; automated virtual accounts.</p>
+                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Online Store Link</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Let buyers pay online with card or transfer.</p>
                     </div>
 
-                    <!-- Satellite 8: Multi-Store Isolation -->
+                    <!-- 8: Multiple Shops -->
                     <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
                         <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center mx-auto">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                         </div>
-                        <h3 class="font-bold text-base sm:text-lg text-slate-900">Multi-Location Branch</h3>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Manage multiple boutiques from one login.</p>
+                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Multiple Shops</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Check all your shop branches in one place.</p>
                     </div>
 
                 </div>
