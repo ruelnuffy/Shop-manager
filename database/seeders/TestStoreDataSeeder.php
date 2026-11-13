@@ -36,7 +36,7 @@ class TestStoreDataSeeder extends Seeder
                     'branding' => [
                         'name' => 'Test Store',
                         'tagline' => 'Quality Goods & Fast Walk-in POS Checkout',
-                        'logo_url' => 'images/shopmanager-logo.png',
+                        'logo_url' => null,
                         'palette' => [
                             'primary' => '#2563eb',
                             'secondary' => '#0f172a',

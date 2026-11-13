@@ -1001,11 +1001,26 @@
                     </div>
 
                     <!-- Q4: Logo File -->
-                    <div class="p-5 rounded-2xl bg-white border border-slate-200/80 space-y-2 shadow-xs">
+                    <div class="p-5 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs">
                         <label class="block text-xs font-bold text-slate-900">
-                            Question: Do you have a logo image?
+                            Storefront Logo
                         </label>
-                        <p class="text-[11px] text-slate-500">Upload your logo (PNG or JPG).</p>
+                        <p class="text-[11px] text-slate-500">Upload your store logo (PNG, JPG, or WebP). This appears at the top of your storefront.</p>
+                        @php
+                            $currentLogoUrl = data_get($branding, 'logo_url');
+                            if ($currentLogoUrl && str_contains($currentLogoUrl, 'shopmanager-logo')) {
+                                $currentLogoUrl = null;
+                            }
+                            $resolvedAdminLogo = $currentLogoUrl
+                                ? ((str_starts_with($currentLogoUrl, 'http://') || str_starts_with($currentLogoUrl, 'https://')) ? $currentLogoUrl : asset(ltrim($currentLogoUrl, '/')))
+                                : null;
+                        @endphp
+                        @if ($resolvedAdminLogo)
+                            <div class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                                <img src="{{ $resolvedAdminLogo }}" alt="{{ $tenant->name }} Logo" class="h-10 w-auto object-contain rounded" />
+                                <span class="text-[11px] font-medium text-slate-500">Current storefront logo</span>
+                            </div>
+                        @endif
                         <div class="pt-1">
                             <input
                                 type="file"

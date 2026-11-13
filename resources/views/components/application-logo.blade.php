@@ -4,11 +4,14 @@
     $tenant = app(\App\Services\CurrentTenant::class)->get();
     $platformName = config('app.platform_name', 'ShopManager');
     $logoUrl = $tenant ? $tenant->setting('branding.logo_url') : null;
+    if ($tenant && $logoUrl && str_contains($logoUrl, 'shopmanager-logo')) {
+        $logoUrl = null;
+    }
     $brandName = $tenant ? $tenant->setting('branding.name', $tenant->name) : $platformName;
     $primaryColor = $tenant ? $tenant->setting('branding.palette.primary', '#1a1a1a') : '#1a1a1a';
     $resolvedLogo = null;
     if ($logoUrl) {
-        $resolvedLogo = (str_starts_with($logoUrl, 'http://') || str_starts_with($logoUrl, 'https://')) ? $logoUrl : asset($logoUrl);
+        $resolvedLogo = (str_starts_with($logoUrl, 'http://') || str_starts_with($logoUrl, 'https://')) ? $logoUrl : asset(ltrim($logoUrl, '/'));
     }
 @endphp
 
