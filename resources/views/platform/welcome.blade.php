@@ -307,69 +307,42 @@
                     </div>
                 </div>
 
-                <!-- Right: High-Converting Retail Dashboard Composition -->
+                <!-- Right: Live 3D Business Mascot Showcase -->
                 <div class="lg:col-span-6 relative mt-4 lg:mt-0">
-                    <div class="relative mx-auto max-w-lg lg:max-w-xl">
+                    <style>
+                        @keyframes heroMascotFloat {
+                            0%, 100% { transform: translateY(0px) rotate(0deg); }
+                            50% { transform: translateY(-10px) rotate(0.6deg); }
+                        }
+                        .hero-mascot-float {
+                            animation: heroMascotFloat 5s ease-in-out infinite;
+                        }
+                    </style>
+                    <div
+                        x-data="{ tiltX: 0, tiltY: 0 }"
+                        @mousemove="
+                            const rect = $el.getBoundingClientRect();
+                            const x = ($event.clientX - rect.left) / rect.width - 0.5;
+                            const y = ($event.clientY - rect.top) / rect.height - 0.5;
+                            tiltX = (-y * 10).toFixed(2);
+                            tiltY = (x * 10).toFixed(2);
+                        "
+                        @mouseleave="tiltX = 0; tiltY = 0"
+                        class="relative mx-auto max-w-md lg:max-w-lg hero-mascot-float"
+                        style="perspective: 1000px;"
+                    >
                         <!-- Background Ambient Aura -->
-                        <div class="absolute -inset-4 bg-gradient-to-r from-blue-300 to-indigo-300 rounded-3xl blur-2xl opacity-30"></div>
+                        <div class="absolute -inset-6 bg-gradient-to-tr from-sky-400/30 via-blue-300/20 to-indigo-400/30 rounded-full blur-3xl opacity-70 pointer-events-none"></div>
 
-                        <!-- Main Floating App Window Card -->
-                        <div class="relative bg-white rounded-3xl p-5 sm:p-7 shadow-2xl text-slate-900 space-y-4 sm:space-y-5 border border-white/40">
-                            <!-- Top Window Chrome -->
-                            <div class="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-100">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-400"></span>
-                                    <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-400"></span>
-                                    <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-400"></span>
-                                    <span class="text-xs sm:text-sm font-bold text-slate-400 ml-2 font-mono">shopmanager.console &bull; Live</span>
-                                </div>
-                                <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                    <span>POS Terminal Online</span>
-                                </span>
-                            </div>
-
-                            <!-- Key Metrics Row -->
-                            <div class="grid grid-cols-2 gap-3 sm:gap-4">
-                                <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 space-y-1">
-                                    <div class="text-[11px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Today's Revenue</div>
-                                    <div class="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-900 tracking-tight">₦285,000</div>
-                                    <div class="text-xs text-emerald-600 font-bold">+18.4% vs yesterday</div>
-                                </div>
-                                <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 space-y-1">
-                                    <div class="text-[11px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Stock Valuation</div>
-                                    <div class="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-900 tracking-tight">₦4.2M</div>
-                                    <div class="text-xs text-slate-500 font-medium">16 categories synced</div>
-                                </div>
-                            </div>
-
-                            <!-- Recent Live Walk-in Transaction Pill (with real product image) -->
-                            <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-900 text-white flex items-center justify-between gap-3 shadow-md">
-                                <div class="flex items-center gap-3 min-w-0">
-                                    <img
-                                        src="{{ asset('images/products/versse-snakeskin-accent-bag.png') }}"
-                                        alt="Snake-Accent Leather Bag"
-                                        class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl object-cover bg-slate-800 border border-slate-700 shrink-0 shadow-xs"
-                                    />
-                                    <div class="min-w-0">
-                                        <div class="font-bold text-xs sm:text-sm truncate">Snake-Accent Leather Bag &bull; Set</div>
-                                        <div class="text-[11px] sm:text-xs text-slate-400">Cashier: Blessing &bull; Paid via SPLIT</div>
-                                    </div>
-                                </div>
-                                <div class="text-right shrink-0">
-                                    <div class="font-display font-bold text-sm sm:text-base text-emerald-400">₦45,000</div>
-                                    <div class="text-[10px] sm:text-xs text-slate-400">Receipt Printed &check;</div>
-                                </div>
-                            </div>
-
-                            <!-- Floating Merchant WhatsApp Notification Bubble -->
-                            <div class="p-3 sm:p-3.5 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-between text-xs sm:text-sm text-emerald-950">
-                                <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/></svg>
-                                    <span class="text-xs sm:text-sm font-medium">Customer receipt sent via WhatsApp</span>
-                                </div>
-                                <span class="text-emerald-700 font-bold text-xs">Delivered</span>
-                            </div>
+                        <div
+                            class="relative rounded-[2.25rem] overflow-hidden shadow-2xl shadow-blue-950/40 border border-white/15 transition-transform duration-200 ease-out"
+                            :style="`transform: rotateX(${tiltX}deg) rotateY(${tiltY}deg);`"
+                        >
+                            <img
+                                src="{{ asset('images/hero-3d-mascot.jpg') }}"
+                                alt="ShopManager 3D Business Mascot holding POS terminal and shopping bags"
+                                class="w-full h-auto object-cover block select-none"
+                            />
                         </div>
                     </div>
                 </div>
