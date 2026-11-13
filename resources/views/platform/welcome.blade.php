@@ -597,7 +597,7 @@
                     </p>
 
                     <!-- Billing Toggle Pills -->
-                    <div class="pt-3 inline-flex items-center p-1.5 rounded-full bg-white shadow-sm border border-slate-200">
+                    <div class="mt-3 inline-flex items-center p-1.5 rounded-full bg-white shadow-sm border border-slate-200">
                         <button
                             type="button"
                             @click="billingCycle = 'monthly'"
