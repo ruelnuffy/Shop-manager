@@ -286,48 +286,24 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
                 <!-- Left: Hero Text & Call to Actions -->
-                <div class="lg:col-span-6 space-y-5 sm:space-y-6 text-center lg:text-left">
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-white text-xs sm:text-sm font-bold tracking-wide">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span>FOR RETAILERS &amp; COMMERCE BRANDS</span>
-                    </div>
-
-                    <h1 class="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-[56px] xl:text-[64px] tracking-tight leading-[1.08]">
+                <div class="lg:col-span-6 space-y-7 sm:space-y-8 text-center lg:text-left">
+                    <h1 class="font-display font-black text-4xl sm:text-5xl md:text-6xl lg:text-[60px] xl:text-[68px] tracking-tight leading-[1.06]">
                         Sell anywhere.<br class="hidden sm:inline">
                         It all lands in one place.
                     </h1>
 
-                    <p class="text-base sm:text-lg lg:text-xl text-blue-100/90 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-                        {{ config('app.platform_name', 'ShopManager') }} is the operating system for modern retail brands. Unified Retail, Inventory, physical POS counter sales, wireless receipts, and WhatsApp orders &mdash; without ever losing track of inventory or revenue.
-                    </p>
-
-                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
+                    <div class="flex items-center justify-center lg:justify-start pt-1">
                         <a
-                            href="{{ route('register') }}"
-                            class="w-full sm:w-auto px-7 py-3.5 sm:px-8 sm:py-4 rounded-full bg-white hover:bg-slate-50 text-blue-800 font-extrabold text-xs sm:text-sm uppercase tracking-wider transition shadow-xl shadow-blue-950/20 flex items-center justify-center gap-2 active:scale-95"
+                            href="https://wa.me/2349046686176?text=I%20want%20to%20subscribe"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-slate-50 text-blue-800 font-extrabold text-sm uppercase tracking-wider transition shadow-xl shadow-blue-950/20 flex items-center justify-center gap-2.5 active:scale-95"
                         >
-                            <span>Start free trial</span>
+                            <span>Sign Up</span>
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                             </svg>
                         </a>
-
-                        <a
-                            href="{{ route('admin.sales.create') }}"
-                            class="w-full sm:w-auto px-6 py-3.5 sm:px-7 sm:py-4 rounded-full bg-blue-800/60 hover:bg-blue-800 text-white font-bold text-xs sm:text-sm uppercase tracking-wider transition border border-white/20 flex items-center justify-center gap-2"
-                        >
-                            <span>Try Walk-in POS Till</span>
-                            <span>&nearr;</span>
-                        </a>
-                    </div>
-
-                    <!-- Micro Trust Badges -->
-                    <div class="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-4 text-xs sm:text-sm font-medium text-blue-100/90">
-                        <span class="inline-flex items-center gap-1.5"><span class="text-emerald-300 font-bold">&check;</span> No credit card required</span>
-                        <span class="text-blue-300/60 hidden xs:inline">&bull;</span>
-                        <span class="inline-flex items-center gap-1.5"><span class="text-emerald-300 font-bold">&check;</span> 14-day free trial</span>
-                        <span class="text-blue-300/60 hidden xs:inline">&bull;</span>
-                        <span class="inline-flex items-center gap-1.5"><span class="text-emerald-300 font-bold">&check;</span> Cancel anytime</span>
                     </div>
                 </div>
 
@@ -1170,6 +1146,22 @@
                 </div>
             </div>
         </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- HOVERING WHATSAPP SUPPORT ICON                              -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <a
+            href="https://wa.me/2349046686176?text=Hello%2C%20I%20need%20support"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="WhatsApp Support"
+            class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#1ebe5d] text-white shadow-2xl shadow-emerald-950/30 flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 group"
+            title="Chat on WhatsApp"
+        >
+            <svg class="w-7 h-7 fill-current" viewBox="0 0 32 32" aria-hidden="true">
+                <path d="M16.004 3C8.834 3 3 8.834 3 16.004c0 2.295.603 4.534 1.747 6.506L3 29l6.654-1.744A12.956 12.956 0 0016.004 29C23.174 29 29 23.166 29 16.004 29 8.834 23.174 3 16.004 3zm0 23.62c-2.01 0-3.984-.54-5.71-1.56l-.41-.243-4.248 1.113 1.135-4.14-.267-.426a10.562 10.562 0 01-1.622-5.36c0-5.858 4.765-10.623 10.622-10.623 5.857 0 10.623 4.765 10.623 10.623 0 5.857-4.766 10.622-10.623 10.622zm5.826-7.957c-.32-.16-1.89-.932-2.183-1.038-.293-.107-.506-.16-.72.16-.213.32-.826 1.038-1.013 1.25-.186.214-.373.24-.692.08-.32-.16-1.348-.497-2.568-1.585-.949-.846-1.59-1.89-1.776-2.21-.186-.32-.02-.493.14-.652.144-.143.32-.373.48-.56.16-.186.213-.32.32-.533.106-.213.053-.4-.027-.56-.08-.16-.72-1.732-.986-2.37-.26-.624-.524-.54-.72-.55l-.613-.01c-.213 0-.56.08-.853.4-.293.32-1.12 1.093-1.12 2.665 0 1.573 1.146 3.092 1.306 3.305.16.214 2.256 3.445 5.465 4.83.763.33 1.358.527 1.823.675.766.243 1.463.209 2.014.127.614-.092 1.89-.773 2.156-1.519.267-.746.267-1.386.187-1.519-.08-.133-.293-.213-.613-.373z"/>
+            </svg>
+        </a>
 
     </body>
 </html>
