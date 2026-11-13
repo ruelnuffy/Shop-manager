@@ -163,6 +163,12 @@ Route::prefix('admin')
         Route::get('/reports', [Admin\ReportController::class, 'index'])->name('reports.index');
         Route::get('/reports/export', [Admin\ReportController::class, 'exportCsv'])->name('reports.export');
 
+        // Store System Notifications (Web & Mobile Alerts)
+        Route::get('/notifications', [Admin\NotificationController::class, 'index'])->name('notifications.index');
+        Route::get('/notifications/poll', [Admin\NotificationController::class, 'poll'])->name('notifications.poll');
+        Route::post('/notifications/{id}/read', [Admin\NotificationController::class, 'markAsRead'])->name('notifications.read');
+        Route::post('/notifications/read-all', [Admin\NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+
         // OCR Paper Ledger Imports
         Route::get('/ocr-imports', [Admin\OcrImportController::class, 'index'])->name('ocr.index');
         Route::get('/ocr-imports/upload', [Admin\OcrImportController::class, 'create'])->name('ocr.create');

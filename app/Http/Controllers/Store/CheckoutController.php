@@ -13,6 +13,7 @@ use App\Models\Tenant;
 use App\Services\CartService;
 use App\Services\CurrentTenant;
 use App\Services\PaystackService;
+use App\Services\StoreNotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -148,6 +149,10 @@ class CheckoutController extends Controller
                 $this->cartService->clear();
 
                 DB::commit();
+
+                if ($tenant = Tenant::find($order->tenant_id) ?? app(CurrentTenant::class)->get()) {
+                    app(StoreNotificationService::class)->notifyStorefrontOrder($tenant, $order);
+                }
 
                 return redirect()->route('order.confirmation', $order->order_number)
                     ->with('success', 'Order placed successfully using your Boutique Wallet balance!');
@@ -318,6 +323,10 @@ class CheckoutController extends Controller
 
                     // Clear shopping cart on successful payment
                     $this->cartService->clear();
+
+                    if ($tenant = Tenant::find($order->tenant_id) ?? app(CurrentTenant::class)->get()) {
+                        app(StoreNotificationService::class)->notifyStorefrontOrder($tenant, $order);
+                    }
                 }
 
                 return redirect()->route('order.confirmation', $order->order_number)

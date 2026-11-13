@@ -9,6 +9,7 @@ use App\Models\Tenant;
 use App\Models\WalletTransaction;
 use App\Services\CurrentTenant;
 use App\Services\PaystackService;
+use App\Services\StoreNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -132,6 +133,11 @@ class PaystackWebhookController extends Controller
                         }
                     }
                 });
+
+                $order = $payment->order;
+                if ($order && $order->payment_status === 'paid' && ($tenant = Tenant::find($order->tenant_id))) {
+                    app(StoreNotificationService::class)->notifyStorefrontOrder($tenant, $order);
+                }
 
                 return response()->json(['status' => 'success', 'message' => 'Order payment processed.']);
             }

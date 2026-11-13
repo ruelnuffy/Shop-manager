@@ -8,6 +8,7 @@ use App\Models\SalesRecord;
 use App\Models\StockMovement;
 use App\Models\User;
 use App\Services\CurrentTenant;
+use App\Services\StoreNotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -117,7 +118,8 @@ class ManualSaleController extends Controller
         }
 
         $saleId = null;
-        DB::transaction(function () use ($variant, $request, $qty, &$saleId) {
+        $recordedSale = null;
+        DB::transaction(function () use ($variant, $request, $qty, &$saleId, &$recordedSale) {
             $prev = $variant->stock_quantity;
             $newStock = $prev - $qty;
 
@@ -158,6 +160,7 @@ class ManualSaleController extends Controller
             ]);
 
             $saleId = $sale->id;
+            $recordedSale = $sale;
 
             // Record stock movement
             StockMovement::create([
@@ -172,6 +175,11 @@ class ManualSaleController extends Controller
                 'created_by' => Auth::id(),
             ]);
         });
+
+        $tenant = app(CurrentTenant::class)->get();
+        if ($tenant && $recordedSale) {
+            app(StoreNotificationService::class)->notifyStaffSale($tenant, $recordedSale, Auth::user());
+        }
 
         return redirect()->route('admin.sales.create')
             ->with('success', "In-store boutique sale recorded for {$variant->product->name}. Stock updated.")

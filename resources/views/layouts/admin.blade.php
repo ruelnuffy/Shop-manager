@@ -164,6 +164,56 @@
                     </a>
                 @endif
 
+                <!-- Notification Bell (Desktop) -->
+                <div
+                    x-data="{ open: false }"
+                    @click.outside="open = false"
+                    class="relative"
+                >
+                    <button
+                        type="button"
+                        @click="open = !open"
+                        class="relative w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 transition shadow-xs cursor-pointer"
+                        title="Notifications"
+                    >
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span
+                            data-notif-badge
+                            class="hidden absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-rose-600 text-white text-[10px] font-extrabold flex items-center justify-center"
+                        >0</span>
+                    </button>
+
+                    <div
+                        x-show="open"
+                        x-cloak
+                        x-transition
+                        class="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200/80 overflow-hidden z-50"
+                    >
+                        <div class="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+                            <span class="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Notifications</span>
+                            <div class="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    onclick="if (window.requestStoreNotificationPermission) window.requestStoreNotificationPermission()"
+                                    data-notif-perm-btn
+                                    class="hidden text-[11px] font-bold text-blue-600 hover:underline cursor-pointer"
+                                >
+                                    Enable Alerts
+                                </button>
+                                <a href="{{ route('admin.notifications.index') }}" class="text-[11px] font-bold text-slate-500 hover:text-slate-900">
+                                    View All
+                                </a>
+                            </div>
+                        </div>
+
+                        <div data-notif-list class="max-h-72 overflow-y-auto divide-y divide-slate-100 text-xs">
+                            <div class="p-4 text-center text-slate-400">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+
                 @if (Auth::user()->isAdmin() && !session()->has('impersonator_id'))
                     <form method="POST" action="{{ route('admin.impersonate-staff') }}" class="inline">
                         @csrf
@@ -215,6 +265,20 @@
         </div>
 
         <div class="flex items-center gap-2">
+            <a
+                href="{{ route('admin.notifications.index') }}"
+                class="relative p-2 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
+                title="Notifications"
+            >
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <span
+                    data-notif-badge
+                    class="hidden absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-rose-600 text-white text-[10px] font-extrabold flex items-center justify-center"
+                >0</span>
+            </a>
+
             <a
                 href="{{ route('admin.sales.create') }}"
                 class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-600 text-white text-[11px] font-bold uppercase tracking-wider shadow-sm"
@@ -301,6 +365,103 @@
             @yield('content')
         @endisset
     </main>
+
+    <script>
+        (function () {
+            var pollUrl = @json(route('admin.notifications.poll'));
+            var indexUrl = @json(route('admin.notifications.index'));
+            var seenIds = new Set();
+            var initialized = false;
+
+            window.requestStoreNotificationPermission = function () {
+                if (!('Notification' in window)) return;
+                Notification.requestPermission().then(function (perm) {
+                    if (perm === 'granted') {
+                        document.querySelectorAll('[data-notif-perm-btn]').forEach(function (el) {
+                            el.classList.add('hidden');
+                        });
+                        new Notification(@json($storeName), {
+                            body: 'System notifications enabled for staff logins, POS sales & storefront orders.'
+                        });
+                    }
+                });
+            };
+
+            function renderNotifications(data) {
+                var badges = document.querySelectorAll('[data-notif-badge]');
+                badges.forEach(function (badge) {
+                    if (data.unread_count > 0) {
+                        badge.textContent = data.unread_count > 99 ? '99+' : data.unread_count;
+                        badge.classList.remove('hidden');
+                    } else {
+                        badge.classList.add('hidden');
+                    }
+                });
+
+                var list = document.querySelector('[data-notif-list]');
+                if (list) {
+                    if (!data.notifications || data.notifications.length === 0) {
+                        list.innerHTML = '<div class="p-5 text-center text-slate-400">No notifications yet.</div>';
+                    } else {
+                        list.innerHTML = data.notifications.map(function (item) {
+                            var bg = item.read ? 'bg-white' : 'bg-blue-50/40';
+                            return '<a href="' + indexUrl + '" class="block px-4 py-3 hover:bg-slate-50 transition ' + bg + '">' +
+                                '<div class="flex items-center justify-between gap-2">' +
+                                    '<span class="font-bold text-slate-900 truncate">' + escapeHtml(item.title) + '</span>' +
+                                    '<span class="text-[10px] text-slate-400 shrink-0">' + escapeHtml(item.time_ago) + '</span>' +
+                                '</div>' +
+                                '<p class="text-slate-600 mt-0.5 line-clamp-2">' + escapeHtml(item.message) + '</p>' +
+                            '</a>';
+                        }).join('');
+                    }
+                }
+
+                if (initialized && 'Notification' in window && Notification.permission === 'granted' && data.notifications) {
+                    data.notifications.forEach(function (item) {
+                        if (!item.read && !seenIds.has(item.id)) {
+                            var n = new Notification(item.title, { body: item.message });
+                            n.onclick = function () {
+                                window.focus();
+                                window.location.href = item.action_url || indexUrl;
+                            };
+                        }
+                    });
+                }
+
+                if (data.notifications) {
+                    data.notifications.forEach(function (item) {
+                        seenIds.add(item.id);
+                    });
+                }
+                initialized = true;
+            }
+
+            function escapeHtml(str) {
+                return String(str || '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
+            }
+
+            function poll() {
+                fetch(pollUrl, { headers: { 'Accept': 'application/json' } })
+                    .then(function (r) { return r.ok ? r.json() : null; })
+                    .then(function (data) { if (data) renderNotifications(data); })
+                    .catch(function () {});
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                if ('Notification' in window && Notification.permission === 'default') {
+                    document.querySelectorAll('[data-notif-perm-btn]').forEach(function (el) {
+                        el.classList.remove('hidden');
+                    });
+                }
+                poll();
+                setInterval(poll, 20000);
+            });
+        })();
+    </script>
 
 </body>
 </html>
