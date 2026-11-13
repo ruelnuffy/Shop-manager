@@ -364,93 +364,123 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 2: "ONE SYSTEM, NOT EIGHT APPS" (Hub & Satellites)  -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section id="features" class="pt-14 sm:pt-20 pb-20 sm:pb-28 bg-white">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 sm:space-y-16">
-                <!-- Section Header -->
-                <div class="text-center max-w-xl mx-auto space-y-4">
-                    <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-slate-950 tracking-tight">
-                        Everything your shop needs
-                    </h2>
-                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
-                        No more paper books or confusing apps. Run your whole business from one place.
-                    </p>
+        <section id="features" class="pt-14 sm:pt-20 pb-20 sm:pb-28 bg-white overflow-hidden">
+            <div
+                x-data="{
+                    scrollLeft() {
+                        this.$refs.track.scrollBy({ left: -330, behavior: 'smooth' });
+                    },
+                    scrollRight() {
+                        this.$refs.track.scrollBy({ left: 330, behavior: 'smooth' });
+                    }
+                }"
+                class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12"
+            >
+                <!-- Section Header + Carousel Arrows -->
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+                    <div class="max-w-xl space-y-3 text-center sm:text-left mx-auto sm:mx-0">
+                        <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-slate-950 tracking-tight">
+                            Everything your shop needs
+                        </h2>
+                        <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                            Swipe through what you can do from one simple place.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center justify-center sm:justify-end gap-2.5 shrink-0">
+                        <button
+                            type="button"
+                            @click="scrollLeft()"
+                            aria-label="Previous feature card"
+                            class="w-11 h-11 rounded-full bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-700 flex items-center justify-center transition shadow-xs cursor-pointer active:scale-95"
+                        >
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
+                        <button
+                            type="button"
+                            @click="scrollRight()"
+                            aria-label="Next feature card"
+                            class="w-11 h-11 rounded-full bg-slate-900 hover:bg-blue-600 text-white flex items-center justify-center transition shadow-sm cursor-pointer active:scale-95"
+                        >
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Simple 8-Card Grid -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-7">
+                @php
+                    $featureCards = [
+                        [
+                            'title' => 'Record Sales Fast',
+                            'desc' => 'Sell quickly to walk-in buyers on any phone.',
+                            'image' => asset('images/hero-3d-mascot.jpg'),
+                            'bg' => 'from-blue-600 to-indigo-700',
+                        ],
+                        [
+                            'title' => 'Print Paper Slips',
+                            'desc' => 'Print receipts with a small Bluetooth printer.',
+                            'image' => asset('images/shop/boutique-shelves-showcase.png'),
+                            'bg' => 'from-emerald-500 to-teal-700',
+                        ],
+                        [
+                            'title' => 'WhatsApp Receipts',
+                            'desc' => 'Send receipts straight to your buyer\'s WhatsApp.',
+                            'image' => asset('images/products/versse-snakeskin-accent-bag.png'),
+                            'bg' => 'from-teal-500 to-emerald-700',
+                        ],
+                        [
+                            'title' => 'Track Your Goods',
+                            'desc' => 'Always know what is left in your shop.',
+                            'image' => asset('images/shop/boutique-interior-tour.png'),
+                            'bg' => 'from-indigo-500 to-purple-700',
+                        ],
+                        [
+                            'title' => 'Cash & Transfer',
+                            'desc' => 'Take half cash and half transfer on one sale.',
+                            'image' => asset('images/products/birkin-style-padlock-tote.png'),
+                            'bg' => 'from-amber-500 to-orange-600',
+                        ],
+                        [
+                            'title' => 'Daily Sales Total',
+                            'desc' => 'See all money made at the end of each day.',
+                            'image' => asset('images/shop/boutique-lights-apparel.png'),
+                            'bg' => 'from-rose-500 to-pink-600',
+                        ],
+                        [
+                            'title' => 'Online Store Link',
+                            'desc' => 'Let buyers pay online with card or transfer.',
+                            'image' => asset('images/products/croc-tote-3pc-set.png'),
+                            'bg' => 'from-cyan-500 to-blue-600',
+                        ],
+                        [
+                            'title' => 'Multiple Shops',
+                            'desc' => 'Check all your shop branches in one place.',
+                            'image' => asset('images/products/quilted-chain-flap-bag.png'),
+                            'bg' => 'from-purple-500 to-indigo-700',
+                        ],
+                    ];
+                @endphp
 
-                    <!-- 1: Record Sales Fast -->
-                    <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center mx-auto">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                <!-- Swipeable Carousel Track -->
+                <div
+                    x-ref="track"
+                    class="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                >
+                    @foreach ($featureCards as $card)
+                        <div class="snap-start shrink-0 w-[270px] sm:w-[300px] rounded-3xl bg-slate-50/90 hover:bg-white border border-slate-200/70 shadow-sm hover:shadow-xl hover:shadow-slate-900/5 transition duration-300 overflow-hidden group flex flex-col">
+                            <div class="relative h-48 overflow-hidden bg-gradient-to-br {{ $card['bg'] }}">
+                                <img
+                                    src="{{ $card['image'] }}"
+                                    alt="{{ $card['title'] }}"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    loading="lazy"
+                                />
+                            </div>
+                            <div class="p-6 space-y-2">
+                                <h3 class="font-bold text-base sm:text-lg text-slate-900">{{ $card['title'] }}</h3>
+                                <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">{{ $card['desc'] }}</p>
+                            </div>
                         </div>
-                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Record Sales Fast</h3>
-                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Sell quickly to walk-in buyers on any phone.</p>
-                    </div>
-
-                    <!-- 2: Print Paper Receipts -->
-                    <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                        </div>
-                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Print Paper Slips</h3>
-                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Print receipts with a small Bluetooth printer.</p>
-                    </div>
-
-                    <!-- 3: WhatsApp Receipts -->
-                    <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
-                        <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center mx-auto">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                        </div>
-                        <h3 class="font-bold text-sm sm:text-base text-slate-900">WhatsApp Receipts</h3>
-                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Send receipts straight to your buyer's WhatsApp.</p>
-                    </div>
-
-                    <!-- 4: Track Your Goods -->
-                    <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
-                        <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center mx-auto">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                        </div>
-                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Track Your Goods</h3>
-                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Always know what is left in your shop.</p>
-                    </div>
-
-                    <!-- 5: Cash & Transfer -->
-                    <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
-                        <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mx-auto">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-                        </div>
-                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Cash &amp; Transfer</h3>
-                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Take half cash and half transfer on one sale.</p>
-                    </div>
-
-                    <!-- 6: Daily Sales Total -->
-                    <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
-                        <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center mx-auto">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                        </div>
-                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Daily Sales Total</h3>
-                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">See all money made at the end of each day.</p>
-                    </div>
-
-                    <!-- 7: Online Shop -->
-                    <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
-                        <div class="w-12 h-12 rounded-2xl bg-cyan-100 text-cyan-700 flex items-center justify-center mx-auto">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M3 14h18m-9-4v8m-7 4h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        </div>
-                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Online Store Link</h3>
-                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Let buyers pay online with card or transfer.</p>
-                    </div>
-
-                    <!-- 8: Multiple Shops -->
-                    <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/80 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5 transition duration-200 space-y-3 text-center border border-slate-100">
-                        <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center mx-auto">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                        </div>
-                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Multiple Shops</h3>
-                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">Check all your shop branches in one place.</p>
-                    </div>
-
+                    @endforeach
                 </div>
             </div>
         </section>
