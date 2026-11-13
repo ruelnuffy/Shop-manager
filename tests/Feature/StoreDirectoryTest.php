@@ -24,9 +24,10 @@ class StoreDirectoryTest extends TestCase
         $response = $this->get('/stores');
 
         $response->assertStatus(200);
-        $response->assertSee('Stores Registered on');
-        $response->assertSee('Live Merchant Directory');
+        $response->assertSee('Stores on');
         $response->assertSee("Jessi's ClassiQ Store");
+        $response->assertSee('Visit Store');
+        $response->assertDontSee('Admin &rarr;', false);
     }
 
     public function test_public_can_search_stores_by_name(): void

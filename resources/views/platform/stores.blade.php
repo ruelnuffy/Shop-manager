@@ -70,24 +70,19 @@
     <!-- HERO HEADER & DIRECTORY SEARCH                              -->
     <!-- ═══════════════════════════════════════════════════════════ -->
     <main class="flex-1 pb-20">
-        <section class="pt-8 sm:pt-14 pb-12 sm:pb-16 bg-gradient-to-b from-blue-50/50 via-white to-transparent border-b border-slate-100">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+        <section class="pt-10 sm:pt-16 pb-10 sm:pb-14">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
 
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-700 text-xs font-bold uppercase tracking-wider shadow-xs">
-                    <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-                    <span>Live Merchant Directory</span>
-                </div>
-
-                <h1 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-slate-950 tracking-tight leading-tight max-w-4xl mx-auto">
-                    Stores Registered on <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{{ config('app.platform_name', 'ShopManager') }}</span>
+                <h1 class="font-display font-extrabold text-3xl sm:text-5xl text-slate-950 tracking-tight leading-tight">
+                    Stores on <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{{ config('app.platform_name', 'ShopManager') }}</span>
                 </h1>
 
-                <p class="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-                    Discover verified fashion boutiques, apparel ateliers, and retail merchants running their in-store counters and online storefronts on ShopManager.
+                <p class="text-sm sm:text-base text-slate-500 max-w-xl mx-auto">
+                    Browse storefronts powered by {{ config('app.platform_name', 'ShopManager') }}.
                 </p>
 
                 <!-- Search Input Bar -->
-                <div class="max-w-2xl mx-auto pt-2">
+                <div class="max-w-xl mx-auto pt-2">
                     <form method="GET" action="{{ route('stores.index') }}" class="relative flex items-center">
                         <div class="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none text-slate-400">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -98,7 +93,7 @@
                             type="text"
                             name="q"
                             value="{{ $search }}"
-                            placeholder="Search by store name, city, or category..."
+                            placeholder="Search stores..."
                             class="w-full pl-12 sm:pl-14 pr-28 sm:pr-32 py-3.5 sm:py-4 rounded-full bg-white border border-slate-200 shadow-lg shadow-slate-900/5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 transition"
                         />
                         <button
@@ -111,25 +106,13 @@
 
                     @if ($search !== '')
                         <div class="mt-3 flex items-center justify-center gap-2 text-xs text-slate-500">
-                            <span>Filtering for "<strong>{{ $search }}</strong>"</span>
+                            <span>Showing results for "<strong>{{ $search }}</strong>"</span>
                             <span>&bull;</span>
                             <a href="{{ route('stores.index') }}" class="text-blue-600 font-bold hover:underline">
-                                Clear search &times;
+                                Clear &times;
                             </a>
                         </div>
                     @endif
-                </div>
-
-                <!-- Live Counter Stats -->
-                <div class="flex items-center justify-center gap-6 sm:gap-8 pt-4 text-xs font-semibold text-slate-500">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        <span><strong>{{ $stores->count() }}</strong> @if($search !== '') matching @else registered @endif {{ \Illuminate\Support\Str::plural('store', $stores->count()) }}</span>
-                    </div>
-                    <span>&bull;</span>
-                    <div>
-                        <span><strong>{{ $totalStoresCount }}</strong> active on platform</span>
-                    </div>
                 </div>
             </div>
         </section>
@@ -137,91 +120,49 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- STORES GRID                                                 -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14">
+        <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8">
             @if ($stores->isNotEmpty())
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
                     @foreach ($stores as $store)
                         @php
                             $primaryColor = data_get($store->settings, 'branding.palette.primary', '#2563eb');
                             $logoUrl = data_get($store->settings, 'branding.logo_url');
-                            $tagline = data_get($store->settings, 'branding.tagline', 'Curated Boutique & Ready-to-Wear');
-                            $locationBadge = $store->locationBadge();
-                            $leadName = $store->leadName();
-                            $leadRole = $store->leadRole();
-                            $leadStatus = $store->leadStatus();
+                            $tagline = data_get($store->settings, 'branding.tagline');
                         @endphp
-                        <div class="rounded-3xl bg-white border border-slate-200/80 p-6 shadow-sm hover:shadow-xl hover:shadow-slate-900/5 transition duration-300 flex flex-col justify-between gap-5 group">
-                            <!-- Top Brand Info -->
+                        <div class="rounded-3xl bg-white border border-slate-200/70 p-7 sm:p-8 shadow-sm hover:shadow-xl hover:shadow-slate-900/5 transition duration-300 flex flex-col justify-between gap-8 group">
                             <div class="space-y-4">
-                                <div class="flex items-start justify-between gap-3">
-                                    <div class="flex items-center gap-3">
-                                        @if ($logoUrl)
-                                            <div class="w-12 h-12 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 p-1 flex items-center justify-center shrink-0">
-                                                <img src="{{ $logoUrl }}" alt="{{ $store->name }}" class="w-full h-full object-contain">
-                                            </div>
-                                        @else
-                                            <div
-                                                class="w-12 h-12 rounded-2xl flex items-center justify-center font-extrabold text-sm text-white shadow-xs shrink-0 group-hover:scale-105 transition-transform"
-                                                style="background-color: {{ $primaryColor }};"
-                                            >
-                                                {{ strtoupper(substr($store->name, 0, 2)) }}
-                                            </div>
-                                        @endif
-                                        <div class="min-w-0">
-                                            <h2 class="font-bold text-slate-900 text-base leading-tight truncate group-hover:text-blue-600 transition">
-                                                {{ $store->name }}
-                                            </h2>
-                                            <span class="text-xs text-slate-400 font-mono block truncate">
-                                                @if ($store->subdomain) {{ $store->subdomain }}.shopmanager @else {{ $store->slug }} @endif
-                                            </span>
+                                <div class="flex items-center gap-4">
+                                    @if ($logoUrl)
+                                        <div class="w-12 h-12 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 p-1.5 flex items-center justify-center shrink-0">
+                                            <img src="{{ $logoUrl }}" alt="{{ $store->name }}" class="w-full h-full object-contain">
                                         </div>
-                                    </div>
-
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-100 shrink-0">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                        <span>Live</span>
-                                    </span>
+                                    @else
+                                        <div
+                                            class="w-12 h-12 rounded-2xl flex items-center justify-center font-extrabold text-sm text-white shadow-xs shrink-0 group-hover:scale-105 transition-transform"
+                                            style="background-color: {{ $primaryColor }};"
+                                        >
+                                            {{ strtoupper(substr($store->name, 0, 2)) }}
+                                        </div>
+                                    @endif
+                                    <h2 class="font-bold text-slate-900 text-lg leading-snug truncate group-hover:text-blue-600 transition">
+                                        {{ $store->name }}
+                                    </h2>
                                 </div>
 
-                                <p class="text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed">
-                                    {{ $tagline }}
-                                </p>
-
-                                <!-- Meta Badges -->
-                                <div class="space-y-2 pt-1 border-t border-slate-100 text-xs text-slate-600">
-                                    <div class="flex items-center gap-2 truncate">
-                                        <span class="text-slate-400 text-sm">📍</span>
-                                        <span class="truncate font-medium">{{ $locationBadge }}</span>
-                                    </div>
-                                    <div class="flex items-center justify-between gap-2 text-[11px] text-slate-500">
-                                        <div class="flex items-center gap-1.5 truncate">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-                                            <span class="truncate">{{ $leadName }} &bull; {{ $leadRole }}</span>
-                                        </div>
-                                        <div class="font-bold text-slate-700 shrink-0">
-                                            {{ $store->products_count }} {{ \Illuminate\Support\Str::plural('item', $store->products_count) }}
-                                        </div>
-                                    </div>
-                                </div>
+                                @if ($tagline)
+                                    <p class="text-sm text-slate-500 line-clamp-2 leading-relaxed">
+                                        {{ $tagline }}
+                                    </p>
+                                @endif
                             </div>
 
-                            <!-- Bottom Action Buttons -->
-                            <div class="pt-3 border-t border-slate-100 flex items-center gap-2">
-                                <a
-                                    href="{{ route('storefront', ['tenant' => $store->slug]) }}"
-                                    class="flex-1 py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold text-center transition flex items-center justify-center gap-1.5 shadow-xs"
-                                >
-                                    <span>Storefront</span>
-                                    <span class="text-slate-400">&nearr;</span>
-                                </a>
-                                <a
-                                    href="{{ route('login') }}"
-                                    class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold text-center transition"
-                                    title="Store Admin Login"
-                                >
-                                    <span>Admin &rarr;</span>
-                                </a>
-                            </div>
+                            <a
+                                href="{{ route('storefront', ['tenant' => $store->slug]) }}"
+                                class="w-full py-3 px-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold text-center transition flex items-center justify-center gap-2 shadow-xs"
+                            >
+                                <span>Visit Store</span>
+                                <span class="text-slate-400">&nearr;</span>
+                            </a>
                         </div>
                     @endforeach
                 </div>
