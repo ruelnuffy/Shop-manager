@@ -650,7 +650,7 @@
                             </ul>
                         </div>
 
-                        <a href="{{ route('register') }}" class="w-full py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs sm:text-sm text-center transition">
+                        <a href="https://wa.me/2349046686176?text=I%20want%20to%20subscribe" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs sm:text-sm text-center transition">
                             Start Free
                         </a>
                     </div>
@@ -692,7 +692,7 @@
                             </ul>
                         </div>
 
-                        <a href="{{ route('register') }}" class="w-full py-3.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm text-center transition shadow-lg shadow-blue-600/25 active:scale-95">
+                        <a href="https://wa.me/2349046686176?text=I%20want%20to%20subscribe" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm text-center transition shadow-lg shadow-blue-600/25 active:scale-95">
                             Start Free Trial &rarr;
                         </a>
                     </div>
@@ -726,7 +726,7 @@
                             </ul>
                         </div>
 
-                        <a href="{{ route('register') }}" class="w-full py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs sm:text-sm text-center transition">
+                        <a href="https://wa.me/2349046686176?text=I%20want%20to%20subscribe" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs sm:text-sm text-center transition">
                             Get Started
                         </a>
                     </div>
