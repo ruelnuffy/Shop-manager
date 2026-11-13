@@ -585,25 +585,24 @@
         <!-- SECTION 4: "START FREE FOR 14 DAYS, GROW AT YOUR PACE"      -->
         <!-- Warm Sand / Beige background matching myshoplet screenshot   -->
         <!-- ═══════════════════════════════════════════════════════════ -->
-        <section id="pricing" class="py-16 sm:py-24 bg-warm-sand">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+        <section id="pricing" class="py-20 sm:py-28 bg-warm-sand">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 sm:space-y-16">
                 <!-- Section Header -->
-                <div class="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4">
-                    <span class="text-xs sm:text-sm font-bold text-blue-700 uppercase tracking-wider">Pricing Plans</span>
-                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-slate-950 tracking-tight">
-                        Start free for 14 days, grow at your pace
+                <div class="text-center max-w-xl mx-auto space-y-4">
+                    <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-slate-950 tracking-tight">
+                        Start free for 14 days
                     </h2>
-                    <p class="text-base sm:text-lg text-slate-600 leading-relaxed">
-                        Transparent plans built for Nigerian boutiques and merchants. No contracts, cancel anytime.
+                    <p class="text-sm sm:text-base text-slate-600">
+                        Pick a plan that fits your shop. Cancel anytime.
                     </p>
 
                     <!-- Billing Toggle Pills -->
-                    <div class="pt-4 inline-flex items-center p-1.5 rounded-full bg-white shadow-sm border border-slate-200">
+                    <div class="pt-3 inline-flex items-center p-1.5 rounded-full bg-white shadow-sm border border-slate-200">
                         <button
                             type="button"
                             @click="billingCycle = 'monthly'"
                             :class="billingCycle === 'monthly' ? 'bg-blue-600 text-white font-bold' : 'text-slate-600 font-semibold'"
-                            class="px-6 py-2.5 rounded-full text-xs sm:text-sm transition cursor-pointer"
+                            class="px-6 py-2 rounded-full text-xs sm:text-sm transition cursor-pointer"
                         >
                             Monthly
                         </button>
@@ -611,23 +610,23 @@
                             type="button"
                             @click="billingCycle = 'annual'"
                             :class="billingCycle === 'annual' ? 'bg-blue-600 text-white font-bold' : 'text-slate-600 font-semibold'"
-                            class="px-6 py-2.5 rounded-full text-xs sm:text-sm transition flex items-center gap-1.5 cursor-pointer"
+                            class="px-6 py-2 rounded-full text-xs sm:text-sm transition flex items-center gap-1.5 cursor-pointer"
                         >
                             <span>Annually</span>
-                            <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] sm:text-xs font-extrabold uppercase">Save 20%</span>
+                            <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase">-20%</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- 3 Pricing Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch pt-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
 
                     <!-- Plan 1: Starter -->
-                    <div class="bg-white rounded-3xl p-8 sm:p-9 shadow-xl shadow-slate-900/5 space-y-6 flex flex-col justify-between border border-slate-200/80">
-                        <div class="space-y-4">
+                    <div class="bg-white rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-900/5 space-y-8 flex flex-col justify-between border border-slate-200/80">
+                        <div class="space-y-6">
                             <div>
-                                <h3 class="font-display font-bold text-xl sm:text-2xl text-slate-900">Starter Store</h3>
-                                <p class="text-xs sm:text-sm text-slate-500 mt-1">For single boutique owners &amp; walk-in stores</p>
+                                <h3 class="font-display font-bold text-xl text-slate-900">Starter</h3>
+                                <p class="text-xs sm:text-sm text-slate-500 mt-1">For small shops</p>
                             </div>
 
                             <div class="flex items-baseline gap-1.5">
@@ -635,47 +634,37 @@
                                 <span class="text-xs sm:text-sm text-slate-400 font-medium">/ month</span>
                             </div>
 
-                            <div class="border-b border-slate-100 pt-2"></div>
-
-                            <ul class="space-y-3.5 text-xs sm:text-sm text-slate-700">
-                                <li class="flex items-center gap-2.5">
+                            <ul class="space-y-4 text-xs sm:text-sm text-slate-600 pt-2">
+                                <li class="flex items-center gap-3">
                                     <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>Full Walk-In POS Till</span>
+                                    <span>POS &amp; online storefront</span>
                                 </li>
-                                <li class="flex items-center gap-2.5">
+                                <li class="flex items-center gap-3">
                                     <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>Direct WhatsApp Receipts</span>
+                                    <span>Up to 150 products</span>
                                 </li>
-                                <li class="flex items-center gap-2.5">
+                                <li class="flex items-center gap-3">
                                     <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>Up to 150 Products</span>
-                                </li>
-                                <li class="flex items-center gap-2.5">
-                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>2 Cashier / Staff Logins</span>
-                                </li>
-                                <li class="flex items-center gap-2.5">
-                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>Paystack Payment Gateway</span>
+                                    <span>2 staff logins</span>
                                 </li>
                             </ul>
                         </div>
 
-                        <a href="{{ route('register') }}" class="w-full py-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-extrabold text-xs sm:text-sm uppercase tracking-wider text-center transition">
-                            Start Free Trial
+                        <a href="{{ route('register') }}" class="w-full py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs sm:text-sm text-center transition">
+                            Start Free
                         </a>
                     </div>
 
-                    <!-- Plan 2: Pro Retailer (Highlighted) -->
-                    <div class="bg-white rounded-3xl p-8 sm:p-9 shadow-2xl shadow-blue-600/10 space-y-6 flex flex-col justify-between relative border-2 border-blue-600">
+                    <!-- Plan 2: Pro (Highlighted) -->
+                    <div class="bg-white rounded-3xl p-8 sm:p-10 shadow-2xl shadow-blue-600/10 space-y-8 flex flex-col justify-between relative border-2 border-blue-600">
                         <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-blue-600 text-white text-[11px] font-extrabold uppercase tracking-wider shadow-sm">
-                            MOST POPULAR
+                            Popular
                         </span>
 
-                        <div class="space-y-4">
+                        <div class="space-y-6">
                             <div>
-                                <h3 class="font-display font-bold text-xl sm:text-2xl text-slate-900">Pro Retailer</h3>
-                                <p class="text-xs sm:text-sm text-slate-500 mt-1">For busy retail shops, boutiques &amp; growing brands</p>
+                                <h3 class="font-display font-bold text-xl text-slate-900">Pro</h3>
+                                <p class="text-xs sm:text-sm text-slate-500 mt-1">For growing shops</p>
                             </div>
 
                             <div class="flex items-baseline gap-1.5">
@@ -683,47 +672,37 @@
                                 <span class="text-xs sm:text-sm text-slate-400 font-medium">/ month</span>
                             </div>
 
-                            <div class="border-b border-slate-100 pt-2"></div>
-
-                            <ul class="space-y-3.5 text-xs sm:text-sm text-slate-700">
-                                <li class="flex items-center gap-2.5">
+                            <ul class="space-y-4 text-xs sm:text-sm text-slate-600 pt-2">
+                                <li class="flex items-center gap-3">
                                     <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>Everything in Starter</span>
+                                    <span>Unlimited products &amp; staff</span>
                                 </li>
-                                <li class="flex items-center gap-2.5">
+                                <li class="flex items-center gap-3">
                                     <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <strong class="text-slate-900">58mm Wireless Thermal Slips</strong>
+                                    <span>58mm receipt printing</span>
                                 </li>
-                                <li class="flex items-center gap-2.5">
+                                <li class="flex items-center gap-3">
                                     <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <strong class="text-slate-900">Split Payments (Cash + Transfer)</strong>
+                                    <span>Cash &amp; transfer split pay</span>
                                 </li>
-                                <li class="flex items-center gap-2.5">
+                                <li class="flex items-center gap-3">
                                     <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <strong class="text-slate-900">Cashier Password Authorization</strong>
-                                </li>
-                                <li class="flex items-center gap-2.5">
-                                    <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>Daily Closeout Z-Reports</span>
-                                </li>
-                                <li class="flex items-center gap-2.5">
-                                    <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>Unlimited Products &amp; Staff</span>
+                                    <span>Daily sales reports</span>
                                 </li>
                             </ul>
                         </div>
 
-                        <a href="{{ route('register') }}" class="w-full py-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider text-center transition shadow-lg shadow-blue-600/30 active:scale-95">
-                            Start 14-Day Free Trial &rarr;
+                        <a href="{{ route('register') }}" class="w-full py-3.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm text-center transition shadow-lg shadow-blue-600/25 active:scale-95">
+                            Start Free Trial &rarr;
                         </a>
                     </div>
 
-                    <!-- Plan 3: Enterprise -->
-                    <div class="bg-white rounded-3xl p-8 sm:p-9 shadow-xl shadow-slate-900/5 space-y-6 flex flex-col justify-between border border-slate-200/80">
-                        <div class="space-y-4">
+                    <!-- Plan 3: Multi-Store -->
+                    <div class="bg-white rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-900/5 space-y-8 flex flex-col justify-between border border-slate-200/80">
+                        <div class="space-y-6">
                             <div>
-                                <h3 class="font-display font-bold text-xl sm:text-2xl text-slate-900">Enterprise Multi-Store</h3>
-                                <p class="text-xs sm:text-sm text-slate-500 mt-1">For multi-location retail chains &amp; franchises</p>
+                                <h3 class="font-display font-bold text-xl text-slate-900">Multi-Store</h3>
+                                <p class="text-xs sm:text-sm text-slate-500 mt-1">For multiple branches</p>
                             </div>
 
                             <div class="flex items-baseline gap-1.5">
@@ -731,34 +710,24 @@
                                 <span class="text-xs sm:text-sm text-slate-400 font-medium">/ month</span>
                             </div>
 
-                            <div class="border-b border-slate-100 pt-2"></div>
-
-                            <ul class="space-y-3.5 text-xs sm:text-sm text-slate-700">
-                                <li class="flex items-center gap-2.5">
+                            <ul class="space-y-4 text-xs sm:text-sm text-slate-600 pt-2">
+                                <li class="flex items-center gap-3">
                                     <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>Up to 5 Store Branches</span>
+                                    <span>Up to 5 shop branches</span>
                                 </li>
-                                <li class="flex items-center gap-2.5">
+                                <li class="flex items-center gap-3">
                                     <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>Centralized Warehouse Stock Sync</span>
+                                    <span>Shared stock &amp; staff payroll</span>
                                 </li>
-                                <li class="flex items-center gap-2.5">
+                                <li class="flex items-center gap-3">
                                     <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>Automated Staff Payroll Transfers</span>
-                                </li>
-                                <li class="flex items-center gap-2.5">
-                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>Custom Domain Integration</span>
-                                </li>
-                                <li class="flex items-center gap-2.5">
-                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span>Dedicated Account Manager</span>
+                                    <span>Custom domain &amp; support</span>
                                 </li>
                             </ul>
                         </div>
 
-                        <a href="{{ route('register') }}" class="w-full py-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-extrabold text-xs sm:text-sm uppercase tracking-wider text-center transition">
-                            Contact Sales
+                        <a href="{{ route('register') }}" class="w-full py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs sm:text-sm text-center transition">
+                            Get Started
                         </a>
                     </div>
 
