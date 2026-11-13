@@ -607,9 +607,9 @@
                                 <p class="text-xs sm:text-sm text-slate-500 mt-1">For small shops</p>
                             </div>
 
-                            <div class="flex items-baseline gap-1.5">
-                                <span class="font-display font-extrabold text-3xl sm:text-4xl text-slate-950" x-text="billingCycle === 'annual' ? '₦6,400' : '₦8,000'"></span>
-                                <span class="text-xs sm:text-sm text-slate-400 font-medium">/ month</span>
+                            <div class="flex flex-wrap items-baseline gap-1.5">
+                                <span class="font-display font-extrabold text-3xl sm:text-4xl text-slate-950 whitespace-nowrap" x-text="billingCycle === 'annual' ? '₦6,400' : '₦8,000'">₦8,000</span>
+                                <span class="text-xs sm:text-sm text-slate-400 font-medium whitespace-nowrap">/ month</span>
                             </div>
 
                             <ul class="space-y-4 text-xs sm:text-sm text-slate-600 pt-2">
@@ -645,9 +645,9 @@
                                 <p class="text-xs sm:text-sm text-slate-500 mt-1">For growing shops</p>
                             </div>
 
-                            <div class="flex items-baseline gap-1.5">
-                                <span class="font-display font-extrabold text-3xl sm:text-4xl text-blue-600" x-text="billingCycle === 'annual' ? '₦14,400' : '₦18,000'"></span>
-                                <span class="text-xs sm:text-sm text-slate-400 font-medium">/ month</span>
+                            <div class="flex flex-wrap items-baseline gap-1.5">
+                                <span class="font-display font-extrabold text-3xl sm:text-4xl text-blue-600 whitespace-nowrap" x-text="billingCycle === 'annual' ? '₦14,400' : '₦18,000'">₦18,000</span>
+                                <span class="text-xs sm:text-sm text-slate-400 font-medium whitespace-nowrap">/ month</span>
                             </div>
 
                             <ul class="space-y-4 text-xs sm:text-sm text-slate-600 pt-2">
@@ -683,9 +683,9 @@
                                 <p class="text-xs sm:text-sm text-slate-500 mt-1">For multiple branches</p>
                             </div>
 
-                            <div class="flex items-baseline gap-1.5">
-                                <span class="font-display font-extrabold text-3xl sm:text-4xl text-slate-950" x-text="billingCycle === 'annual' ? '₦36,000' : '₦45,000'"></span>
-                                <span class="text-xs sm:text-sm text-slate-400 font-medium">/ month</span>
+                            <div class="flex flex-wrap items-baseline gap-1.5">
+                                <span class="font-display font-extrabold text-3xl sm:text-4xl text-slate-950 whitespace-nowrap" x-text="billingCycle === 'annual' ? '₦36,000' : '₦45,000'">₦45,000</span>
+                                <span class="text-xs sm:text-sm text-slate-400 font-medium whitespace-nowrap">/ month</span>
                             </div>
 
                             <ul class="space-y-4 text-xs sm:text-sm text-slate-600 pt-2">
