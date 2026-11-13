@@ -365,17 +365,7 @@
         <!-- SECTION 2: "ONE SYSTEM, NOT EIGHT APPS" (Hub & Satellites)  -->
         <!-- ═══════════════════════════════════════════════════════════ -->
         <section id="features" class="pt-14 sm:pt-20 pb-20 sm:pb-28 bg-white overflow-hidden">
-            <div
-                x-data="{
-                    scrollLeft() {
-                        this.$refs.track.scrollBy({ left: -330, behavior: 'smooth' });
-                    },
-                    scrollRight() {
-                        this.$refs.track.scrollBy({ left: 330, behavior: 'smooth' });
-                    }
-                }"
-                class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12"
-            >
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
                 <!-- Section Header + Carousel Arrows -->
                 <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                     <div class="max-w-xl space-y-3 text-center sm:text-left mx-auto sm:mx-0">
@@ -390,7 +380,7 @@
                     <div class="flex items-center justify-center sm:justify-end gap-2.5 shrink-0">
                         <button
                             type="button"
-                            @click="scrollLeft()"
+                            onclick="scrollFeatureCarousel(-330)"
                             aria-label="Previous feature card"
                             class="w-11 h-11 rounded-full bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-700 flex items-center justify-center transition shadow-xs cursor-pointer active:scale-95"
                         >
@@ -398,7 +388,7 @@
                         </button>
                         <button
                             type="button"
-                            @click="scrollRight()"
+                            onclick="scrollFeatureCarousel(330)"
                             aria-label="Next feature card"
                             class="w-11 h-11 rounded-full bg-slate-900 hover:bg-blue-600 text-white flex items-center justify-center transition shadow-sm cursor-pointer active:scale-95"
                         >
@@ -462,7 +452,7 @@
 
                 <!-- Swipeable Carousel Track -->
                 <div
-                    x-ref="track"
+                    id="featureCarouselTrack"
                     class="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                 >
                     @foreach ($featureCards as $card)
@@ -578,17 +568,17 @@
                     <div class="mt-3 inline-flex items-center p-1.5 rounded-full bg-white shadow-sm border border-slate-200">
                         <button
                             type="button"
-                            @click="billingCycle = 'monthly'"
-                            :class="billingCycle === 'monthly' ? 'bg-blue-600 text-white font-bold' : 'text-slate-600 font-semibold'"
-                            class="px-6 py-2 rounded-full text-xs sm:text-sm transition cursor-pointer"
+                            id="billingMonthlyBtn"
+                            onclick="setBillingCycle('monthly')"
+                            class="px-6 py-2 rounded-full text-xs sm:text-sm transition cursor-pointer bg-blue-600 text-white font-bold"
                         >
                             Monthly
                         </button>
                         <button
                             type="button"
-                            @click="billingCycle = 'annual'"
-                            :class="billingCycle === 'annual' ? 'bg-blue-600 text-white font-bold' : 'text-slate-600 font-semibold'"
-                            class="px-6 py-2 rounded-full text-xs sm:text-sm transition flex items-center gap-1.5 cursor-pointer"
+                            id="billingAnnualBtn"
+                            onclick="setBillingCycle('annual')"
+                            class="px-6 py-2 rounded-full text-xs sm:text-sm transition flex items-center gap-1.5 cursor-pointer text-slate-600 font-semibold"
                         >
                             <span>Annually</span>
                             <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase">-20%</span>
@@ -608,7 +598,7 @@
                             </div>
 
                             <div class="flex flex-wrap items-baseline gap-1.5">
-                                <span class="font-display font-extrabold text-3xl sm:text-4xl text-slate-950 whitespace-nowrap" x-text="billingCycle === 'annual' ? '₦6,400' : '₦8,000'">₦8,000</span>
+                                <span class="billing-price font-display font-extrabold text-3xl sm:text-4xl text-slate-950 whitespace-nowrap" data-monthly="₦8,000" data-annual="₦6,400">₦8,000</span>
                                 <span class="text-xs sm:text-sm text-slate-400 font-medium whitespace-nowrap">/ month</span>
                             </div>
 
@@ -646,7 +636,7 @@
                             </div>
 
                             <div class="flex flex-wrap items-baseline gap-1.5">
-                                <span class="font-display font-extrabold text-3xl sm:text-4xl text-blue-600 whitespace-nowrap" x-text="billingCycle === 'annual' ? '₦14,400' : '₦18,000'">₦18,000</span>
+                                <span class="billing-price font-display font-extrabold text-3xl sm:text-4xl text-blue-600 whitespace-nowrap" data-monthly="₦18,000" data-annual="₦14,400">₦18,000</span>
                                 <span class="text-xs sm:text-sm text-slate-400 font-medium whitespace-nowrap">/ month</span>
                             </div>
 
@@ -684,7 +674,7 @@
                             </div>
 
                             <div class="flex flex-wrap items-baseline gap-1.5">
-                                <span class="font-display font-extrabold text-3xl sm:text-4xl text-slate-950 whitespace-nowrap" x-text="billingCycle === 'annual' ? '₦36,000' : '₦45,000'">₦45,000</span>
+                                <span class="billing-price font-display font-extrabold text-3xl sm:text-4xl text-slate-950 whitespace-nowrap" data-monthly="₦45,000" data-annual="₦36,000">₦45,000</span>
                                 <span class="text-xs sm:text-sm text-slate-400 font-medium whitespace-nowrap">/ month</span>
                             </div>
 
@@ -1165,5 +1155,33 @@
             </svg>
         </a>
 
+        <script>
+            function scrollFeatureCarousel(offset) {
+                var track = document.getElementById('featureCarouselTrack');
+                if (track && track.scrollBy) {
+                    track.scrollBy({ left: offset, behavior: 'smooth' });
+                } else if (track) {
+                    track.scrollLeft += offset;
+                }
+            }
+
+            function setBillingCycle(cycle) {
+                var isAnnual = cycle === 'annual';
+                var monthlyBtn = document.getElementById('billingMonthlyBtn');
+                var annualBtn = document.getElementById('billingAnnualBtn');
+
+                if (monthlyBtn && annualBtn) {
+                    monthlyBtn.className = 'px-6 py-2 rounded-full text-xs sm:text-sm transition cursor-pointer ' +
+                        (isAnnual ? 'text-slate-600 font-semibold' : 'bg-blue-600 text-white font-bold');
+                    annualBtn.className = 'px-6 py-2 rounded-full text-xs sm:text-sm transition flex items-center gap-1.5 cursor-pointer ' +
+                        (isAnnual ? 'bg-blue-600 text-white font-bold' : 'text-slate-600 font-semibold');
+                }
+
+                var prices = document.querySelectorAll('.billing-price');
+                for (var i = 0; i < prices.length; i++) {
+                    prices[i].textContent = isAnnual ? prices[i].getAttribute('data-annual') : prices[i].getAttribute('data-monthly');
+                }
+            }
+        </script>
     </body>
 </html>
