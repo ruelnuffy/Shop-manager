@@ -781,82 +781,34 @@
         <!-- Warm Sand / Beige background matching myshoplet screenshot   -->
         <!-- ═══════════════════════════════════════════════════════════ -->
         <section id="testimonials" class="py-16 sm:py-24 bg-warm-sand">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
-                <div class="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4">
-                    <span class="text-xs sm:text-sm font-bold text-blue-700 uppercase tracking-wider">Social Proof</span>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+                <div class="text-center max-w-xl mx-auto space-y-3 sm:space-y-4">
+                    <span class="text-xs sm:text-sm font-bold text-blue-700 uppercase tracking-wider">Vendor Reviews</span>
                     <h2 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-slate-950 tracking-tight">
                         What vendors are saying
                     </h2>
-                    <p class="text-base sm:text-lg text-slate-600 leading-relaxed">
-                        Trusted by fashion boutiques, shoe stores, and retail merchants across Nigeria.
-                    </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-
-                    <!-- Review 1 -->
-                    <div class="bg-white rounded-3xl p-7 sm:p-8 shadow-xl shadow-slate-900/5 space-y-5 flex flex-col justify-between border border-slate-200/60">
-                        <div class="space-y-3.5">
-                            <div class="flex text-amber-400 text-sm gap-1">
-                                <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
-                            </div>
-                            <p class="text-sm sm:text-base text-slate-700 leading-relaxed">
-                                "The POS counter is as fast as our Moniepoint terminal. Our walk-in customers love getting their receipts right on WhatsApp, and the wireless printer setup took literally 2 minutes on my phone."
-                            </p>
-                        </div>
-                        <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-slate-900 text-white font-bold text-xs sm:text-sm flex items-center justify-center">
-                                JA
-                            </div>
-                            <div>
-                                <div class="font-bold text-sm sm:text-base text-slate-900">Jessica Adebayo</div>
-                                <div class="text-xs sm:text-sm text-slate-500">Jessi's ClassiQ Boutique, Victoria Island</div>
-                            </div>
-                        </div>
+                <div class="bg-white rounded-3xl p-8 sm:p-12 shadow-xl shadow-slate-900/5 border border-slate-200/60 text-center space-y-5 max-w-2xl mx-auto">
+                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-extrabold uppercase tracking-wider">
+                        Coming Soon
+                    </span>
+                    <h3 class="font-display font-bold text-xl sm:text-2xl text-slate-900">
+                        Real shop owner stories are on the way
+                    </h3>
+                    <p class="text-sm sm:text-base text-slate-500 max-w-md mx-auto leading-relaxed">
+                        We are collecting real reviews from shops using ShopManager. Want to be one of our first featured stores?
+                    </p>
+                    <div class="pt-2">
+                        <a
+                            href="https://wa.me/2349046686176?text=I%20want%20to%20subscribe"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm transition shadow-lg shadow-blue-600/20"
+                        >
+                            Get Started on WhatsApp &rarr;
+                        </a>
                     </div>
-
-                    <!-- Review 2 -->
-                    <div class="bg-white rounded-3xl p-7 sm:p-8 shadow-xl shadow-slate-900/5 space-y-5 flex flex-col justify-between border border-slate-200/60">
-                        <div class="space-y-3.5">
-                            <div class="flex text-amber-400 text-sm gap-1">
-                                <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
-                            </div>
-                            <p class="text-sm sm:text-base text-slate-700 leading-relaxed">
-                                "Before ShopManager, we were losing track of silk gowns sold between our Instagram page and our Lekki boutique. Now stock updates everywhere automatically the instant a sale happens."
-                            </p>
-                        </div>
-                        <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold text-xs sm:text-sm flex items-center justify-center">
-                                CE
-                            </div>
-                            <div>
-                                <div class="font-bold text-sm sm:text-base text-slate-900">Chidinma Eze</div>
-                                <div class="text-xs sm:text-sm text-slate-500">Aura Luxury Apparel, Lekki Phase 1</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Review 3 -->
-                    <div class="bg-white rounded-3xl p-7 sm:p-8 shadow-xl shadow-slate-900/5 space-y-5 flex flex-col justify-between border border-slate-200/60">
-                        <div class="space-y-3.5">
-                            <div class="flex text-amber-400 text-sm gap-1">
-                                <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
-                            </div>
-                            <p class="text-sm sm:text-base text-slate-700 leading-relaxed">
-                                "The daily Z-report closeout is a lifesaver. At 7 PM when my staff closes the store, they print the slip showing exactly how much cash and transfer came in. No missing money."
-                            </p>
-                        </div>
-                        <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold text-xs sm:text-sm flex items-center justify-center">
-                                TO
-                            </div>
-                            <div>
-                                <div class="font-bold text-sm sm:text-base text-slate-900">Tunde Ogunleye</div>
-                                <div class="text-xs sm:text-sm text-slate-500">Urban Kicks &amp; Accessories, Ikeja</div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </section>
