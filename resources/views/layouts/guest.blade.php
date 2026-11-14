@@ -63,18 +63,6 @@
 
             <!-- Right Column: Authentication Card -->
             <div class="w-full lg:w-1/2 min-h-screen flex flex-col justify-between p-6 sm:p-10 md:p-12 xl:p-16 bg-[#faf8f5] relative overflow-y-auto">
-                <!-- Top Navigation Header -->
-                <div class="flex items-center justify-between pb-4 lg:pb-0">
-                    <a href="{{ route('home') }}" class="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-charcoal/70 hover:text-blue-600 transition-colors">
-                        <span class="w-8 h-8 rounded-full bg-black/5 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition duration-200">
-                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                            </svg>
-                        </span>
-                        <span>{{ $currentTenant ? 'Storefront' : 'Home' }}</span>
-                    </a>
-                </div>
-
                 <!-- Form Center Container -->
                 <div class="w-full max-w-md mx-auto my-auto py-6">
                     <!-- Brand Logo Showcase -->
