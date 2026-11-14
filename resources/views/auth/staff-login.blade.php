@@ -70,19 +70,13 @@
 
                 {{-- Form --}}
                 <div class="w-full max-w-md mx-auto my-auto py-8">
-                    <div class="mb-8">
-                        <div class="mb-6">
-                            <x-application-logo class="h-12" />
+                    <div class="mb-6 text-center">
+                        <div class="mb-4">
+                            <x-application-logo class="h-10 mx-auto" />
                         </div>
-                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-white/10 text-white/60 border border-white/10 mb-3">
-                            Staff Access
-                        </div>
-                        <h2 class="font-display font-extrabold text-2xl sm:text-3xl uppercase tracking-tight text-white">
+                        <h2 class="font-display font-extrabold text-2xl sm:text-3xl tracking-tight text-white">
                             Staff Sign In
                         </h2>
-                        <p class="text-xs text-white/30 mt-1">
-                            For authorised boutique assistants only.
-                        </p>
                     </div>
 
                     <div class="bg-white/[0.03] rounded-3xl p-7 sm:p-9 border border-white/[0.06] backdrop-blur-sm">

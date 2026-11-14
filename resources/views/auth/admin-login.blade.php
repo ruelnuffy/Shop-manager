@@ -71,19 +71,13 @@
 
                 {{-- Form --}}
                 <div class="w-full max-w-md mx-auto my-auto py-8">
-                    <div class="mb-8">
-                        <div class="mb-6">
-                            <x-application-logo class="h-12" />
+                    <div class="mb-6 text-center">
+                        <div class="mb-4">
+                            <x-application-logo class="h-10 mx-auto" />
                         </div>
-                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-brand-pink/15 text-brand-pink border border-brand-pink/20 mb-3">
-                            Admin Access
-                        </div>
-                        <h2 class="font-display font-extrabold text-2xl sm:text-3xl uppercase tracking-tight text-white">
+                        <h2 class="font-display font-extrabold text-2xl sm:text-3xl tracking-tight text-white">
                             Admin Sign In
                         </h2>
-                        <p class="text-xs text-white/40 mt-1">
-                            Restricted to authorised administrators only.
-                        </p>
                     </div>
 
                     <div class="bg-white/[0.04] rounded-3xl p-7 sm:p-9 border border-white/[0.07] backdrop-blur-sm">

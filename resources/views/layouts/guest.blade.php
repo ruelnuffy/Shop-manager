@@ -63,44 +63,36 @@
 
             <!-- Right Column: Authentication Card -->
             <div class="w-full lg:w-1/2 min-h-screen flex flex-col justify-between p-6 sm:p-10 md:p-12 xl:p-16 bg-[#faf8f5] relative overflow-y-auto">
-                <!-- Mobile Top Navigation Header -->
-                <div class="flex items-center justify-between pb-6 border-b border-black/5 lg:border-none">
-                    <a href="{{ route('home') }}" class="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-charcoal/70 hover:text-indigo-600 transition-colors">
-                        <span class="w-7 h-7 rounded-full bg-black/5 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center transition duration-200">
+                <!-- Top Navigation Header -->
+                <div class="flex items-center justify-between pb-4 lg:pb-0">
+                    <a href="{{ route('home') }}" class="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-charcoal/70 hover:text-blue-600 transition-colors">
+                        <span class="w-8 h-8 rounded-full bg-black/5 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition duration-200">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
                         </span>
                         <span>{{ $currentTenant ? 'Storefront' : 'Home' }}</span>
                     </a>
-
-                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white border border-black/5 text-brand-charcoal/70 shadow-xs">
-                        <svg class="w-3 h-3 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
-                        <span>256-Bit SSL Encrypted</span>
-                    </div>
                 </div>
 
                 <!-- Form Center Container -->
-                <div class="w-full max-w-md mx-auto my-auto py-8">
+                <div class="w-full max-w-md mx-auto my-auto py-6">
                     <!-- Brand Logo Showcase -->
-                    <div class="mb-8 text-center sm:text-left">
+                    <div class="mb-6 text-center">
                         <a href="{{ route('home') }}" class="inline-block group transition transform hover:scale-[1.02] duration-200">
-                            <x-application-logo class="h-12 sm:h-14" />
+                            <x-application-logo class="h-10 sm:h-12" />
                         </a>
                     </div>
 
                     <!-- Inner Card -->
-                    <div class="bg-white rounded-3xl p-7 sm:p-9 shadow-xl shadow-brand-charcoal/5 border border-black/[0.06] backdrop-blur-sm">
+                    <div class="bg-white rounded-3xl p-7 sm:p-9 shadow-xl shadow-brand-charcoal/5 border border-black/[0.06]">
                         {{ $slot }}
                     </div>
                 </div>
 
-                <!-- Footer Copyright & Info -->
-                <div class="pt-6 border-t border-black/5 text-center text-xs text-brand-charcoal/50 flex flex-col sm:flex-row items-center justify-between gap-2">
-                    <span>&copy; {{ date('Y') }} {{ $brandName }}. All rights reserved.</span>
-                    <span class="font-medium text-brand-charcoal/40">{{ $currentTenant ? 'Independent Boutique Merchant' : 'Multi-Store Retail Infrastructure' }}</span>
+                <!-- Footer Copyright -->
+                <div class="pt-4 text-center text-xs text-brand-charcoal/45">
+                    <span>&copy; {{ date('Y') }} {{ $brandName }}</span>
                 </div>
             </div>
         </div>

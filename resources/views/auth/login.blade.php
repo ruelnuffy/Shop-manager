@@ -6,15 +6,9 @@
 <x-guest-layout>
     <!-- Header Block -->
     <div class="mb-6">
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-brand-pink-50 text-brand-pink border border-brand-pink-100 mb-2.5">
-            {{ $currentTenant ? 'Customer Access' : $platformName . ' Console' }}
-        </div>
-        <h2 class="font-display font-extrabold text-2xl sm:text-3xl uppercase tracking-tight text-brand-charcoal">
-            Welcome Back
+        <h2 class="font-display font-extrabold text-2xl sm:text-3xl tracking-tight text-brand-charcoal">
+            Sign In
         </h2>
-        <p class="text-xs text-brand-charcoal/60 mt-1 font-normal">
-            {{ $currentTenant ? 'Enter your credentials to access your orders, wishlist, and account privileges.' : 'Enter your credentials to access your store inventory, payroll, and operations.' }}
-        </p>
     </div>
 
     <!-- Session Status -->
