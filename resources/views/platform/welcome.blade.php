@@ -740,9 +740,6 @@
                 <div class="bg-gradient-to-tr from-slate-900 via-slate-950 to-slate-900 text-white rounded-3xl p-8 sm:p-14 shadow-2xl overflow-hidden relative">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                         <div class="space-y-6">
-                            <span class="px-3.5 py-1.5 rounded-full bg-blue-600/30 border border-blue-500/40 text-blue-300 text-xs sm:text-sm font-bold">
-                                Mobile POS &bull; Wireless Ready
-                            </span>
                             <h3 class="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white">
                                 Print receipts directly from your smartphone.
                             </h3>
@@ -932,10 +929,6 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <section class="py-16 sm:py-24 bg-[#0b0f19] text-white relative overflow-hidden">
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 relative z-10">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-white text-xs sm:text-sm font-bold">
-                    <span>GET STARTED IN 2 MINUTES</span>
-                </div>
-
                 <h2 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-tight max-w-3xl mx-auto">
                     Ready to grow your retail business?
                 </h2>

@@ -1,15 +1,9 @@
 <x-guest-layout>
     <!-- Header Block -->
     <div class="mb-6">
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-blue-50 text-blue-600 border border-blue-100 mb-2.5">
-            Security Checkpoint
-        </div>
-        <h2 class="font-display font-extrabold text-2xl sm:text-3xl uppercase tracking-tight text-brand-charcoal">
+        <h2 class="font-display font-extrabold text-2xl tracking-tight text-brand-charcoal">
             Confirm Password
         </h2>
-        <p class="text-xs text-brand-charcoal/60 mt-1 font-normal leading-relaxed">
-            This is a secure area of the boutique. Please confirm your current password to continue.
-        </p>
     </div>
 
     <form

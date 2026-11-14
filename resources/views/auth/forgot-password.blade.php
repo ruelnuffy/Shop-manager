@@ -1,15 +1,9 @@
 <x-guest-layout>
     <!-- Header Block -->
     <div class="mb-6">
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-blue-50 text-blue-600 border border-blue-100 mb-2.5">
-            Account Recovery
-        </div>
-        <h2 class="font-display font-extrabold text-2xl sm:text-3xl uppercase tracking-tight text-brand-charcoal">
+        <h2 class="font-display font-extrabold text-2xl tracking-tight text-brand-charcoal">
             Reset Password
         </h2>
-        <p class="text-xs text-brand-charcoal/60 mt-1 font-normal leading-relaxed">
-            Enter your registered email address below and we'll dispatch an encrypted reset link so you can choose a new password.
-        </p>
     </div>
 
     <!-- Session Status -->
@@ -20,7 +14,7 @@
 
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Registered Email')" />
+            <x-input-label for="email" :value="__('Email Address')" />
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-charcoal/40">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -33,7 +27,7 @@
                     type="email"
                     name="email"
                     :value="old('email')"
-                    placeholder="client@jessiclassiq.com"
+                    placeholder="you@example.com"
                     required
                     autofocus
                 />
@@ -43,7 +37,7 @@
 
         <div class="pt-2">
             <x-primary-button class="group">
-                <span>{{ __('Email Password Reset Link') }}</span>
+                <span>{{ __('Send Reset Link') }}</span>
                 <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>

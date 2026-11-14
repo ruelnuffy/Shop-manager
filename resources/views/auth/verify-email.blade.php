@@ -1,14 +1,11 @@
 <x-guest-layout>
     <!-- Header Block -->
     <div class="mb-6">
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-blue-50 text-blue-600 border border-blue-100 mb-2.5">
-            Email Confirmation
-        </div>
-        <h2 class="font-display font-extrabold text-2xl sm:text-3xl uppercase tracking-tight text-brand-charcoal">
+        <h2 class="font-display font-extrabold text-2xl tracking-tight text-brand-charcoal">
             Verify Email
         </h2>
         <p class="text-xs text-brand-charcoal/60 mt-1 font-normal leading-relaxed">
-            {{ __('Thanks for creating an account with Jessi\'s ClassiQ Store! Before proceeding, please click on the verification link we dispatched to your email address.') }}
+            {{ __('Check your inbox and click the verification link we sent you.') }}
         </p>
     </div>
 
