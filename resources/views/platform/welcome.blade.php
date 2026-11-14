@@ -70,7 +70,25 @@
                 </nav>
 
                 <!-- Auth & Dynamic Action Cluster -->
-                <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
+                    <!-- Language Switcher (Always visible on Android, iOS & Desktop) -->
+                    <select
+                        id="langSwitcher"
+                        onchange="changeSiteLanguage(this.value)"
+                        aria-label="Translate page"
+                        class="notranslate h-9 sm:h-10 pl-2.5 pr-6 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 cursor-pointer transition"
+                    >
+                        <option value="en">EN</option>
+                        <option value="ha">Hausa</option>
+                        <option value="yo">Yoruba</option>
+                        <option value="ig">Igbo</option>
+                        <option value="fr">Fran&ccedil;ais</option>
+                        <option value="ar">العربية</option>
+                        <option value="es">Espa&ntilde;ol</option>
+                        <option value="pt">Portugu&ecirc;s</option>
+                        <option value="zh-CN">中文</option>
+                    </select>
+
                     @auth
                         <a href="{{ route('dashboard') }}" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition shadow-md shadow-blue-600/25 active:scale-95">
                             <span class="hidden sm:inline">Dashboard</span>
@@ -1134,6 +1152,63 @@
                     prices[i].textContent = isAnnual ? prices[i].getAttribute('data-annual') : prices[i].getAttribute('data-monthly');
                 }
             }
+
+            function getActiveTranslateLang() {
+                var match = document.cookie.match(/(?:^|;\s*)googtrans=\/en\/([^;]+)/);
+                return match && match[1] ? decodeURIComponent(match[1]) : 'en';
+            }
+
+            function setGoogTransCookie(lang) {
+                var val = lang === 'en' ? '' : '/en/' + lang;
+                var expires = lang === 'en' ? 'Thu, 01 Jan 1970 00:00:00 GMT' : '';
+                var cookieBase = 'googtrans=' + val + '; path=/;' + (expires ? ' expires=' + expires + ';' : '');
+                document.cookie = cookieBase;
+                document.cookie = cookieBase + ' domain=.' + window.location.hostname + ';';
+            }
+
+            function applyGoogleTranslation(lang) {
+                var combo = document.querySelector('.goog-te-combo');
+                if (combo) {
+                    combo.value = lang === 'en' ? '' : lang;
+                    combo.dispatchEvent(new Event('change'));
+                    return true;
+                }
+                return false;
+            }
+
+            function changeSiteLanguage(lang) {
+                setGoogTransCookie(lang);
+                if (!applyGoogleTranslation(lang)) {
+                    window.location.reload();
+                } else if (lang === 'en') {
+                    window.location.reload();
+                }
+            }
+
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'en,ha,yo,ig,fr,ar,es,pt,zh-CN',
+                    autoDisplay: false
+                }, 'google_translate_element');
+
+                var currentLang = getActiveTranslateLang();
+                var switcher = document.getElementById('langSwitcher');
+                if (switcher) {
+                    switcher.value = currentLang;
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var switcher = document.getElementById('langSwitcher');
+                if (switcher) {
+                    switcher.value = getActiveTranslateLang();
+                }
+            });
         </script>
+        <div id="gt-wrapper" style="position:fixed;left:-9999px;top:-9999px;visibility:hidden;pointer-events:none;" aria-hidden="true">
+            <div id="google_translate_element"></div>
+        </div>
+        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
     </body>
 </html>
