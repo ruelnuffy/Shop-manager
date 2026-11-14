@@ -993,11 +993,6 @@
                     <div>
                         &copy; {{ date('Y') }} {{ config('app.platform_name', 'ShopManager') }}. All rights reserved.
                     </div>
-                    <div class="flex items-center gap-6">
-                        <a href="#" class="hover:text-slate-600">Privacy Policy</a>
-                        <a href="#" class="hover:text-slate-600">Terms of Service</a>
-                        <a href="#" class="hover:text-slate-600">Security</a>
-                    </div>
                 </div>
             </div>
         </footer>
