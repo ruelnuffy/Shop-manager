@@ -20,46 +20,34 @@
         {{-- Dark full-bleed admin portal layout --}}
         <div class="min-h-screen flex flex-col lg:flex-row">
 
-            {{-- Left: Dark Atelier Identity Panel --}}
-            <div class="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 xl:p-16 overflow-hidden bg-[#0d0b0c]">
-                {{-- Background --}}
-                <div class="absolute inset-0">
-                    <img src="{{ asset('images/shop/boutique-shelves-showcase.png') }}" alt="" class="w-full h-full object-cover object-center opacity-20" style="filter: saturate(0.3);" />
-                    <div class="absolute inset-0 bg-gradient-to-tr from-[#0d0b0c] via-[#0d0b0c]/90 to-[#1a0a10]/80"></div>
-                </div>
-                <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-brand-pink/10 rounded-full blur-3xl pointer-events-none"></div>
+            {{-- Left: Clean Admin Hero Panel with 3D Mascot --}}
+            <div class="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 xl:p-16 overflow-hidden bg-gradient-to-br from-[#1d4ed8] via-[#2563eb] to-[#1e40af]">
+                <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl pointer-events-none"></div>
 
                 {{-- Top: Logo + Label --}}
                 <div class="relative z-10 flex items-center gap-3">
                     <x-application-logo :showText="false" class="h-8" />
-                    <div class="h-5 w-px bg-white/15"></div>
-                    <span class="text-[10px] uppercase font-bold tracking-[0.4em] text-white/40">Admin Portal</span>
+                    <div class="h-5 w-px bg-white/25"></div>
+                    <span class="text-[10px] uppercase font-bold tracking-[0.3em] text-white/80">Admin Portal</span>
                 </div>
 
-                {{-- Center --}}
-                <div class="relative z-10 my-auto">
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-pink/15 border border-brand-pink/25 text-brand-pink-200 text-[10px] font-bold uppercase tracking-widest mb-5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-brand-pink animate-pulse"></span>
-                        {{ $currentTenant ? 'Atelier Command Centre' : 'Platform Control' }}
+                {{-- Center: 3D Mascot --}}
+                <div class="relative z-10 max-w-md mx-auto my-auto text-center space-y-6">
+                    <div class="rounded-[2rem] overflow-hidden shadow-2xl shadow-blue-950/40 border border-white/20 bg-blue-800/30">
+                        <img
+                            src="{{ asset('images/hero-3d-mascot.jpg') }}"
+                            alt="{{ $brandName }} Mascot"
+                            class="w-full h-auto object-cover"
+                        />
                     </div>
-                    <h1 class="font-display font-black text-4xl xl:text-5xl uppercase tracking-tight text-white leading-[1.05] mb-4">
-                        Manage {{ $currentTenant ? 'The Boutique.' : $platformName . '.' }}
+                    <h1 class="font-display font-extrabold text-3xl xl:text-4xl tracking-tight text-white leading-tight">
+                        Manage {{ $currentTenant ? $brandName : $platformName }}.
                     </h1>
-                    <p class="text-sm text-white/50 font-light leading-relaxed max-w-xs">
-                        Full access to inventory, staff management, payroll disbursement, sales reporting, and OCR paper ledger imports.
-                    </p>
-
-                    {{-- Access pills --}}
-                    <div class="mt-8 flex flex-wrap gap-2">
-                        @foreach(['Inventory Control', 'Staff & Payroll', 'Sales Reports', 'OCR Imports', 'Order Management'] as $item)
-                            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-semibold text-white/50 tracking-wide">{{ $item }}</span>
-                        @endforeach
-                    </div>
                 </div>
 
                 {{-- Bottom --}}
-                <div class="relative z-10 text-[10px] font-mono uppercase tracking-widest text-white/20">
-                    <span>{{ $brandName }} &bull; {{ $currentTenant ? 'Store Administration' : 'Platform Operations' }}</span>
+                <div class="relative z-10 text-xs text-white/70 font-medium text-center">
+                    <span>{{ $brandName }} &bull; Admin Portal</span>
                 </div>
             </div>
 

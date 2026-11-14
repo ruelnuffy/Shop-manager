@@ -19,45 +19,34 @@
 
         <div class="min-h-screen flex flex-col lg:flex-row">
 
-            {{-- Left: Staff Identity Panel --}}
-            <div class="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 xl:p-16 overflow-hidden bg-[#0e0c11]">
-                <div class="absolute inset-0">
-                    <img src="{{ asset('images/shop/boutique-lights-apparel.png') }}" alt="" class="w-full h-full object-cover object-center opacity-20" style="filter: saturate(0.25);" />
-                    <div class="absolute inset-0 bg-gradient-to-tr from-[#0e0c11] via-[#0e0c11]/90 to-[#0e0c11]/70"></div>
-                </div>
-                <div class="absolute -top-24 -right-24 w-80 h-80 bg-brand-pink/10 rounded-full blur-3xl pointer-events-none"></div>
+            {{-- Left: Clean Staff Hero Panel with 3D Mascot --}}
+            <div class="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 xl:p-16 overflow-hidden bg-gradient-to-br from-[#1d4ed8] via-[#2563eb] to-[#1e40af]">
+                <div class="absolute -top-24 -right-24 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl pointer-events-none"></div>
 
                 {{-- Top: Logo --}}
                 <div class="relative z-10 flex items-center gap-3">
                     <x-application-logo :showText="false" class="h-8" />
-                    <div class="h-5 w-px bg-white/10"></div>
-                    <span class="text-[10px] uppercase font-bold tracking-[0.4em] text-white/30">Staff Portal</span>
+                    <div class="h-5 w-px bg-white/25"></div>
+                    <span class="text-[10px] uppercase font-bold tracking-[0.3em] text-white/80">Staff Portal</span>
                 </div>
 
-                {{-- Center --}}
-                <div class="relative z-10 my-auto">
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/10 text-white/60 text-[10px] font-bold uppercase tracking-widest mb-5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        Store Assistant Access
+                {{-- Center: 3D Mascot --}}
+                <div class="relative z-10 max-w-md mx-auto my-auto text-center space-y-6">
+                    <div class="rounded-[2rem] overflow-hidden shadow-2xl shadow-blue-950/40 border border-white/20 bg-blue-800/30">
+                        <img
+                            src="{{ asset('images/hero-3d-mascot.jpg') }}"
+                            alt="{{ $brandName }} Mascot"
+                            class="w-full h-auto object-cover"
+                        />
                     </div>
-                    <h1 class="font-display font-black text-4xl xl:text-5xl uppercase tracking-tight text-white leading-[1.05] mb-4">
-                        Welcome, Associate.
+                    <h1 class="font-display font-extrabold text-3xl xl:text-4xl tracking-tight text-white leading-tight">
+                        Welcome, Team.
                     </h1>
-                    <p class="text-sm text-white/40 font-light leading-relaxed max-w-xs">
-                        Access the store management tools &mdash; process walk-in manual sales, manage stock, and fulfil incoming orders.
-                    </p>
-
-                    {{-- Access pills --}}
-                    <div class="mt-8 flex flex-wrap gap-2">
-                        @foreach(['Inventory View', 'Manual Sales', 'Order Fulfilment', 'Stock Adjustments'] as $item)
-                            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/8 text-[10px] font-semibold text-white/40 tracking-wide">{{ $item }}</span>
-                        @endforeach
-                    </div>
                 </div>
 
                 {{-- Bottom --}}
-                <div class="relative z-10 text-[10px] font-mono uppercase tracking-widest text-white/15">
-                    <span>{{ $brandName }} &bull; Staff Operations</span>
+                <div class="relative z-10 text-xs text-white/70 font-medium text-center">
+                    <span>{{ $brandName }} &bull; Staff Portal</span>
                 </div>
             </div>
 
