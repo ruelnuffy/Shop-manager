@@ -927,45 +927,6 @@
             </div>
         </section>
 
-
-
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        <!-- SECTION 9: COMMERCIAL PROMO OFFER (50% Off / Migration)     -->
-        <!-- Gradient banner matching myshoplet screenshot               -->
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        <section class="py-14 sm:py-16 bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-700 text-white">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-6 p-7 sm:p-10 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl">
-                    <div class="space-y-2 text-center md:text-left">
-                        <span class="px-3.5 py-1 rounded-full bg-white/20 text-white text-xs font-extrabold uppercase tracking-wider">
-                            Limited Time Merchant Offer
-                        </span>
-                        <h3 class="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white">
-                            Switching from another POS or manual ledgers?
-                        </h3>
-                        <p class="text-sm sm:text-base text-blue-100 max-w-xl">
-                            We will import your inventory catalog for free and give you <strong>50% off your first 3 months</strong> on any plan.
-                        </p>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row items-center gap-4 shrink-0">
-                        <div class="text-center sm:text-right hidden sm:block">
-                            <div class="font-display font-black text-3xl sm:text-4xl text-amber-300">50% OFF</div>
-                            <div class="text-xs text-blue-100 uppercase tracking-wider font-semibold">Use code: SWITCH50</div>
-                        </div>
-                        <a
-                            href="{{ route('register') }}"
-                            class="px-8 py-4 rounded-full bg-white hover:bg-slate-100 text-blue-800 font-extrabold text-xs sm:text-sm uppercase tracking-wider transition shadow-lg active:scale-95"
-                        >
-                            Claim offer &rarr;
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-
         <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- SECTION 11: FINAL DARK CTA BANNER                           -->
         <!-- ═══════════════════════════════════════════════════════════ -->
