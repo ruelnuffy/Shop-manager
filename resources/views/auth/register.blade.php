@@ -6,15 +6,9 @@
 <x-guest-layout>
     <!-- Header Block -->
     <div class="mb-6">
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-blue-50 text-blue-600 border border-blue-100 mb-2.5">
-            {{ $currentTenant ? 'New Account Registration' : $platformName . ' Onboarding' }}
-        </div>
-        <h2 class="font-display font-extrabold text-2xl sm:text-3xl uppercase tracking-tight text-brand-charcoal">
-            {{ $currentTenant ? 'Create Your Account' : 'Get Started with ' . $platformName }}
+        <h2 class="font-display font-extrabold text-2xl tracking-tight text-brand-charcoal">
+            {{ $currentTenant ? 'Create Account' : 'Create Your Store' }}
         </h2>
-        <p class="text-xs text-brand-charcoal/60 mt-1 font-normal">
-            {{ $currentTenant ? 'Join our store for order tracking, wishlist, and exclusive member privileges.' : 'Start managing your multi-location store inventory, sales, and automated payroll.' }}
-        </p>
     </div>
 
     <form
@@ -216,25 +210,6 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <!-- Perks Snippet -->
-        <div class="p-3 rounded-2xl bg-brand-cream/80 border border-black/5 space-y-1.5">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/60 block mb-1">
-                {{ $currentTenant ? 'Your Member Privileges:' : 'Platform Capabilities Included:' }}
-            </span>
-            <div class="flex items-center gap-2 text-xs text-brand-charcoal/80">
-                <svg class="w-3.5 h-3.5 text-blue-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                </svg>
-                <span>{{ $currentTenant ? 'Personal order history and boutique privileges' : 'Multi-location physical inventory & catalog sync' }}</span>
-            </div>
-            <div class="flex items-center gap-2 text-xs text-brand-charcoal/80">
-                <svg class="w-3.5 h-3.5 text-blue-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                </svg>
-                <span>{{ $currentTenant ? 'Live dispatch tracking & digital purchase receipts' : 'Automated staff payroll disbursement & OCR ledgers' }}</span>
-            </div>
-        </div>
-
         <!-- Submit Button -->
         <div class="pt-2">
             <x-primary-button class="group">
@@ -248,12 +223,12 @@
         <!-- Login Link -->
         <div class="pt-4 text-center border-t border-black/5">
             <p class="text-xs text-brand-charcoal/60">
-                {{ $currentTenant ? __('Already have a boutique account?') : __('Already have a platform account?') }}
+                {{ __('Already have an account?') }}
                 <a
                     href="{{ route('login') }}"
                     class="font-bold text-brand-charcoal hover:text-blue-600 underline underline-offset-4 transition-colors ml-1"
                 >
-                    {{ __('Sign in here') }} &rarr;
+                    {{ __('Sign in') }} &rarr;
                 </a>
             </p>
         </div>
