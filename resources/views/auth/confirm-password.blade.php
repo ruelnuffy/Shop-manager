@@ -1,7 +1,7 @@
 <x-guest-layout>
     <!-- Header Block -->
     <div class="mb-6">
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-brand-pink-50 text-brand-pink border border-brand-pink-100 mb-2.5">
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-blue-50 text-blue-600 border border-blue-100 mb-2.5">
             Security Checkpoint
         </div>
         <h2 class="font-display font-extrabold text-2xl sm:text-3xl uppercase tracking-tight text-brand-charcoal">
@@ -36,7 +36,7 @@
                     required
                     autocomplete="current-password"
                     placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
-                    class="w-full pl-10 pr-10 py-3 bg-white border border-black/15 focus:border-brand-pink focus:ring-4 focus:ring-brand-pink/15 rounded-xl shadow-xs text-brand-charcoal placeholder:text-brand-charcoal/30 text-sm transition duration-150"
+                    class="w-full pl-10 pr-10 py-3 bg-white border border-black/15 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/15 rounded-xl shadow-xs text-brand-charcoal placeholder:text-brand-charcoal/30 text-sm transition duration-150"
                 />
                 <button
                     type="button"

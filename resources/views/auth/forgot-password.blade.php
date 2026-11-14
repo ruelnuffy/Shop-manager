@@ -1,7 +1,7 @@
 <x-guest-layout>
     <!-- Header Block -->
     <div class="mb-6">
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-brand-pink-50 text-brand-pink border border-brand-pink-100 mb-2.5">
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-blue-50 text-blue-600 border border-blue-100 mb-2.5">
             Account Recovery
         </div>
         <h2 class="font-display font-extrabold text-2xl sm:text-3xl uppercase tracking-tight text-brand-charcoal">
@@ -54,7 +54,7 @@
         <div class="pt-4 text-center border-t border-black/5">
             <a
                 href="{{ route('login') }}"
-                class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-charcoal hover:text-brand-pink transition-colors"
+                class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-charcoal hover:text-blue-600 transition-colors"
             >
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />

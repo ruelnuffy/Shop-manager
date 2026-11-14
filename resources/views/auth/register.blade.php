@@ -6,7 +6,7 @@
 <x-guest-layout>
     <!-- Header Block -->
     <div class="mb-6">
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-brand-pink-50 text-brand-pink border border-brand-pink-100 mb-2.5">
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-blue-50 text-blue-600 border border-blue-100 mb-2.5">
             {{ $currentTenant ? 'New Account Registration' : $platformName . ' Onboarding' }}
         </div>
         <h2 class="font-display font-extrabold text-2xl sm:text-3xl uppercase tracking-tight text-brand-charcoal">
@@ -158,7 +158,7 @@
                     required
                     autocomplete="new-password"
                     placeholder="At least 8 characters"
-                    class="w-full pl-10 pr-10 py-3 bg-white border border-black/15 focus:border-brand-pink focus:ring-4 focus:ring-brand-pink/15 rounded-xl shadow-xs text-brand-charcoal placeholder:text-brand-charcoal/30 text-sm transition duration-150"
+                    class="w-full pl-10 pr-10 py-3 bg-white border border-black/15 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/15 rounded-xl shadow-xs text-brand-charcoal placeholder:text-brand-charcoal/30 text-sm transition duration-150"
                 />
                 <button
                     type="button"
@@ -195,7 +195,7 @@
                     required
                     autocomplete="new-password"
                     placeholder="Re-enter your password"
-                    class="w-full pl-10 pr-10 py-3 bg-white border border-black/15 focus:border-brand-pink focus:ring-4 focus:ring-brand-pink/15 rounded-xl shadow-xs text-brand-charcoal placeholder:text-brand-charcoal/30 text-sm transition duration-150"
+                    class="w-full pl-10 pr-10 py-3 bg-white border border-black/15 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/15 rounded-xl shadow-xs text-brand-charcoal placeholder:text-brand-charcoal/30 text-sm transition duration-150"
                 />
                 <button
                     type="button"
@@ -222,13 +222,13 @@
                 {{ $currentTenant ? 'Your Member Privileges:' : 'Platform Capabilities Included:' }}
             </span>
             <div class="flex items-center gap-2 text-xs text-brand-charcoal/80">
-                <svg class="w-3.5 h-3.5 text-brand-pink shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-3.5 h-3.5 text-blue-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
                 <span>{{ $currentTenant ? 'Personal order history and boutique privileges' : 'Multi-location physical inventory & catalog sync' }}</span>
             </div>
             <div class="flex items-center gap-2 text-xs text-brand-charcoal/80">
-                <svg class="w-3.5 h-3.5 text-brand-pink shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-3.5 h-3.5 text-blue-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
                 <span>{{ $currentTenant ? 'Live dispatch tracking & digital purchase receipts' : 'Automated staff payroll disbursement & OCR ledgers' }}</span>
@@ -251,7 +251,7 @@
                 {{ $currentTenant ? __('Already have a boutique account?') : __('Already have a platform account?') }}
                 <a
                     href="{{ route('login') }}"
-                    class="font-bold text-brand-charcoal hover:text-brand-pink underline underline-offset-4 transition-colors ml-1"
+                    class="font-bold text-brand-charcoal hover:text-blue-600 underline underline-offset-4 transition-colors ml-1"
                 >
                     {{ __('Sign in here') }} &rarr;
                 </a>

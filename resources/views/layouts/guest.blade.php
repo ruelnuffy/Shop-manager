@@ -22,7 +22,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-brand-charcoal antialiased bg-[#faf8f5] min-h-screen selection:bg-brand-pink-100 selection:text-brand-pink-900">
+    <body class="font-sans text-brand-charcoal antialiased bg-[#faf8f5] min-h-screen selection:bg-blue-100 selection:text-blue-900">
         <div class="min-h-screen flex flex-col lg:flex-row">
             <!-- Left Visual Showcase (Desktop) — Clean & Simple with 3D Mascot -->
             <div class="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 xl:p-16 text-white overflow-hidden bg-gradient-to-br from-[#1d4ed8] via-[#2563eb] to-[#1e40af]">
@@ -55,10 +55,7 @@
                     </h1>
                 </div>
 
-                <!-- Bottom -->
-                <div class="relative z-10 text-xs text-white/70 font-medium text-center">
-                    {{ $brandName }}
-                </div>
+                <div aria-hidden="true"></div>
             </div>
 
             <!-- Right Column: Authentication Card -->

@@ -15,7 +15,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased min-h-screen bg-brand-charcoal text-white selection:bg-brand-pink/30">
+    <body class="font-sans antialiased min-h-screen bg-brand-charcoal text-white selection:bg-blue-600/30">
 
         <div class="min-h-screen flex flex-col lg:flex-row">
 
@@ -56,7 +56,7 @@
                 {{-- Mobile header --}}
                 <div class="flex items-center justify-between pb-6 border-b border-white/5 lg:border-none">
                     <a href="{{ route('home') }}" class="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white/30 hover:text-white/60 transition-colors">
-                        <span class="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand-pink transition duration-200">
+                        <span class="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-blue-600 transition duration-200">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
@@ -116,7 +116,7 @@
                                         required
                                         autofocus
                                         autocomplete="username"
-                                        class="w-full pl-10 py-3 pr-4 bg-white/5 border border-white/10 focus:border-brand-pink focus:ring-4 focus:ring-brand-pink/15 rounded-xl text-white placeholder:text-white/15 text-sm transition duration-150 outline-none"
+                                        class="w-full pl-10 py-3 pr-4 bg-white/5 border border-white/10 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/15 rounded-xl text-white placeholder:text-white/15 text-sm transition duration-150 outline-none"
                                     />
                                 </div>
                             </div>
@@ -137,7 +137,7 @@
                                         required
                                         autocomplete="current-password"
                                         placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
-                                        class="w-full pl-10 pr-10 py-3 bg-white/5 border border-white/10 focus:border-brand-pink focus:ring-4 focus:ring-brand-pink/15 rounded-xl text-white placeholder:text-white/15 text-sm transition duration-150 outline-none"
+                                        class="w-full pl-10 pr-10 py-3 bg-white/5 border border-white/10 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/15 rounded-xl text-white placeholder:text-white/15 text-sm transition duration-150 outline-none"
                                     />
                                     <button type="button" @click="showPassword = !showPassword" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-white/20 hover:text-white/50 transition-colors cursor-pointer" tabindex="-1">
                                         <svg x-show="!showPassword" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

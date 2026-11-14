@@ -1,7 +1,7 @@
 <x-guest-layout>
     <!-- Header Block -->
     <div class="mb-6">
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-brand-pink-50 text-brand-pink border border-brand-pink-100 mb-2.5">
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-blue-50 text-blue-600 border border-blue-100 mb-2.5">
             Email Confirmation
         </div>
         <h2 class="font-display font-extrabold text-2xl sm:text-3xl uppercase tracking-tight text-brand-charcoal">
@@ -38,7 +38,7 @@
 
             <button
                 type="submit"
-                class="text-xs font-semibold text-brand-charcoal/60 hover:text-brand-pink underline underline-offset-4 transition-colors cursor-pointer"
+                class="text-xs font-semibold text-brand-charcoal/60 hover:text-blue-600 underline underline-offset-4 transition-colors cursor-pointer"
             >
                 {{ __('Log Out of Current Session') }}
             </button>

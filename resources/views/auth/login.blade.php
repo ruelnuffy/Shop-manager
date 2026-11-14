@@ -53,7 +53,7 @@
                 @if (Route::has('password.request'))
                     <a
                         href="{{ route('password.request') }}"
-                        class="text-xs font-semibold text-brand-pink hover:text-brand-pink-700 hover:underline transition-colors"
+                        class="text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors"
                     >
                         {{ __('Forgot password?') }}
                     </a>
@@ -74,7 +74,7 @@
                     required
                     autocomplete="current-password"
                     placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
-                    class="w-full pl-10 pr-10 py-3 bg-white border border-black/15 focus:border-brand-pink focus:ring-4 focus:ring-brand-pink/15 rounded-xl shadow-xs text-brand-charcoal placeholder:text-brand-charcoal/30 text-sm transition duration-150"
+                    class="w-full pl-10 pr-10 py-3 bg-white border border-black/15 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/15 rounded-xl shadow-xs text-brand-charcoal placeholder:text-brand-charcoal/30 text-sm transition duration-150"
                 />
 
                 <button
@@ -103,7 +103,7 @@
                 <input
                     id="remember_me"
                     type="checkbox"
-                    class="rounded-md border-black/20 text-brand-pink shadow-xs focus:ring-brand-pink/30 focus:ring-offset-0 transition"
+                    class="rounded-md border-black/20 text-blue-600 shadow-xs focus:ring-blue-600/30 focus:ring-offset-0 transition"
                     name="remember"
                 >
                 <span class="ms-2 text-xs text-brand-charcoal/70 font-medium">{{ __('Remember my session') }}</span>
@@ -126,7 +126,7 @@
                 {{ $currentTenant ? __("Don't have an account yet?") : __("New to " . $platformName . "?") }}
                 <a
                     href="{{ route('register') }}"
-                    class="font-bold text-brand-charcoal hover:text-brand-pink underline underline-offset-4 transition-colors ml-1"
+                    class="font-bold text-blue-600 hover:text-blue-700 underline underline-offset-4 transition-colors ml-1"
                 >
                     {{ $currentTenant ? __('Create an account') : __('Start free trial') }} &rarr;
                 </a>
