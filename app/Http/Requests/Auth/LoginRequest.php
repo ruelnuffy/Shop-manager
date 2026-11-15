@@ -64,7 +64,6 @@ class LoginRequest extends FormRequest
                 }
 
                 return $candidate->tenant
-                    && in_array($candidate->tenant->status, ['active', 'pending'], true)
                     && Hash::check($password, $candidate->password);
             });
 
@@ -73,6 +72,12 @@ class LoginRequest extends FormRequest
 
                 throw ValidationException::withMessages([
                     'email' => trans('auth.failed'),
+                ]);
+            }
+
+            if (! $matchedUser->isSuperAdmin() && $matchedUser->tenant?->status === 'suspended') {
+                throw ValidationException::withMessages([
+                    'email' => 'Your account has been suspended. Please contact support.',
                 ]);
             }
 
@@ -91,6 +96,14 @@ class LoginRequest extends FormRequest
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
+            ]);
+        }
+
+        if (! Auth::user()?->isSuperAdmin() && $currentTenant->getTenant()?->status === 'suspended') {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => 'Your account has been suspended. Please contact support.',
             ]);
         }
 
