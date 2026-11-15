@@ -36,3 +36,7 @@ Artisan::command('ocr:reap-stuck-batches', function () {
 Schedule::command('ocr:reap-stuck-batches')
     ->everyFiveMinutes()
     ->withoutOverlapping(10);
+
+Schedule::command('subscriptions:check-expirations')
+    ->dailyAt('09:00')
+    ->withoutOverlapping(10);

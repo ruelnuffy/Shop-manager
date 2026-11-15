@@ -143,6 +143,8 @@ class TenantController extends Controller
             'domain' => ($validated['domain'] ?? null) ?: null,
             'plan' => $validated['plan'],
             'status' => $validated['status'],
+            'subscription_started_at' => $validated['status'] === 'active' ? now() : null,
+            'subscription_expires_at' => $validated['status'] === 'active' ? now()->addMonth() : null,
             'settings' => [
                 'currency' => $request->input('currency', 'NGN'),
                 'currency_symbol' => $request->input('currency_symbol', '₦'),
@@ -399,7 +401,7 @@ class TenantController extends Controller
             data_set($settings, 'currency_symbol', $request->input('currency_symbol'));
         }
 
-        $tenant->update([
+        $updates = [
             'name' => $validated['name'],
             'slug' => Str::slug($validated['slug']),
             'subdomain' => ! empty($validated['subdomain']) ? Str::slug($validated['subdomain']) : Str::slug($validated['slug']),
@@ -407,7 +409,11 @@ class TenantController extends Controller
             'plan' => $validated['plan'],
             'status' => $validated['status'],
             'settings' => $settings,
-        ]);
+        ];
+        if ($validated['status'] === 'active') {
+            $updates = array_merge($updates, $tenant->oneMonthCycleAttributes());
+        }
+        $tenant->update($updates);
 
         return redirect()->route('super-admin.tenants.show', $tenant)
             ->with('status', "Store '{$tenant->name}' settings updated successfully.");
@@ -419,7 +425,11 @@ class TenantController extends Controller
     public function toggleStatus(Tenant $tenant): RedirectResponse
     {
         $newStatus = $tenant->status === 'active' ? 'suspended' : 'active';
-        $tenant->update(['status' => $newStatus]);
+        $updates = ['status' => $newStatus];
+        if ($newStatus === 'active') {
+            $updates = array_merge($updates, $tenant->oneMonthCycleAttributes());
+        }
+        $tenant->update($updates);
 
         $label = $newStatus === 'active' ? 'activated' : 'suspended';
 

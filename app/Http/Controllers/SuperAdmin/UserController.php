@@ -182,6 +182,9 @@ class UserController extends Controller
             }
             if (! empty($validated['status'])) {
                 $tenantUpdates['status'] = $validated['status'];
+                if ($validated['status'] === 'active') {
+                    $tenantUpdates = array_merge($tenantUpdates, $targetUser->tenant->oneMonthCycleAttributes());
+                }
             }
             if (! empty($validated['store_name']) && $targetUser->isAdmin()) {
                 $storeName = trim($validated['store_name']);

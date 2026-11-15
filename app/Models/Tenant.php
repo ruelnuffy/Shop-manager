@@ -22,6 +22,9 @@ class Tenant extends Model
         'paystack_secret_key',
         'plan',
         'status',
+        'subscription_started_at',
+        'subscription_expires_at',
+        'expiry_reminder_sent_at',
     ];
 
     protected function casts(): array
@@ -30,6 +33,27 @@ class Tenant extends Model
             'settings' => 'array',
             'paystack_public_key' => 'encrypted',
             'paystack_secret_key' => 'encrypted',
+            'subscription_started_at' => 'datetime',
+            'subscription_expires_at' => 'datetime',
+            'expiry_reminder_sent_at' => 'datetime',
+        ];
+    }
+
+    /**
+     * Build 1-month subscription cycle attributes when activating a store.
+     *
+     * @return array<string, mixed>
+     */
+    public function oneMonthCycleAttributes(bool $forceReset = false): array
+    {
+        if (! $forceReset && $this->subscription_expires_at?->isFuture()) {
+            return [];
+        }
+
+        return [
+            'subscription_started_at' => now(),
+            'subscription_expires_at' => now()->addMonth(),
+            'expiry_reminder_sent_at' => null,
         ];
     }
 
