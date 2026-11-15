@@ -1,13 +1,4 @@
 <x-admin-layout>
-    <x-slot name="header">
-        <div class="flex items-center gap-2">
-            <h1 class="font-display font-extrabold text-lg text-slate-900 tracking-tight">
-                Atelier Overview
-            </h1>
-            <span class="text-xs text-slate-400 font-medium hidden sm:inline">&bull; Daily Workspace</span>
-        </div>
-    </x-slot>
-
     @php
         $currentTenant = app(\App\Services\CurrentTenant::class)->get();
         $storeName = $currentTenant ? $currentTenant->setting('branding.name', $currentTenant->name) : config('app.platform_name', 'ShopManager');
