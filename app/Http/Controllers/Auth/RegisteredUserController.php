@@ -52,7 +52,7 @@ class RegisteredUserController extends Controller
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
                 'phone' => ['required', 'string', 'max:30'],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
-                'plan' => ['nullable', 'string', 'in:starter,pro,enterprise,standard,free'],
+                'plan' => ['nullable', 'string', 'in:starter,pro,enterprise'],
             ]);
 
             $phone = trim($request->string('phone')->toString());
@@ -73,9 +73,9 @@ class RegisteredUserController extends Controller
                     $slug = "{$baseSlug}-{$counter}";
                 }
 
-                $chosenPlan = $request->input('plan', 'standard');
-                if (! in_array($chosenPlan, ['starter', 'pro', 'enterprise', 'free', 'standard'], true)) {
-                    $chosenPlan = 'standard';
+                $chosenPlan = $request->input('plan', 'starter');
+                if (! in_array($chosenPlan, ['starter', 'pro', 'enterprise'], true)) {
+                    $chosenPlan = 'starter';
                 }
 
                 $tenant = Tenant::create([

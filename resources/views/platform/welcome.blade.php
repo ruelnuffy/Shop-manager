@@ -177,7 +177,7 @@
                             </div>
                             <div>
                                 <div class="text-sm font-bold text-slate-900">Pricing &amp; Plans</div>
-                                <div class="text-xs text-slate-500">14-day free trial, cancel anytime</div>
+                                <div class="text-xs text-slate-500">Simple monthly &amp; annual plans</div>
                             </div>
                         </div>
                         <span class="text-slate-300 group-hover:text-slate-500 font-bold">&rsaquo;</span>
@@ -241,7 +241,7 @@
                         href="{{ route('register') }}"
                         class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider text-center transition shadow-lg shadow-blue-600/30 active:scale-95"
                     >
-                        Start 14-Day Free Trial &rarr;
+                        Get Started &rarr;
                     </a>
                     <a
                         href="{{ route('login') }}"
@@ -576,7 +576,7 @@
                 <!-- Section Header -->
                 <div class="text-center max-w-xl mx-auto space-y-4">
                     <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-slate-950 tracking-tight">
-                        Start free for 14 days
+                        Simple, transparent pricing
                     </h2>
                     <p class="text-sm sm:text-base text-slate-600">
                         Pick a plan that fits your shop. Cancel anytime.
@@ -637,7 +637,7 @@
                         </div>
 
                         <a href="https://wa.me/2349046686176?text=I%20want%20to%20subscribe" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs sm:text-sm text-center transition">
-                            Start Free
+                            Get Started
                         </a>
                     </div>
 
@@ -679,7 +679,7 @@
                         </div>
 
                         <a href="https://wa.me/2349046686176?text=I%20want%20to%20subscribe" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm text-center transition shadow-lg shadow-blue-600/25 active:scale-95">
-                            Start Free Trial &rarr;
+                            Get Started &rarr;
                         </a>
                     </div>
 
@@ -942,7 +942,7 @@
                         href="{{ route('register') }}"
                         class="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider transition shadow-2xl shadow-blue-600/40 active:scale-95"
                     >
-                        <span>Start your free trial</span>
+                        <span>Create Your Store</span>
                         <span>&rarr;</span>
                     </a>
                 </div>

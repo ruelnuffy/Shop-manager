@@ -318,7 +318,7 @@
                                             Free User
                                         </span>
                                         <div class="text-[11px] text-slate-400">
-                                            14-Day Free Trial
+                                            Standard Plan
                                         </div>
                                     </div>
                                 @else

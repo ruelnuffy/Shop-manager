@@ -128,7 +128,7 @@
                     href="{{ route('register') }}"
                     class="font-bold text-blue-600 hover:text-blue-700 underline underline-offset-4 transition-colors ml-1"
                 >
-                    {{ $currentTenant ? __('Create an account') : __('Start free trial') }} &rarr;
+                    {{ $currentTenant ? __('Create an account') : __('Create your store') }} &rarr;
                 </a>
             </p>
         </div>

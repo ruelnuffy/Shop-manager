@@ -59,7 +59,7 @@
                         href="{{ route('register') }}"
                         class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition shadow-md shadow-blue-600/25 active:scale-95"
                     >
-                        <span>Start Free Trial</span>
+                        <span>Get Started</span>
                     </a>
                 @endauth
             </div>
@@ -240,7 +240,7 @@
                 <a href="{{ route('home') }}" class="hover:text-blue-600 transition">Platform Home</a>
                 <a href="{{ route('stores.index') }}" class="hover:text-blue-600 transition">Stores Directory</a>
                 <a href="{{ route('login') }}" class="hover:text-blue-600 transition">Sign In</a>
-                <a href="{{ route('register') }}" class="hover:text-blue-600 transition">Start Free Trial</a>
+                <a href="{{ route('register') }}" class="hover:text-blue-600 transition">Get Started</a>
             </div>
         </div>
     </footer>

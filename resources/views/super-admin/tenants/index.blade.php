@@ -54,7 +54,7 @@
             <div>
                 <span class="text-[11px] font-semibold text-amber-600 uppercase tracking-wider block">Free &amp; Trial Users</span>
                 <div class="text-2xl font-extrabold text-slate-900 mt-1">{{ number_format($freeCount) }}</div>
-                <span class="text-[11px] text-amber-600 font-medium mt-0.5 block">Standard free tier &amp; 14-day trials</span>
+                <span class="text-[11px] text-amber-600 font-medium mt-0.5 block">Pending billing &amp; standard accounts</span>
             </div>
             <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
