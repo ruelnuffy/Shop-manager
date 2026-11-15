@@ -135,111 +135,103 @@
         @endif
 
         <div class="{{ $planActive ? 'space-y-8' : 'space-y-8 pointer-events-none opacity-45 select-none grayscale' }}" @if (! $planActive) aria-disabled="true" @endif>
-        <!-- Sticky Notes Workspace Grid (Completely Borderless with Soft Shadows) -->
+        <!-- Cloud Workspace Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
 
-            <!-- Sticky Note 1: Yellow - Make a Sale (POS) -->
-            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#fef9c3] shadow-lg shadow-amber-900/5 hover:shadow-2xl hover:shadow-amber-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                <!-- Frosted tape at top center (borderless) -->
-                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[-1deg] pointer-events-none"></div>
-                <!-- Folded dog-ear corner effect on bottom-right -->
-                <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-amber-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+            <!-- Cloud 1: Make a Sale (POS) -->
+            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-amber-50/40 to-amber-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(217,119,6,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
+                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-amber-200/35 blur-md pointer-events-none"></div>
+                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
 
-                <div>
-                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-800/70">Walk-In Register</span>
-                    <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Make a Sale</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
-                        <div class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                <div class="relative">
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-amber-100/80 text-[10px] font-bold uppercase tracking-wider text-amber-800">Walk-In Register</span>
+                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Make a Sale</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
+                        <div class="flex items-center gap-2 text-slate-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                             <span><strong>Today's Revenue:</strong> ₦{{ number_format($todayRevenue, 0) }}</span>
                         </div>
-                        <div class="text-slate-600 pl-3.5 text-[11px]">Barcode scan, cash, &amp; card checkout</div>
-                        <div class="text-slate-600 pl-3.5 text-[11px]">Instant receipt generation</div>
+                        <div class="pl-3.5 text-[11px]">Barcode scan, cash &amp; card checkout</div>
+                        <div class="pl-3.5 text-[11px]">Instant receipt generation</div>
                     </div>
                 </div>
 
-                <div class="pt-5">
-                    <a href="{{ route('admin.sales.create') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-amber-950 group-hover:text-black group-hover:underline">
+                <div class="relative pt-5">
+                    <a href="{{ route('admin.sales.create') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-amber-900 group-hover:bg-amber-500 group-hover:text-white transition">
                         <span>Open register</span>
-                        <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Sticky Note 2: Mint Green - Orders -->
-            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#dcfce7] shadow-lg shadow-emerald-900/5 hover:shadow-2xl hover:shadow-emerald-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                <!-- Frosted tape at top center (borderless) -->
-                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[1deg] pointer-events-none"></div>
-                <!-- Folded dog-ear corner -->
-                <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-emerald-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+            <!-- Cloud 2: Orders -->
+            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-emerald-50/40 to-emerald-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(16,185,129,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
+                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-emerald-200/35 blur-md pointer-events-none"></div>
+                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
 
-                <div>
-                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800/70">Fulfillment &amp; Shipping</span>
-                    <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Orders</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
-                        <div class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                <div class="relative">
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-100/80 text-[10px] font-bold uppercase tracking-wider text-emerald-800">Fulfillment &amp; Shipping</span>
+                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Orders</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
+                        <div class="flex items-center gap-2 text-slate-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                             <span><strong>{{ $pendingOrdersCount }}</strong> pending to pack</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <div class="flex items-center gap-2 text-slate-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                             <span><strong>{{ $processingOrdersCount }}</strong> out in delivery</span>
                         </div>
-                        <div class="text-slate-600 pl-3.5 text-[11px]">{{ $totalOrdersCount }} all-time customer orders</div>
+                        <div class="pl-3.5 text-[11px]">{{ $totalOrdersCount }} all-time customer orders</div>
                     </div>
                 </div>
 
-                <div class="pt-5">
-                    <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-950 group-hover:text-black group-hover:underline">
+                <div class="relative pt-5">
+                    <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-emerald-900 group-hover:bg-emerald-600 group-hover:text-white transition">
                         <span>Open orders</span>
-                        <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Sticky Note 3: Pastel Pink - Products -->
-            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#ffe4e6] shadow-lg shadow-rose-900/5 hover:shadow-2xl hover:shadow-rose-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                <!-- Frosted tape at top center (borderless) -->
-                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[-0.5deg] pointer-events-none"></div>
-                <!-- Folded dog-ear corner -->
-                <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-rose-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+            <!-- Cloud 3: Products -->
+            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-rose-50/40 to-rose-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(244,63,94,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
+                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-rose-200/35 blur-md pointer-events-none"></div>
+                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
 
-                <div>
-                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-rose-800/70">Store Catalog</span>
-                    <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Products</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
-                        <div class="text-slate-800 font-semibold">Curated items, sizes &amp; colors</div>
-                        <div class="text-slate-600 text-[11px]">Pricing, discounts, and photo uploads</div>
-                        <div class="text-slate-600 text-[11px]">Active in online store &amp; counter POS</div>
+                <div class="relative">
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-rose-100/80 text-[10px] font-bold uppercase tracking-wider text-rose-800">Store Catalog</span>
+                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Products</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
+                        <div class="text-slate-700 font-semibold">Curated items, sizes &amp; colors</div>
+                        <div class="text-[11px]">Pricing, discounts, and photo uploads</div>
+                        <div class="text-[11px]">Active in online store &amp; counter POS</div>
                     </div>
                 </div>
 
-                <div class="pt-5 flex items-center justify-between">
-                    <a href="{{ route('admin.products.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-rose-950 group-hover:text-black group-hover:underline">
+                <div class="relative pt-5 flex items-center justify-between gap-2">
+                    <a href="{{ route('admin.products.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-rose-900 group-hover:bg-rose-600 group-hover:text-white transition">
                         <span>{{ Auth::user()->isAdmin() ? 'Manage catalog' : 'View catalog' }}</span>
-                        <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
                     </a>
                     @if(Auth::user()->isAdmin())
-                        <a href="{{ route('admin.products.create') }}" class="text-[11px] font-bold text-rose-800 hover:text-rose-950">
+                        <a href="{{ route('admin.products.create') }}" class="px-3 py-1.5 rounded-full bg-white/70 hover:bg-white text-[11px] font-bold text-rose-800 transition">
                             + Add Item
                         </a>
                     @endif
                 </div>
             </div>
 
-            <!-- Sticky Note 4: Pastel Purple - Inventory Valuation & Health -->
-            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#f3e8ff] shadow-lg shadow-purple-900/5 hover:shadow-2xl hover:shadow-purple-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                <!-- Frosted tape at top center (borderless) -->
-                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[0.8deg] pointer-events-none"></div>
-                <!-- Folded dog-ear corner -->
-                <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-purple-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+            <!-- Cloud 4: Inventory Valuation & Health -->
+            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-purple-50/40 to-purple-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(147,51,234,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
+                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-purple-200/35 blur-md pointer-events-none"></div>
+                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
 
-                <div>
-                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-purple-800/70">Inventory Health</span>
-                    <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Inventory Valuation</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
-                        <div class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+                <div class="relative">
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-purple-100/80 text-[10px] font-bold uppercase tracking-wider text-purple-800">Inventory Health</span>
+                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Inventory Valuation</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
+                        <div class="flex items-center gap-2 text-slate-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
                             <span><strong>₦{{ number_format($totalInventoryValuation, 0) }}</strong> total stock worth</span>
                         </div>
                         @if ($lowStockVariants->count() > 0)
@@ -251,129 +243,121 @@
                                 &bull; All item quantities healthy
                             </div>
                         @endif
-                        <div class="text-slate-600 pl-3.5 text-[11px]">Audit counts &amp; restock logs</div>
+                        <div class="pl-3.5 text-[11px]">Audit counts &amp; restock logs</div>
                     </div>
                 </div>
 
-                <div class="pt-5">
-                    <a href="{{ route('admin.stock.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-purple-950 group-hover:text-black group-hover:underline">
+                <div class="relative pt-5">
+                    <a href="{{ route('admin.stock.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-purple-900 group-hover:bg-purple-600 group-hover:text-white transition">
                         <span>Check stock</span>
-                        <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Sticky Note 5: Pastel Peach / Orange - Sales Reports -->
-            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#ffedd5] shadow-lg shadow-orange-900/5 hover:shadow-2xl hover:shadow-orange-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                <!-- Frosted tape at top center (borderless) -->
-                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[-1deg] pointer-events-none"></div>
-                <!-- Folded dog-ear corner -->
-                <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-orange-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+            <!-- Cloud 5: Sales Reports -->
+            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-orange-50/40 to-orange-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(249,115,22,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
+                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-orange-200/35 blur-md pointer-events-none"></div>
+                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
 
-                <div>
-                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-orange-800/70">Sales &amp; Finance</span>
-                    <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Analytics</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
-                        <div class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-orange-600"></span>
+                <div class="relative">
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-orange-100/80 text-[10px] font-bold uppercase tracking-wider text-orange-800">Sales &amp; Finance</span>
+                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Analytics</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
+                        <div class="flex items-center gap-2 text-slate-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
                             <span><strong>₦{{ number_format($monthRevenue, 0) }}</strong> this month</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                        <div class="flex items-center gap-2 text-slate-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>
                             <span><strong>₦{{ number_format($weekRevenue, 0) }}</strong> rolling week</span>
                         </div>
-                        <div class="text-slate-600 pl-3.5 text-[11px]">Download reports &amp; CSV spreadsheets</div>
+                        <div class="pl-3.5 text-[11px]">Download reports &amp; CSV spreadsheets</div>
                     </div>
                 </div>
 
-                <div class="pt-5">
-                    <a href="{{ route('admin.reports.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-orange-950 group-hover:text-black group-hover:underline">
+                <div class="relative pt-5">
+                    <a href="{{ route('admin.reports.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-orange-900 group-hover:bg-orange-600 group-hover:text-white transition">
                         <span>View insights</span>
-                        <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Sticky Note 6: Pastel Sky Blue - Scan Paper Daybook -->
-            <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#e0f2fe] shadow-lg shadow-sky-900/5 hover:shadow-2xl hover:shadow-sky-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                <!-- Frosted tape at top center (borderless) -->
-                <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[0.5deg] pointer-events-none"></div>
-                <!-- Folded dog-ear corner -->
-                <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-sky-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+            <!-- Cloud 6: Scan Paper Daybook -->
+            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-sky-50/40 to-sky-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(14,165,233,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
+                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-sky-200/35 blur-md pointer-events-none"></div>
+                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
 
-                <div>
-                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-sky-800/70">Paper Daybook</span>
-                    <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Scan Receipts</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
-                        <div class="text-slate-800 font-semibold">Snap photo of written paper ledger</div>
-                        <div class="text-slate-600 text-[11px]">AI reads items, quantities &amp; prices</div>
-                        <div class="text-slate-600 text-[11px]">Imports automatically into store records</div>
+                <div class="relative">
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-sky-100/80 text-[10px] font-bold uppercase tracking-wider text-sky-800">Paper Daybook</span>
+                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Scan Receipts</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
+                        <div class="text-slate-700 font-semibold">Snap photo of written paper ledger</div>
+                        <div class="text-[11px]">AI reads items, quantities &amp; prices</div>
+                        <div class="text-[11px]">Imports automatically into store records</div>
                     </div>
                 </div>
 
-                <div class="pt-5">
-                    <a href="{{ route('admin.ocr.create') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-sky-950 group-hover:text-black group-hover:underline">
+                <div class="relative pt-5">
+                    <a href="{{ route('admin.ocr.create') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-sky-900 group-hover:bg-sky-600 group-hover:text-white transition">
                         <span>Scan page</span>
-                        <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Sticky Note 7: Pastel Lime - Staff & Payroll (Admin Only) -->
+            <!-- Cloud 7: Staff & Payroll (Admin Only) -->
             @if(Auth::user()->isAdmin())
-                <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#ecfccb] shadow-lg shadow-lime-900/5 hover:shadow-2xl hover:shadow-lime-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                    <!-- Frosted tape at top center (borderless) -->
-                    <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[-0.8deg] pointer-events-none"></div>
-                    <!-- Folded dog-ear corner -->
-                    <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-lime-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+                <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-lime-50/40 to-lime-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(132,204,22,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
+                    <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-lime-200/35 blur-md pointer-events-none"></div>
+                    <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
 
-                    <div>
-                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-lime-800/70">Store Team</span>
-                        <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Staff &amp; Payroll</h3>
-                        <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
-                            <div class="text-slate-800 font-semibold">Cashiers, attendants &amp; sales staff</div>
-                            <div class="text-slate-600 text-[11px]">Sales commissions &amp; monthly salary sheets</div>
-                            <div class="text-slate-600 text-[11px]">Track attendance &amp; roles</div>
+                    <div class="relative">
+                        <span class="inline-block px-2.5 py-0.5 rounded-full bg-lime-100/80 text-[10px] font-bold uppercase tracking-wider text-lime-800">Store Team</span>
+                        <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Staff &amp; Payroll</h3>
+                        <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
+                            <div class="text-slate-700 font-semibold">Cashiers, attendants &amp; sales staff</div>
+                            <div class="text-[11px]">Sales commissions &amp; monthly salary sheets</div>
+                            <div class="text-[11px]">Track attendance &amp; roles</div>
                         </div>
                     </div>
 
-                    <div class="pt-5 flex items-center justify-between">
-                        <a href="{{ route('admin.staff.index') }}" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-lime-950 group-hover:text-black group-hover:underline">
+                    <div class="relative pt-5 flex items-center justify-between gap-2">
+                        <a href="{{ route('admin.staff.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-lime-900 group-hover:bg-lime-600 group-hover:text-white transition">
                             <span>Manage team</span>
-                            <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                            <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
                         </a>
-                        <a href="{{ route('admin.payroll.index') }}" class="text-[11px] font-bold text-lime-800 hover:text-lime-950">
+                        <a href="{{ route('admin.payroll.index') }}" class="px-3 py-1.5 rounded-full bg-white/70 hover:bg-white text-[11px] font-bold text-lime-800 transition">
                             Payroll &rarr;
                         </a>
                     </div>
                 </div>
 
                 @if(Auth::user()->isSuperAdmin())
-                <!-- Sticky Note 8: Pastel Indigo - Store Admin Accounts & Subscriptions (Super Admin Only) -->
-                <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#e0e7ff] shadow-lg shadow-indigo-900/5 hover:shadow-2xl hover:shadow-indigo-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
-                    <!-- Frosted tape at top center (borderless) -->
-                    <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[0.6deg] pointer-events-none"></div>
-                    <!-- Folded dog-ear corner -->
-                    <div class="absolute bottom-0 right-0 w-6 h-6 bg-gradient-to-tl from-indigo-300/40 to-transparent rounded-br-[28px] pointer-events-none"></div>
+                <!-- Cloud 8: Store Admin Accounts & Subscriptions (Super Admin Only) -->
+                <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-indigo-50/40 to-indigo-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(99,102,241,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
+                    <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-indigo-200/35 blur-md pointer-events-none"></div>
+                    <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
 
-                    <div>
-                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-800/70">Store Admins</span>
-                        <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">Users &amp; Plans</h3>
-                        <div class="space-y-1.5 mt-3 text-xs text-slate-700 font-medium">
-                            <div class="flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                    <div class="relative">
+                        <span class="inline-block px-2.5 py-0.5 rounded-full bg-indigo-100/80 text-[10px] font-bold uppercase tracking-wider text-indigo-800">Store Admins</span>
+                        <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Users &amp; Plans</h3>
+                        <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
+                            <div class="flex items-center gap-2 text-slate-700">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                                 <span><strong>{{ $subscribedUsersCount }}</strong> Subscribed Users</span>
                             </div>
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 text-slate-700">
                                 <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                                 <span><strong>{{ $freeUsersCount }}</strong> Free / Trial Users</span>
                             </div>
-                            <div class="text-slate-600 pl-3.5 text-[11px]">{{ $totalAdminUsersCount }} total store admin accounts</div>
+                            <div class="pl-3.5 text-[11px]">{{ $totalAdminUsersCount }} total store admin accounts</div>
                         </div>
                     </div>
 
-                    <div class="pt-5 flex items-center justify-between">
-                        <a href="#stores-section" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-indigo-950 group-hover:text-black group-hover:underline">
+                    <div class="relative pt-5 flex items-center justify-between">
+                        <a href="#stores-section" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-indigo-900 group-hover:bg-indigo-600 group-hover:text-white transition">
                             <span>View accounts</span>
                             <span class="transition-transform group-hover:translate-y-0.5">&darr;</span>
                         </a>
