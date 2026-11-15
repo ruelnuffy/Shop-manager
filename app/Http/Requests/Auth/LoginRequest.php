@@ -64,7 +64,7 @@ class LoginRequest extends FormRequest
                 }
 
                 return $candidate->tenant
-                    && $candidate->tenant->status === 'active'
+                    && in_array($candidate->tenant->status, ['active', 'pending'], true)
                     && Hash::check($password, $candidate->password);
             });
 

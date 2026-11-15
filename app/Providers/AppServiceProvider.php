@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Listeners\NotifyAdminsOnStaffLogin;
+use App\Listeners\SendLoginNoticeEmail;
 use App\Services\CurrentTenant;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Event;
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Event::listen(Login::class, NotifyAdminsOnStaffLogin::class);
+        Event::listen(Login::class, SendLoginNoticeEmail::class);
 
         $appUrl = (string) config('app.url', '');
         $parsed = ! empty($appUrl) ? parse_url($appUrl) : [];
