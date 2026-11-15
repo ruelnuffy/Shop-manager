@@ -210,6 +210,16 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        try {
+            Mail::to('ruelnuffy@gmail.com')->send(new NewAccountRegisteredMail($user, $currentTenant->get()));
+        } catch (\Throwable $e) {
+            Log::warning('Failed to send storefront signup email', [
+                'user_id' => $user->id,
+                'tenant_id' => $currentTenant->id(),
+                'error' => $e->getMessage(),
+            ]);
+        }
+
         return redirect(route('dashboard', absolute: false));
     }
 }

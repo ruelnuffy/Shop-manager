@@ -19,7 +19,7 @@ class NewAccountRegisteredMail extends Mailable
      */
     public function __construct(
         public User $user,
-        public Tenant $tenant,
+        public ?Tenant $tenant = null,
     ) {}
 
     /**
@@ -27,10 +27,11 @@ class NewAccountRegisteredMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        $planLabel = strtoupper((string) ($this->tenant->plan ?: 'standard'));
+        $storeName = $this->tenant?->name ?: 'Storefront';
+        $planLabel = strtoupper((string) ($this->tenant?->plan ?: $this->user->role ?: 'customer'));
 
         return new Envelope(
-            subject: "New ShopManager Account: {$this->tenant->name} ({$planLabel})",
+            subject: "New ShopManager Sign Up: {$this->user->name} ({$storeName} • {$planLabel})",
         );
     }
 
@@ -61,8 +62,10 @@ class NewAccountRegisteredMail extends Mailable
             $digits = '234'.substr($digits, 1);
         }
 
+        $storeName = $this->tenant?->name ?: 'ShopManager';
+        $planName = $this->tenant?->plan ?: 'standard';
         $message = rawurlencode(
-            "Hello {$this->user->name}, welcome to ShopManager! We saw your new store registration for {$this->tenant->name} ({$this->tenant->plan} plan) and are reaching out to help with billing and plan activation."
+            "Hello {$this->user->name}, welcome to ShopManager! We saw your new store registration for {$storeName} ({$planName} plan) and are reaching out to help with billing and plan activation."
         );
 
         return "https://wa.me/{$digits}?text={$message}";

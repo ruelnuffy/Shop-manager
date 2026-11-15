@@ -22,11 +22,11 @@
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;font-size:14px;">
                     <tr>
                         <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;color:#64748b;width:140px;">Store Name</td>
-                        <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-weight:700;color:#0f172a;">{{ $tenant->name }}</td>
+                        <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-weight:700;color:#0f172a;">{{ $tenant?->name ?: 'Platform' }}</td>
                     </tr>
                     <tr>
-                        <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;color:#64748b;">Selected Plan</td>
-                        <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-weight:700;color:#2563eb;text-transform:uppercase;">{{ $tenant->plan ?: 'standard' }}</td>
+                        <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;color:#64748b;">Selected Plan / Role</td>
+                        <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-weight:700;color:#2563eb;text-transform:uppercase;">{{ $tenant?->plan ?: ($user->role ?: 'standard') }}</td>
                     </tr>
                     <tr>
                         <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;color:#64748b;">Owner Name</td>
@@ -42,7 +42,7 @@
                     </tr>
                     <tr>
                         <td style="padding:10px 0;color:#64748b;">Subdomain</td>
-                        <td style="padding:10px 0;color:#0f172a;">{{ $tenant->subdomain }}</td>
+                        <td style="padding:10px 0;color:#0f172a;">{{ $tenant?->subdomain ?: 'N/A' }}</td>
                     </tr>
                 </table>
 
