@@ -7,19 +7,8 @@
 
     <title>{{ $title ?? 'Super Admin Cockpit' }} &bull; {{ config('app.platform_name', 'ShopManager') }}</title>
 
-    <!-- Google Font: Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <!-- Proper Compiled Tailwind CSS & JS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <style>
-        body, button, input, select, textarea, table, h1, h2, h3, h4, span, p, a {
-            font-family: 'Poppins', system-ui, -apple-system, sans-serif !important;
-        }
-    </style>
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
