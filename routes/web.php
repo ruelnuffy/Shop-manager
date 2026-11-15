@@ -162,6 +162,7 @@ Route::prefix('admin')
 
         Route::get('/reports', [Admin\ReportController::class, 'index'])->name('reports.index');
         Route::get('/reports/export', [Admin\ReportController::class, 'exportCsv'])->name('reports.export');
+        Route::get('/visitors', [Admin\VisitorController::class, 'index'])->name('visitors.index');
 
         // Store System Notifications (Web & Mobile Alerts)
         Route::get('/notifications', [Admin\NotificationController::class, 'index'])->name('notifications.index');
@@ -235,6 +236,7 @@ Route::prefix('super-admin')
         Route::post('/users/{user}/impersonate', [SuperAdmin\UserController::class, 'impersonate'])->name('users.impersonate');
 
         Route::get('/export-report', [SuperAdmin\DashboardController::class, 'exportAuditReport'])->name('export-report');
+        Route::get('/visitors', [SuperAdmin\VisitorController::class, 'index'])->name('visitors.index');
         Route::post('/clear-cache', [SuperAdmin\DashboardController::class, 'clearCache'])->name('clear-cache');
     });
 

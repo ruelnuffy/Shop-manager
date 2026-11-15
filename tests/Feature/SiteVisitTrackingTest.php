@@ -43,7 +43,7 @@ class SiteVisitTrackingTest extends TestCase
             'visited_on' => now()->toDateString(),
         ]);
 
-        // Store admin sees Store Visitors cloud card
+        // Store admin sees Store Visitors cloud card and dedicated Storefront Visitors page
         app(CurrentTenant::class)->set($tenant);
         $this->actingAs($storeAdmin)
             ->withSession(['active_tenant_id' => $tenant->id])
@@ -52,12 +52,23 @@ class SiteVisitTrackingTest extends TestCase
             ->assertSee('Store Visitors')
             ->assertSee('visits today');
 
-        // Super admin sees Site Visitors stat and Recent Site Visitors table
+        $this->actingAs($storeAdmin)
+            ->withSession(['active_tenant_id' => $tenant->id])
+            ->get(route('admin.visitors.index'))
+            ->assertOk()
+            ->assertSee('Storefront Visitors')
+            ->assertSee('127.0.0.1');
+
+        // Super admin sees Site Visitors stat and dedicated Site Visitors page
         $this->actingAs($superAdmin)
             ->get(route('super-admin.dashboard'))
             ->assertOk()
+            ->assertSee('Site Visitors');
+
+        $this->actingAs($superAdmin)
+            ->get(route('super-admin.visitors.index'))
+            ->assertOk()
             ->assertSee('Site Visitors')
-            ->assertSee('Recent Site Visitors')
             ->assertSee('Alpha Boutique');
     }
 }

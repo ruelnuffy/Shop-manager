@@ -329,8 +329,8 @@
                 </div>
 
                 <div class="relative pt-5">
-                    <a href="{{ url('/') }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-cyan-900 group-hover:bg-cyan-600 group-hover:text-white transition">
-                        <span>View storefront</span>
+                    <a href="{{ route('admin.visitors.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-cyan-900 group-hover:bg-cyan-600 group-hover:text-white transition">
+                        <span>View visitors</span>
                         <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
                     </a>
                 </div>
