@@ -25,7 +25,7 @@
             $whatsappUrl = 'https://wa.me/' . $whatsappNum . '?text=' . rawurlencode($whatsappMsg);
             $customerCarePhone = $currentTenant ? $currentTenant->customerCarePhone() : '+234 906 949 8376';
             $customerCareEmail = $currentTenant ? $currentTenant->customerCareEmail() : 'support@shopmanager.test';
-            $conciergeChatLabel = $currentTenant ? $currentTenant->conciergeChatLabel() : 'Jos Concierge';
+            $conciergeChatLabel = $currentTenant ? $currentTenant->conciergeChatLabel() : 'WhatsApp';
             $isConciergeEnabled = $currentTenant ? $currentTenant->isConciergeChatEnabled() : true;
             $storefrontAddress = $currentTenant ? $currentTenant->storefrontAddress() : 'Across Chrisbest Plaza, West of Mines, Jos, Plateau State, Nigeria';
             $storefrontOpeningHours = $currentTenant ? $currentTenant->storefrontOpeningHours() : 'Open Mon – Sat';

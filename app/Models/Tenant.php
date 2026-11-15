@@ -126,7 +126,7 @@ class Tenant extends Model
      */
     public function conciergeChatLabel(): string
     {
-        return (string) $this->setting('contact.chat_label', 'Jos Concierge');
+        return (string) $this->setting('contact.chat_label', 'WhatsApp');
     }
 
     /**

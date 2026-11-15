@@ -197,7 +197,7 @@
                             type="text"
                             name="chat_label"
                             value="{{ $chatLabel }}"
-                            placeholder="e.g. Chat with Us, Jos Concierge, Order on WhatsApp"
+                            placeholder="e.g. WhatsApp, Chat with Us, Order on WhatsApp"
                             class="w-full sm:w-96 px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs text-slate-900 focus:outline-none focus:border-emerald-500 shadow-xs"
                         />
                     </div>
