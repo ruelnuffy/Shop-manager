@@ -188,12 +188,12 @@
                                             {{ $tenant->setting('branding.tagline', 'Retail Workspace') }}
                                         </div>
                                         @if ($owner)
-                                            <div class="flex items-center gap-1.5 mt-1 text-[11px] text-slate-600">
+                                            <div class="flex items-center gap-1.5 mt-1 text-[11px] text-slate-600 whitespace-nowrap">
                                                 <svg class="w-3.5 h-3.5 text-indigo-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                                 </svg>
                                                 <span class="font-semibold text-slate-800">{{ $owner->name }}</span>
-                                                <span class="text-slate-400 font-mono text-[10px]">&bull; {{ $owner->email }}</span>
+                                                <span class="text-slate-400 text-[10px]">&bull; {{ $owner->email }}</span>
                                             </div>
                                         @else
                                             <div class="text-[11px] text-slate-400 italic mt-1">No merchant owner attached</div>
@@ -203,24 +203,24 @@
                             </td>
 
                             <!-- Slug / Subdomain -->
-                            <td class="px-4 py-4.5">
-                                <div class="font-mono text-slate-900 font-semibold">{{ $tenant->slug }}</div>
-                                <div class="text-[11px] text-slate-400 font-mono">
-                                    {{ $tenant->domain ?: ($tenant->subdomain ? $tenant->subdomain . '.shopmanager.test' : 'local') }}
+                            <td class="px-4 py-4.5 whitespace-nowrap">
+                                <div class="text-slate-900 font-semibold">{{ $tenant->slug }}</div>
+                                <div class="text-[11px] text-slate-400">
+                                    {{ $tenant->domain ?: ($tenant->subdomain ? $tenant->subdomain . '.' . config('tenancy.base_domain', 'houseoframah.name.ng') : 'local') }}
                                 </div>
                             </td>
 
                             <!-- Subscription & Plan -->
-                            <td class="px-4 py-4.5 space-y-1.5">
+                            <td class="px-4 py-4.5 space-y-1.5 whitespace-nowrap">
                                 @if ($isSubscribed)
-                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 whitespace-nowrap">
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                        <span>Subscribed &bull; {{ $tenant->plan }}</span>
+                                        <span>{{ $tenant->plan }}</span>
                                     </div>
                                 @else
-                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200">
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200 whitespace-nowrap">
                                         <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                        <span>Free Tier &bull; {{ $tenant->plan ?? 'standard' }}</span>
+                                        <span>{{ $tenant->plan ?? 'standard' }}</span>
                                     </div>
                                 @endif
 
@@ -246,7 +246,7 @@
                             </td>
 
                             <!-- Status -->
-                            <td class="px-4 py-4.5">
+                            <td class="px-4 py-4.5 whitespace-nowrap">
                                 @php
                                     $statusClasses = match ($tenant->status) {
                                         'active' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
@@ -259,15 +259,15 @@
                                         default => 'bg-rose-500',
                                     };
                                 @endphp
-                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border {{ $statusClasses }}">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border whitespace-nowrap {{ $statusClasses }}">
                                     <span class="w-1.5 h-1.5 rounded-full {{ $dotClass }}"></span>
                                     {{ $tenant->status }}
                                 </span>
                             </td>
 
                             <!-- Actions -->
-                            <td class="px-6 py-4.5 text-right">
-                                <div class="flex items-center justify-end gap-1.5 flex-wrap">
+                            <td class="px-6 py-4.5 text-right whitespace-nowrap">
+                                <div class="inline-flex items-center justify-end gap-1.5">
                                     <form method="POST" action="{{ route('super-admin.tenants.impersonate-admin', $tenant) }}">
                                         @csrf
                                         <button
