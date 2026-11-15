@@ -357,7 +357,8 @@
                     </div>
                 </div>
 
-                <!-- Sticky Note 8: Pastel Indigo - Store Admin Accounts & Subscriptions (Admin Only) -->
+                @if(Auth::user()->isSuperAdmin())
+                <!-- Sticky Note 8: Pastel Indigo - Store Admin Accounts & Subscriptions (Super Admin Only) -->
                 <div class="group relative rounded-2xl rounded-br-[28px] p-6 bg-[#e0e7ff] shadow-lg shadow-indigo-900/5 hover:shadow-2xl hover:shadow-indigo-900/10 hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[220px]">
                     <!-- Frosted tape at top center (borderless) -->
                     <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-16 h-5 bg-white/80 backdrop-blur-xs shadow-xs rounded-xs rotate-[0.6deg] pointer-events-none"></div>
@@ -387,12 +388,13 @@
                         </a>
                     </div>
                 </div>
+                @endif
             @endif
 
         </div>
 
-        <!-- Store Admins Directory Section (Admin Only - Staff & Customers nested under each Admin) -->
-        @if(Auth::user()->isAdmin())
+        <!-- Store Admins Directory Section (Super Admin Only - Staff & Customers nested under each Admin) -->
+        @if(Auth::user()->isSuperAdmin())
             <div id="stores-section" x-data="{ activeTier: 'all' }" class="bg-white rounded-2xl p-5 sm:p-7 shadow-xl shadow-slate-900/5 space-y-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
                     <div>

@@ -65,32 +65,39 @@ class DashboardController extends Controller
         // Recent Stock Movements
         $recentStockMovements = StockMovement::with(['variant.product', 'creator'])->latest()->take(5)->get();
 
-        // Platform Store Admin accounts only (staff and customers are nested under each admin)
-        $adminUsersBase = User::withoutTenancy()->where('role', 'admin');
+        $totalAdminUsersCount = 0;
+        $subscribedUsersCount = 0;
+        $freeUsersCount = 0;
+        $storeAdmins = collect();
 
-        $totalAdminUsersCount = (clone $adminUsersBase)->count();
-        $subscribedUsersCount = (clone $adminUsersBase)->whereHas('tenant', function ($q) {
-            $q->whereIn('plan', ['starter', 'pro', 'enterprise']);
-        })->count();
-        $freeUsersCount = (clone $adminUsersBase)->where(function ($q) {
-            $q->whereHas('tenant', function ($tq) {
-                $tq->whereNotIn('plan', ['starter', 'pro', 'enterprise'])->orWhereNull('plan');
-            })->orWhereNull('tenant_id');
-        })->count();
+        if (request()->user()?->isSuperAdmin()) {
+            // Platform Store Admin accounts only (staff and customers are nested under each admin)
+            $adminUsersBase = User::withoutTenancy()->where('role', 'admin');
 
-        $storeAdmins = User::withoutTenancy()
-            ->where('role', 'admin')
-            ->with(['tenant' => function ($tq) {
-                $tq->with([
-                    'users' => fn ($uq) => $uq->withoutTenancy()->whereIn('role', ['staff', 'customer']),
-                ])->withCount([
-                    'products' => fn ($q) => $q->withoutTenancy(),
-                    'orders' => fn ($q) => $q->withoutTenancy(),
-                    'staff' => fn ($q) => $q->withoutTenancy(),
-                ]);
-            }])
-            ->latest()
-            ->get();
+            $totalAdminUsersCount = (clone $adminUsersBase)->count();
+            $subscribedUsersCount = (clone $adminUsersBase)->whereHas('tenant', function ($q) {
+                $q->whereIn('plan', ['starter', 'pro', 'enterprise']);
+            })->count();
+            $freeUsersCount = (clone $adminUsersBase)->where(function ($q) {
+                $q->whereHas('tenant', function ($tq) {
+                    $tq->whereNotIn('plan', ['starter', 'pro', 'enterprise'])->orWhereNull('plan');
+                })->orWhereNull('tenant_id');
+            })->count();
+
+            $storeAdmins = User::withoutTenancy()
+                ->where('role', 'admin')
+                ->with(['tenant' => function ($tq) {
+                    $tq->with([
+                        'users' => fn ($uq) => $uq->withoutTenancy()->whereIn('role', ['staff', 'customer']),
+                    ])->withCount([
+                        'products' => fn ($q) => $q->withoutTenancy(),
+                        'orders' => fn ($q) => $q->withoutTenancy(),
+                        'staff' => fn ($q) => $q->withoutTenancy(),
+                    ]);
+                }])
+                ->latest()
+                ->get();
+        }
 
         return view('admin.dashboard', array_merge($stats, compact(
             'lowStockVariants',

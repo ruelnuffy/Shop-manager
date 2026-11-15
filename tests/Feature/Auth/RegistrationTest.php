@@ -81,7 +81,10 @@ class RegistrationTest extends TestCase
         $user = User::where('email', 'owner@example.com')->firstOrFail();
         $this->assertSame('pending', $user->tenant->status);
 
-        $this->get(route('admin.dashboard'))->assertOk()->assertSee('Plan Pending Activation');
+        $this->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('Plan Pending Activation')
+            ->assertDontSee('Store Admin Accounts');
         $this->get(route('admin.products.index'))->assertRedirect(route('admin.dashboard'));
         $this->get(route('admin.sales.create'))->assertRedirect(route('admin.dashboard'));
 
