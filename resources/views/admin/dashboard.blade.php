@@ -14,6 +14,75 @@
     @endphp
 
     <div class="max-w-6xl mx-auto space-y-8">
+        @if (session('whatsapp_onboarding'))
+            @php
+                $onboarding = session('whatsapp_onboarding');
+            @endphp
+            <div
+                x-data="{ open: true }"
+                x-show="open"
+                x-cloak
+                class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs"
+            >
+                <div
+                    @click.outside="open = false"
+                    class="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 sm:p-7 space-y-5"
+                >
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <span class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12.031 2c-5.516 0-9.969 4.453-9.969 9.969 0 1.766.469 3.484 1.344 5l-1.406 5.156 5.281-1.391c1.469.797 3.109 1.219 4.75 1.219 5.516 0 9.969-4.453 9.969-9.969S17.547 2 12.031 2zm5.813 14.125c-.25.703-1.453 1.344-2 1.422-.516.078-1.156.109-1.875-.109-.438-.141-1-.328-1.719-.641-3.031-1.313-5-4.375-5.156-4.578-.156-.203-1.234-1.641-1.234-3.125s.781-2.219 1.063-2.516c.281-.297.609-.375.813-.375.203 0 .406 0 .578.016.188.016.438-.078.688.516.25.609.859 2.094.938 2.25.078.156.125.344.016.547-.109.203-.156.344-.313.516-.156.172-.328.391-.469.531-.156.156-.328.328-.141.641.188.313.844 1.391 1.813 2.25 1.25 1.109 2.297 1.453 2.609 1.609.313.156.5.125.688-.078.188-.203.797-.922 1.016-1.234.219-.313.422-.266.719-.156.297.109 1.875.891 2.203 1.047.328.156.547.234.625.359.078.125.078.734-.172 1.438z"/>
+                                </svg>
+                            </span>
+                            <div>
+                                <h3 class="font-display font-extrabold text-lg text-slate-900">
+                                    Activate Your Plan on WhatsApp
+                                </h3>
+                                <p class="text-xs text-slate-500 mt-0.5">
+                                    {{ $onboarding['store_name'] ?? 'Your store' }} is ready
+                                </p>
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            @click="open = false"
+                            class="text-slate-400 hover:text-slate-600 transition cursor-pointer"
+                            aria-label="Close"
+                        >
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Send us a quick message on WhatsApp to complete billing and activate your <strong class="text-slate-900 uppercase">{{ $onboarding['plan'] ?? 'selected' }}</strong> plan, or we will reach out to <strong class="text-slate-900">{{ $onboarding['phone'] ?? 'your number' }}</strong>.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-2.5 pt-1">
+                        <a
+                            href="{{ $onboarding['whatsapp_url'] ?? 'https://wa.me/2349046686176' }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            @click="open = false"
+                            class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/20 transition"
+                        >
+                            <span>Message on WhatsApp</span>
+                            <span>&rarr;</span>
+                        </a>
+                        <button
+                            type="button"
+                            @click="open = false"
+                            class="px-4 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition cursor-pointer"
+                        >
+                            Later
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <!-- Welcome Greeting -->
         <div class="pt-2">
             <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Welcome back</span>

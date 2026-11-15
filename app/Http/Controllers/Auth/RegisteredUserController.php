@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewAccountRegisteredMail;
 use App\Models\Category;
 use App\Models\ShopLocation;
 use App\Models\Tenant;
@@ -14,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
@@ -47,11 +50,14 @@ class RegisteredUserController extends Controller
                 'store_name' => ['required', 'string', 'max:255'],
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+                'phone' => ['required', 'string', 'max:30'],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
                 'plan' => ['nullable', 'string', 'in:starter,pro,enterprise,standard,free'],
             ]);
 
-            $user = DB::transaction(function () use ($request, $currentTenant) {
+            $phone = trim($request->string('phone')->toString());
+
+            $user = DB::transaction(function () use ($request, $currentTenant, $phone) {
                 $storeName = trim($request->string('store_name')->toString());
                 $baseSlug = Str::slug($storeName) ?: 'store';
                 $reserved = config('tenancy.reserved_subdomains', ['www', 'app', 'admin', 'api', 'mail', 'billing', 'support', 'status']);
@@ -88,6 +94,10 @@ class RegisteredUserController extends Controller
                             'storefront' => true,
                             'payroll' => true,
                         ],
+                        'contact' => [
+                            'phone' => $phone,
+                            'whatsapp' => preg_replace('/\D+/', '', $phone),
+                        ],
                     ],
                 ]);
 
@@ -116,7 +126,7 @@ class RegisteredUserController extends Controller
                     'country' => 'Nigeria',
                     'latitude' => 6.4474000,
                     'longitude' => 3.4723000,
-                    'phone' => '+234 800 000 0000',
+                    'phone' => $phone,
                     'email' => $request->string('email')->toString(),
                     'opening_hours' => 'Mon - Sat: 9:00 AM - 6:00 PM',
                     'is_primary' => true,
@@ -126,6 +136,7 @@ class RegisteredUserController extends Controller
                     'tenant_id' => $tenant->id,
                     'name' => $request->string('name')->toString(),
                     'email' => $request->string('email')->toString(),
+                    'phone' => $phone,
                     'password' => Hash::make($request->string('password')->toString()),
                     'role' => 'admin',
                     'email_verified_at' => now(),
@@ -144,8 +155,28 @@ class RegisteredUserController extends Controller
             event(new Registered($user));
             Auth::login($user);
 
+            try {
+                Mail::to('ruelnuffy@gmail.com')->send(new NewAccountRegisteredMail($user, $user->tenant));
+            } catch (\Throwable $e) {
+                Log::warning('Failed to send new account registration email', [
+                    'user_id' => $user->id,
+                    'tenant_id' => $user->tenant_id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+
+            $whatsappText = rawurlencode(
+                "Hello ShopManager! I just registered my store \"{$user->tenant->name}\" ({$user->tenant->plan} plan). Name: {$user->name}, Email: {$user->email}, Phone: {$user->phone}. Please help me activate my plan."
+            );
+
             return redirect(route('admin.dashboard', absolute: false))
-                ->with('success', 'Welcome to '.config('app.platform_name', 'ShopManager')."! Your store ({$user->tenant->name}) is live and ready.");
+                ->with('success', 'Welcome to '.config('app.platform_name', 'ShopManager')."! Your store ({$user->tenant->name}) is live and ready.")
+                ->with('whatsapp_onboarding', [
+                    'store_name' => $user->tenant->name,
+                    'plan' => $user->tenant->plan,
+                    'phone' => $user->phone,
+                    'whatsapp_url' => "https://wa.me/2349046686176?text={$whatsappText}",
+                ]);
         }
 
         // Tenant Storefront Customer Registration
