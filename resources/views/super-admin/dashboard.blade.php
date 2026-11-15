@@ -96,7 +96,7 @@
     </div>
 
     <!-- Quick Stats Bar -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-between">
             <div>
                 <div class="text-[11px] text-slate-500">Payroll Disbursed</div>
@@ -119,6 +119,14 @@
                 <div class="text-lg font-bold text-slate-900">{{ number_format($totalOcrBatches) }} Batches</div>
             </div>
             <span class="text-xs text-slate-400">Processed</span>
+        </div>
+
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-between">
+            <div>
+                <div class="text-[11px] text-slate-500">Site Visitors</div>
+                <div class="text-lg font-bold text-blue-600">{{ number_format($totalSiteVisits) }} Visits</div>
+            </div>
+            <span class="text-xs text-slate-500 text-right">{{ number_format($uniqueSiteVisitors) }} Unique<br>{{ number_format($todaySiteVisits) }} Today</span>
         </div>
     </div>
 
@@ -253,6 +261,46 @@
                     <div class="text-center py-6 text-slate-400 text-xs">No orders yet.</div>
                 @endforelse
             </div>
+        </div>
+    </div>
+
+    <!-- Recent Site Visitors -->
+    <div class="p-5 rounded-xl bg-white border border-slate-200 shadow-xs space-y-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+            <div>
+                <h2 class="text-sm font-semibold text-slate-900">Recent Site Visitors</h2>
+                <p class="text-[11px] text-slate-400">Platform visits: {{ number_format($platformSiteVisits) }} &bull; Storefront visits: {{ number_format(max(0, $totalSiteVisits - $platformSiteVisits)) }}</p>
+            </div>
+            <span class="text-xs font-medium text-blue-600">{{ number_format($todaySiteVisits) }} today</span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+                <thead>
+                    <tr class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 border-b border-slate-100">
+                        <th class="py-2 pr-4">Destination</th>
+                        <th class="py-2 pr-4">Path</th>
+                        <th class="py-2 pr-4">IP Address</th>
+                        <th class="py-2 text-right">Visited</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @forelse ($recentVisits as $visit)
+                        <tr>
+                            <td class="py-2.5 pr-4 font-medium text-slate-900">
+                                {{ $visit->tenant ? $visit->tenant->name : 'Platform' }}
+                            </td>
+                            <td class="py-2.5 pr-4 text-slate-600 font-mono text-[11px]">{{ $visit->path }}</td>
+                            <td class="py-2.5 pr-4 text-slate-500">{{ $visit->ip_address ?: 'Unknown' }}</td>
+                            <td class="py-2.5 text-right text-slate-400">{{ $visit->created_at?->diffForHumans() }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="py-6 text-center text-slate-400">No visitor records yet.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 

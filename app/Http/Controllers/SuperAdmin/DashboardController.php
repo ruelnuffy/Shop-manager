@@ -7,6 +7,7 @@ use App\Models\OcrImportBatch;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\SalaryPayment;
+use App\Models\SiteVisit;
 use App\Models\Staff;
 use App\Models\Tenant;
 use Carbon\Carbon;
@@ -163,6 +164,13 @@ class DashboardController extends Controller
             'memory_usage' => round(memory_get_usage(true) / 1024 / 1024, 1).' MB',
         ];
 
+        // Site & Storefront Visitor Analytics
+        $totalSiteVisits = SiteVisit::count();
+        $uniqueSiteVisitors = SiteVisit::whereNotNull('session_id')->distinct('session_id')->count('session_id');
+        $todaySiteVisits = SiteVisit::whereDate('visited_on', Carbon::today())->count();
+        $platformSiteVisits = SiteVisit::whereNull('tenant_id')->count();
+        $recentVisits = SiteVisit::with('tenant')->latest()->take(10)->get();
+
         return view('super-admin.dashboard', compact(
             'tenantsCount',
             'activeTenantsCount',
@@ -184,7 +192,12 @@ class DashboardController extends Controller
             'recentTenants',
             'recentOrders',
             'systemTelemetry',
-            'period'
+            'period',
+            'totalSiteVisits',
+            'uniqueSiteVisitors',
+            'todaySiteVisits',
+            'platformSiteVisits',
+            'recentVisits'
         ));
     }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\ProductVariant;
 use App\Models\SalesRecord;
+use App\Models\SiteVisit;
 use App\Models\StockMovement;
 use App\Models\User;
 use App\Services\CurrentTenant;
@@ -65,6 +66,18 @@ class DashboardController extends Controller
         // Recent Stock Movements
         $recentStockMovements = StockMovement::with(['variant.product', 'creator'])->latest()->take(5)->get();
 
+        // Storefront Visitor Metrics for current tenant
+        $tenantId = app(CurrentTenant::class)->id();
+        $storefrontVisitsToday = $tenantId
+            ? SiteVisit::where('tenant_id', $tenantId)->whereDate('visited_on', now()->toDateString())->count()
+            : 0;
+        $storefrontVisitsTotal = $tenantId
+            ? SiteVisit::where('tenant_id', $tenantId)->count()
+            : 0;
+        $storefrontUniqueVisitors = $tenantId
+            ? SiteVisit::where('tenant_id', $tenantId)->whereNotNull('session_id')->distinct('session_id')->count('session_id')
+            : 0;
+
         $totalAdminUsersCount = 0;
         $subscribedUsersCount = 0;
         $freeUsersCount = 0;
@@ -106,7 +119,10 @@ class DashboardController extends Controller
             'totalAdminUsersCount',
             'subscribedUsersCount',
             'freeUsersCount',
-            'storeAdmins'
+            'storeAdmins',
+            'storefrontVisitsToday',
+            'storefrontVisitsTotal',
+            'storefrontUniqueVisitors'
         )));
     }
 }

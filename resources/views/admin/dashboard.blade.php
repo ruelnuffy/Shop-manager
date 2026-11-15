@@ -307,6 +307,35 @@
                 </div>
             </div>
 
+            <!-- Cloud: Storefront Visitors -->
+            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-cyan-50/40 to-cyan-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(6,182,212,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
+                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-cyan-200/35 blur-md pointer-events-none"></div>
+                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
+
+                <div class="relative">
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-cyan-100/80 text-[10px] font-bold uppercase tracking-wider text-cyan-800">Storefront Traffic</span>
+                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Store Visitors</h3>
+                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
+                        <div class="flex items-center gap-2 text-slate-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
+                            <span><strong>{{ number_format($storefrontVisitsToday ?? 0) }}</strong> visits today</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-slate-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                            <span><strong>{{ number_format($storefrontUniqueVisitors ?? 0) }}</strong> unique visitors</span>
+                        </div>
+                        <div class="pl-3.5 text-[11px]">{{ number_format($storefrontVisitsTotal ?? 0) }} total storefront views</div>
+                    </div>
+                </div>
+
+                <div class="relative pt-5">
+                    <a href="{{ url('/') }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-cyan-900 group-hover:bg-cyan-600 group-hover:text-white transition">
+                        <span>View storefront</span>
+                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+
             <!-- Cloud 7: Staff & Payroll (Admin Only) -->
             @if(Auth::user()->isAdmin())
                 <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-lime-50/40 to-lime-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(132,204,22,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">

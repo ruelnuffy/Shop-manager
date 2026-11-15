@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureUserIsSuperAdmin;
 use App\Http\Middleware\ResolveTenant;
+use App\Http\Middleware\TrackSiteVisit;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -35,6 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->web(append: [
             ResolveTenant::class,
+            TrackSiteVisit::class,
         ]);
 
         $middleware->appendToPriorityList(
