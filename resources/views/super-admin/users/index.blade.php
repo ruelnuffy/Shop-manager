@@ -301,11 +301,31 @@
 
                             <!-- Subscription Status -->
                             <td class="px-4 py-4">
-                                @if ($isSubscribed)
+                                @if ($user->tenant && $user->tenant->status === 'pending')
+                                    <div class="space-y-0.5">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                            Pending Activation
+                                        </span>
+                                        <div class="text-[11px] font-semibold text-slate-700 uppercase">
+                                            {{ $user->tenant->plan }} Plan
+                                        </div>
+                                    </div>
+                                @elseif ($user->tenant && $user->tenant->status === 'suspended')
+                                    <div class="space-y-0.5">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                                            Suspended
+                                        </span>
+                                        <div class="text-[11px] font-semibold text-slate-700 uppercase">
+                                            {{ $user->tenant->plan }} Plan
+                                        </div>
+                                    </div>
+                                @elseif ($isSubscribed)
                                     <div class="space-y-0.5">
                                         <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
                                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                            Subscribed
+                                            Active
                                         </span>
                                         <div class="text-[11px] font-semibold text-slate-700 uppercase">
                                             {{ $user->tenant->plan }} Plan
@@ -315,7 +335,7 @@
                                     <div class="space-y-0.5">
                                         <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200">
                                             <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                            Free User
+                                            Standard User
                                         </span>
                                         <div class="text-[11px] text-slate-400">
                                             Standard Plan
@@ -334,20 +354,35 @@
 
                             <!-- Actions -->
                             <td class="px-6 py-4 text-right">
-                                @if ($user->id !== Auth::id())
-                                    <form method="POST" action="{{ route('super-admin.users.impersonate', $user) }}" class="inline">
-                                        @csrf
-                                        <button
-                                            type="submit"
-                                            class="px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 text-xs font-semibold transition inline-flex items-center gap-1 cursor-pointer"
-                                            title="Direct login as {{ $user->name }}"
-                                        >
-                                            <span>Login &nearr;</span>
-                                        </button>
-                                    </form>
-                                @else
-                                    <span class="text-[11px] text-slate-400 italic">Current User</span>
-                                @endif
+                                <div class="inline-flex items-center justify-end gap-1.5">
+                                    @if ($user->tenant)
+                                        <form method="POST" action="{{ route('super-admin.tenants.toggle-status', $user->tenant) }}" class="inline">
+                                            @csrf
+                                            <button
+                                                type="submit"
+                                                class="px-2.5 py-1.5 rounded-xl border text-xs font-semibold transition cursor-pointer {{ $user->tenant->status === 'active' ? 'border-rose-200 text-rose-600 hover:bg-rose-50' : 'border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white' }}"
+                                                title="{{ $user->tenant->status === 'active' ? 'Suspend Store' : 'Activate Plan' }}"
+                                            >
+                                                {{ $user->tenant->status === 'active' ? 'Suspend' : 'Activate' }}
+                                            </button>
+                                        </form>
+                                    @endif
+
+                                    @if ($user->id !== Auth::id())
+                                        <form method="POST" action="{{ route('super-admin.users.impersonate', $user) }}" class="inline">
+                                            @csrf
+                                            <button
+                                                type="submit"
+                                                class="px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 text-xs font-semibold transition inline-flex items-center gap-1 cursor-pointer"
+                                                title="Direct login as {{ $user->name }}"
+                                            >
+                                                <span>Login &nearr;</span>
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span class="text-[11px] text-slate-400 italic">Current User</span>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @empty
