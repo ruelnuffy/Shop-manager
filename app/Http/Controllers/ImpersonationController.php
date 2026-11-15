@@ -109,6 +109,9 @@ class ImpersonationController extends Controller
                 'tenant_id' => $tenant->id,
                 'user_id' => $staffUser->id,
                 'position' => 'Store Cashier',
+                'bank_name' => 'Not Set',
+                'bank_account_number' => '0000000000',
+                'bank_code' => '000',
                 'is_active' => true,
                 'monthly_salary' => 120000,
             ]);
@@ -184,6 +187,9 @@ class ImpersonationController extends Controller
                 'tenant_id' => $tenant->id,
                 'user_id' => $staffUser->id,
                 'position' => 'Store Cashier',
+                'bank_name' => 'Not Set',
+                'bank_account_number' => '0000000000',
+                'bank_code' => '000',
                 'is_active' => true,
                 'monthly_salary' => 120000,
             ]);
