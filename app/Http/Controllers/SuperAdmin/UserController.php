@@ -9,6 +9,8 @@ use App\Services\CurrentTenant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -140,5 +142,77 @@ class UserController extends Controller
 
         return redirect()->route('dashboard')
             ->with('status', "Masquerade Active: Logged in as customer {$user->name}.");
+    }
+
+    /**
+     * Update a platform user's profile details and store plan/status (Super Admin only).
+     */
+    public function update(Request $request, int|string $user): RedirectResponse
+    {
+        $targetUser = User::withoutTenancy()->with('tenant')->findOrFail($user);
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')
+                    ->where(fn ($query) => $query->where('tenant_id', $targetUser->tenant_id))
+                    ->ignore($targetUser->id),
+            ],
+            'phone' => ['nullable', 'string', 'max:30'],
+            'store_name' => ['nullable', 'string', 'max:255'],
+            'plan' => ['nullable', 'string', 'in:starter,pro,enterprise,standard'],
+            'status' => ['nullable', 'string', 'in:active,pending,suspended'],
+        ]);
+
+        $targetUser->update([
+            'name' => trim($validated['name']),
+            'email' => $validated['email'],
+            'phone' => isset($validated['phone']) ? trim($validated['phone']) : null,
+        ]);
+
+        if ($targetUser->tenant) {
+            $tenantUpdates = [];
+            if (! empty($validated['plan'])) {
+                $tenantUpdates['plan'] = $validated['plan'];
+            }
+            if (! empty($validated['status'])) {
+                $tenantUpdates['status'] = $validated['status'];
+            }
+            if (! empty($validated['store_name']) && $targetUser->isAdmin()) {
+                $storeName = trim($validated['store_name']);
+                $settings = $targetUser->tenant->settings ?? [];
+                data_set($settings, 'branding.name', $storeName);
+                $tenantUpdates['name'] = $storeName;
+                $tenantUpdates['settings'] = $settings;
+            }
+            if ($tenantUpdates !== []) {
+                $targetUser->tenant->update($tenantUpdates);
+            }
+        }
+
+        return back()->with('status', "Updated profile and plan details for {$targetUser->name}.");
+    }
+
+    /**
+     * Reset a platform user's password (Super Admin only).
+     */
+    public function resetPassword(Request $request, int|string $user): RedirectResponse
+    {
+        $targetUser = User::withoutTenancy()->findOrFail($user);
+
+        $validated = $request->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $targetUser->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return back()->with('status', "Password reset successfully for {$targetUser->email}.");
     }
 }

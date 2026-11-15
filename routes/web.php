@@ -230,6 +230,8 @@ Route::prefix('super-admin')
 
         // Platform Users Directory & Direct Masquerade
         Route::get('/users', [SuperAdmin\UserController::class, 'index'])->name('users.index');
+        Route::put('/users/{user}', [SuperAdmin\UserController::class, 'update'])->name('users.update');
+        Route::post('/users/{user}/reset-password', [SuperAdmin\UserController::class, 'resetPassword'])->name('users.reset-password');
         Route::post('/users/{user}/impersonate', [SuperAdmin\UserController::class, 'impersonate'])->name('users.impersonate');
 
         Route::get('/export-report', [SuperAdmin\DashboardController::class, 'exportAuditReport'])->name('export-report');

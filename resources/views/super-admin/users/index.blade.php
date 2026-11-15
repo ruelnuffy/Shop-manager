@@ -1,4 +1,38 @@
 <x-super-admin-layout>
+    <div
+        x-data="{
+            editModalOpen: false,
+            activeTab: 'profile',
+            selectedUser: {
+                id: null,
+                name: '',
+                email: '',
+                phone: '',
+                role: '',
+                hasTenant: false,
+                storeName: '',
+                plan: 'starter',
+                status: 'active',
+                updateUrl: '',
+                resetPasswordUrl: ''
+            },
+            openManage(user) {
+                this.selectedUser = user;
+                this.activeTab = 'profile';
+                this.editModalOpen = true;
+            }
+        }"
+        class="space-y-6"
+    >
+    @if ($errors->any())
+        <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs space-y-1">
+            <div class="font-bold">Please fix the following errors:</div>
+            @foreach ($errors->all() as $error)
+                <div>&bull; {{ $error }}</div>
+            @endforeach
+        </div>
+    @endif
+
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
@@ -354,7 +388,28 @@
 
                             <!-- Actions -->
                             <td class="px-6 py-4 text-right">
-                                <div class="inline-flex items-center justify-end gap-1.5">
+                                <div class="inline-flex items-center justify-end gap-1.5 flex-wrap">
+                                    <button
+                                        type="button"
+                                        @click="openManage({{ Js::from([
+                                            'id' => $user->id,
+                                            'name' => $user->name,
+                                            'email' => $user->email,
+                                            'phone' => $user->phone ?? '',
+                                            'role' => $user->role,
+                                            'hasTenant' => (bool) $user->tenant,
+                                            'storeName' => $user->tenant?->name ?? '',
+                                            'plan' => $user->tenant?->plan ?? 'starter',
+                                            'status' => $user->tenant?->status ?? 'active',
+                                            'updateUrl' => route('super-admin.users.update', $user),
+                                            'resetPasswordUrl' => route('super-admin.users.reset-password', $user),
+                                        ]) }})"
+                                        class="px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold transition cursor-pointer"
+                                        title="Edit profile, switch plan, or reset password"
+                                    >
+                                        Manage
+                                    </button>
+
                                     @if ($user->tenant)
                                         <form method="POST" action="{{ route('super-admin.tenants.toggle-status', $user->tenant) }}" class="inline">
                                             @csrf
@@ -401,5 +456,144 @@
                 {{ $users->links() }}
             </div>
         @endif
+    </div>
+
+    <!-- Manage User, Plan & Password Modal (Super Admin Only) -->
+    <div
+        x-show="editModalOpen"
+        x-cloak
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs"
+    >
+        <div
+            @click.outside="editModalOpen = false"
+            class="w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden"
+        >
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                <div>
+                    <h3 class="font-bold text-base text-slate-900" x-text="'Manage: ' + selectedUser.name"></h3>
+                    <p class="text-[11px] text-slate-500" x-text="selectedUser.email"></p>
+                </div>
+                <button type="button" @click="editModalOpen = false" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Tabs -->
+            <div class="px-6 pt-3 border-b border-slate-100 flex items-center gap-4 text-xs font-bold">
+                <button
+                    type="button"
+                    @click="activeTab = 'profile'"
+                    :class="activeTab === 'profile' ? 'border-b-2 border-indigo-600 text-indigo-600 pb-2.5' : 'text-slate-500 hover:text-slate-800 pb-2.5'"
+                    class="cursor-pointer transition"
+                >
+                    Profile &amp; Plan
+                </button>
+                <button
+                    type="button"
+                    @click="activeTab = 'password'"
+                    :class="activeTab === 'password' ? 'border-b-2 border-indigo-600 text-indigo-600 pb-2.5' : 'text-slate-500 hover:text-slate-800 pb-2.5'"
+                    class="cursor-pointer transition"
+                >
+                    Reset Password
+                </button>
+            </div>
+
+            <!-- Tab 1: Profile & Plan -->
+            <form
+                x-show="activeTab === 'profile'"
+                method="POST"
+                :action="selectedUser.updateUrl"
+                class="p-6 space-y-4"
+            >
+                @csrf
+                @method('PUT')
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Full Name</label>
+                        <input type="text" name="name" x-model="selectedUser.name" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-indigo-600" />
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Phone / WhatsApp</label>
+                        <input type="text" name="phone" x-model="selectedUser.phone" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-indigo-600" />
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Email Address</label>
+                    <input type="email" name="email" x-model="selectedUser.email" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-indigo-600" />
+                </div>
+
+                <template x-if="selectedUser.hasTenant">
+                    <div class="pt-2 border-t border-slate-100 space-y-4">
+                        <div x-show="selectedUser.role === 'admin'">
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Store / Business Name</label>
+                            <input type="text" name="store_name" x-model="selectedUser.storeName" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-indigo-600" />
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Plan</label>
+                                <select name="plan" x-model="selectedUser.plan" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-indigo-600">
+                                    <option value="starter">Starter (₦8,000/mo)</option>
+                                    <option value="pro">Pro (₦18,000/mo)</option>
+                                    <option value="enterprise">Enterprise (₦45,000/mo)</option>
+                                    <option value="standard">Standard</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Activation Status</label>
+                                <select name="status" x-model="selectedUser.status" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-indigo-600">
+                                    <option value="active">Active (Features Unlocked)</option>
+                                    <option value="pending">Pending Activation (Locked)</option>
+                                    <option value="suspended">Suspended (Blocked)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <div class="pt-2 flex items-center justify-end gap-2">
+                    <button type="button" @click="editModalOpen = false" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-sm cursor-pointer">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+
+            <!-- Tab 2: Reset Password -->
+            <form
+                x-show="activeTab === 'password'"
+                method="POST"
+                :action="selectedUser.resetPasswordUrl"
+                class="p-6 space-y-4"
+            >
+                @csrf
+
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">New Password (min 8 chars)</label>
+                    <input type="password" name="password" required minlength="8" autocomplete="new-password" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-indigo-600" />
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Confirm New Password</label>
+                    <input type="password" name="password_confirmation" required minlength="8" autocomplete="new-password" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-indigo-600" />
+                </div>
+
+                <div class="pt-2 flex items-center justify-end gap-2">
+                    <button type="button" @click="editModalOpen = false" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold shadow-sm cursor-pointer">
+                        Reset Password
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
     </div>
 </x-super-admin-layout>
