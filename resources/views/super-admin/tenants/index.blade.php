@@ -131,6 +131,7 @@
             >
                 <option value="all" {{ request('status') === 'all' || !request('status') ? 'selected' : '' }}>All Status</option>
                 <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
+                <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
                 <option value="suspended" {{ request('status') === 'suspended' ? 'selected' : '' }}>Suspended</option>
             </select>
 
@@ -246,8 +247,20 @@
 
                             <!-- Status -->
                             <td class="px-4 py-4.5">
-                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $tenant->status === 'active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200' }}">
-                                    <span class="w-1.5 h-1.5 rounded-full {{ $tenant->status === 'active' ? 'bg-emerald-500' : 'bg-rose-500' }}"></span>
+                                @php
+                                    $statusClasses = match ($tenant->status) {
+                                        'active' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                                        'pending' => 'bg-amber-50 text-amber-700 border-amber-200',
+                                        default => 'bg-rose-50 text-rose-700 border-rose-200',
+                                    };
+                                    $dotClass = match ($tenant->status) {
+                                        'active' => 'bg-emerald-500',
+                                        'pending' => 'bg-amber-500',
+                                        default => 'bg-rose-500',
+                                    };
+                                @endphp
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border {{ $statusClasses }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ $dotClass }}"></span>
                                     {{ $tenant->status }}
                                 </span>
                             </td>

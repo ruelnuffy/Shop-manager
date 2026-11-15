@@ -73,7 +73,9 @@ class ResolveTenant
                 abort(404, 'Store not found.');
             }
 
-            if ($tenant->status !== 'active') {
+            $isAdminOrAuthRequest = $request->is('admin', 'admin/*', 'login', 'logout', 'register', 'forgot-password', 'reset-password*');
+
+            if ($tenant->status !== 'active' && ! ($tenant->status === 'pending' && $isAdminOrAuthRequest)) {
                 abort(503, 'This store is currently inactive.');
             }
 

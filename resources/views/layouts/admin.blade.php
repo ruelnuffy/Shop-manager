@@ -9,6 +9,7 @@
         $currentTenant = app(\App\Services\CurrentTenant::class)->get();
         $platformName = config('app.platform_name', 'ShopManager');
         $storeName = $currentTenant ? $currentTenant->setting('branding.name', $currentTenant->name) : $platformName;
+        $planActive = ! $currentTenant || $currentTenant->isActive();
     @endphp
 
     <title>{{ $storeName }} &bull; {{ $platformName }} Console</title>
@@ -78,6 +79,7 @@
                     HOME
                 </a>
 
+                @if ($planActive)
                 <a
                     href="{{ route('admin.sales.create') }}"
                     class="px-3.5 py-1.5 rounded-full transition {{ request()->routeIs('admin.sales.*') ? 'bg-emerald-600 text-white font-bold shadow-md shadow-emerald-950/15' : 'text-emerald-700 bg-emerald-50 hover:bg-emerald-100 font-bold' }}"
@@ -143,6 +145,11 @@
                         PAYROLL
                     </a>
                 @endif
+                @else
+                    <span class="px-3.5 py-1.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-bold">
+                        PLAN PENDING ACTIVATION
+                    </span>
+                @endif
             </nav>
 
             <!-- Right: Tenant Status Pill & Sign Out -->
@@ -153,7 +160,7 @@
                     </a>
                 @endif
 
-                @if ($currentTenant && $currentTenant->hasFeature('storefront'))
+                @if ($planActive && $currentTenant && $currentTenant->hasFeature('storefront'))
                     <a
                         href="{{ route('storefront') }}"
                         target="_blank"
@@ -214,7 +221,7 @@
                     </div>
                 </div>
 
-                @if (Auth::user()->isAdmin() && !session()->has('impersonator_id'))
+                @if ($planActive && Auth::user()->isAdmin() && !session()->has('impersonator_id'))
                     <form method="POST" action="{{ route('admin.impersonate-staff') }}" class="inline">
                         @csrf
                         <button
@@ -265,6 +272,7 @@
         </div>
 
         <div class="flex items-center gap-2">
+            @if ($planActive)
             <a
                 href="{{ route('admin.notifications.index') }}"
                 class="relative p-2 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
@@ -285,6 +293,7 @@
             >
                 POS
             </a>
+            @endif
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
@@ -305,6 +314,7 @@
     >
         <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
             <a href="{{ route('admin.dashboard') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Dashboard</a>
+            @if ($planActive)
             <a href="{{ route('admin.sales.create') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 shadow-xs">Make Sale (POS)</a>
             <a href="{{ route('admin.orders.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Orders</a>
             <a href="{{ route('admin.products.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Products</a>
@@ -324,6 +334,7 @@
                         </button>
                     </form>
                 @endif
+            @endif
             @endif
         </div>
     </div>

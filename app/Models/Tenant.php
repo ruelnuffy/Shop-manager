@@ -74,6 +74,14 @@ class Tenant extends Model
     }
 
     /**
+     * Determine whether the tenant's plan is active.
+     */
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
+    }
+
+    /**
      * Customer care phone number for display.
      */
     public function customerCarePhone(): string

@@ -11,6 +11,10 @@
     @php
         $currentTenant = app(\App\Services\CurrentTenant::class)->get();
         $storeName = $currentTenant ? $currentTenant->setting('branding.name', $currentTenant->name) : config('app.platform_name', 'ShopManager');
+        $planActive = ! $currentTenant || $currentTenant->isActive();
+        $pendingWhatsappText = $currentTenant
+            ? rawurlencode("Hello ShopManager! Please activate my {$currentTenant->plan} plan for \"{$storeName}\" (Phone: ".(Auth::user()->phone ?: $currentTenant->setting('contact.phone', '')).").")
+            : '';
     @endphp
 
     <div class="max-w-6xl mx-auto space-y-8">
@@ -92,14 +96,14 @@
                 </h2>
 
                 <div class="flex items-center gap-2">
-                    @if ($currentTenant && $currentTenant->hasFeature('storefront'))
+                    @if ($planActive && $currentTenant && $currentTenant->hasFeature('storefront'))
                         <a href="{{ route('storefront') }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-slate-700 text-xs font-semibold shadow-md shadow-slate-900/5 hover:shadow-lg transition">
                             <span>View Storefront</span>
                             <span class="text-slate-400">&nearr;</span>
                         </a>
                     @endif
 
-                    @if (Auth::user()->isAdmin() && !session()->has('impersonator_id'))
+                    @if ($planActive && Auth::user()->isAdmin() && !session()->has('impersonator_id'))
                         <form method="POST" action="{{ route('admin.impersonate-staff') }}" class="inline">
                             @csrf
                             <button
@@ -116,6 +120,30 @@
             </div>
         </div>
 
+        @if (! $planActive)
+            <div class="p-5 sm:p-6 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+                <div class="space-y-1">
+                    <div class="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-amber-800">
+                        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                        <span>Plan Pending Activation</span>
+                    </div>
+                    <p class="text-sm text-amber-950 font-medium">
+                        All store features are locked until your <strong class="uppercase">{{ $currentTenant->plan ?? 'selected' }}</strong> plan is activated. Message us on WhatsApp to complete billing.
+                    </p>
+                </div>
+                <a
+                    href="https://wa.me/2349046686176?text={{ $pendingWhatsappText }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-emerald-600/20 transition shrink-0"
+                >
+                    <span>Message on WhatsApp</span>
+                    <span>&rarr;</span>
+                </a>
+            </div>
+        @endif
+
+        <div class="{{ $planActive ? 'space-y-8' : 'space-y-8 pointer-events-none opacity-45 select-none grayscale' }}" @if (! $planActive) aria-disabled="true" @endif>
         <!-- Sticky Notes Workspace Grid (Completely Borderless with Soft Shadows) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
 
@@ -664,6 +692,7 @@
                     <p class="text-xs text-slate-400 mt-1">When transactions occur, they will display here in real time.</p>
                 </div>
             @endif
+        </div>
         </div>
     </div>
 </x-admin-layout>

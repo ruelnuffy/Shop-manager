@@ -83,7 +83,7 @@ class RegisteredUserController extends Controller
                     'slug' => $slug,
                     'subdomain' => $slug,
                     'plan' => $chosenPlan,
-                    'status' => 'active',
+                    'status' => 'pending',
                     'settings' => [
                         'branding' => [
                             'name' => $storeName,

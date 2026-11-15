@@ -3,6 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use App\Mail\NewAccountRegisteredMail;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
@@ -61,5 +62,31 @@ class RegistrationTest extends TestCase
 
         $response->assertSessionHasErrors('phone');
         $this->assertGuest();
+    }
+
+    public function test_pending_tenant_features_are_disabled_until_activated(): void
+    {
+        Mail::fake();
+
+        $this->post('/register', [
+            'store_name' => 'Locked Store',
+            'plan' => 'starter',
+            'name' => 'Test Owner',
+            'email' => 'owner@example.com',
+            'phone' => '09046686176',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
+
+        $user = User::where('email', 'owner@example.com')->firstOrFail();
+        $this->assertSame('pending', $user->tenant->status);
+
+        $this->get(route('admin.dashboard'))->assertOk()->assertSee('Plan Pending Activation');
+        $this->get(route('admin.products.index'))->assertRedirect(route('admin.dashboard'));
+        $this->get(route('admin.sales.create'))->assertRedirect(route('admin.dashboard'));
+
+        $user->tenant->update(['status' => 'active']);
+
+        $this->get(route('admin.products.index'))->assertOk();
     }
 }
