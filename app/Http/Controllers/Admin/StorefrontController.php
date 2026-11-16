@@ -184,7 +184,9 @@ class StorefrontController extends Controller
             data_set($settings, 'storefront.hero_badge', $request->input('hero_badge'));
         }
 
-        if ($request->hasFile('hero_image_file')) {
+        if ($request->boolean('remove_hero_image')) {
+            data_set($settings, 'storefront.hero_image', null);
+        } elseif ($request->hasFile('hero_image_file')) {
             $path = $request->file('hero_image_file')->store("tenants/{$tenantId}/storefront", 'public');
             data_set($settings, 'storefront.hero_image', '/storage/'.$path);
         } elseif ($request->filled('hero_image_url')) {

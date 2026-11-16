@@ -111,7 +111,7 @@
         @method('PUT')
 
         @php
-            $currentHeroImage = data_get($storefront, 'hero_image') ?: asset('images/shop/boutique-shelves-showcase.png');
+            $currentHeroImage = data_get($storefront, 'hero_image');
             $currentHeroTitle = data_get($storefront, 'hero_title', data_get($branding, 'name', $tenant->name));
             $currentHeroSubtitle = data_get($storefront, 'hero_subtitle', data_get($branding, 'tagline', 'Curated Boutique & Ready-to-Wear'));
             $currentHeroBadge = data_get($storefront, 'hero_badge', 'Physical Boutique Experience');
@@ -503,12 +503,12 @@
                     <!-- Live Preview Card -->
                     <div class="lg:col-span-5 space-y-3">
                         <span class="block text-xs font-bold uppercase tracking-wider text-slate-500">Live Picture Preview</span>
-                        <div class="relative rounded-2xl overflow-hidden aspect-[16/10] bg-slate-900 border border-slate-200 shadow-md group">
+                        <div class="relative rounded-2xl overflow-hidden aspect-[16/10] bg-gradient-to-br from-slate-900 via-slate-800 to-black border border-slate-200 shadow-md group">
                             <img
-                                src="{{ $currentHeroImage }}"
+                                src="{{ $currentHeroImage ? (str_starts_with($currentHeroImage, 'http') ? $currentHeroImage : asset($currentHeroImage)) : '' }}"
                                 alt="Storefront Hero"
                                 id="heroPreviewImg"
-                                class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500"
+                                class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500 {{ $currentHeroImage ? '' : 'hidden' }}"
                             />
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
                             <div class="absolute top-3 left-3">
@@ -551,10 +551,17 @@
                                     type="text"
                                     name="hero_image_url"
                                     value="{{ old('hero_image_url', is_string($currentHeroImage) && str_starts_with($currentHeroImage, 'http') ? $currentHeroImage : '') }}"
+                                    oninput="previewImageUrl(this.value, 'heroPreviewImg')"
                                     placeholder="https://images.unsplash.com/... or any image URL"
                                     class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs text-slate-900 focus:outline-none focus:border-blue-600 shadow-xs"
                                 />
                             </div>
+                            @if ($currentHeroImage)
+                                <label class="inline-flex items-center gap-2 pt-1 text-[11px] font-semibold text-rose-600 cursor-pointer">
+                                    <input type="checkbox" name="remove_hero_image" value="1" class="rounded border-slate-300 text-rose-600 focus:ring-rose-500">
+                                    <span>Remove current hero photo</span>
+                                </label>
+                            @endif
                         </div>
 
                         <!-- Q2: Title & Subtitle -->
@@ -1156,9 +1163,20 @@ function previewImage(input, targetId) {
             const img = document.getElementById(targetId);
             if (img) {
                 img.src = e.target.result;
+                img.classList.remove('hidden');
             }
         };
         reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function previewImageUrl(url, targetId) {
+    const img = document.getElementById(targetId);
+    if (!img) return;
+    const trimmed = (url || '').trim();
+    if (trimmed) {
+        img.src = trimmed;
+        img.classList.remove('hidden');
     }
 }
 </script>
