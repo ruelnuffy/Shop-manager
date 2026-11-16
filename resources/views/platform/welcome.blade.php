@@ -1064,11 +1064,10 @@
             >
                 &times;
             </button>
-            <a
-                href="https://wa.me/2349046686176?text=Hello%20ShopManager%2C%20please%20help%20me%20set%20up%20my%20store%20account."
-                target="_blank"
-                rel="noopener noreferrer"
-                class="block group"
+            <button
+                type="button"
+                onclick="openSetupSupportModal()"
+                class="block group text-left w-full cursor-pointer"
             >
                 <p class="text-xs font-bold text-slate-900 leading-snug">
                     Let's set up your shop for you!
@@ -1076,7 +1075,61 @@
                 <p class="text-[11px] font-semibold text-blue-600 group-hover:underline mt-1">
                     Tap here to chat on WhatsApp &rarr;
                 </p>
-            </a>
+            </button>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- SETUP SUPPORT POPUP MODAL                                   -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div
+            id="setupSupportModal"
+            style="display:none;"
+            class="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs"
+            onclick="if (event.target === this) closeSetupSupportModal()"
+        >
+            <div class="relative w-full max-w-md rounded-3xl bg-white p-6 sm:p-8 shadow-2xl border border-slate-100 text-center space-y-5">
+                <button
+                    type="button"
+                    onclick="closeSetupSupportModal()"
+                    aria-label="Close popup"
+                    class="absolute top-4 right-4 w-8 h-8 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center text-lg font-bold transition cursor-pointer"
+                >
+                    &times;
+                </button>
+
+                <div class="mx-auto w-14 h-14 rounded-2xl bg-emerald-50 text-[#25D366] flex items-center justify-center">
+                    <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" aria-hidden="true">
+                        <path d="M16.004 3C8.834 3 3 8.834 3 16.004c0 2.295.603 4.534 1.747 6.506L3 29l6.654-1.744A12.956 12.956 0 0016.004 29C23.174 29 29 23.166 29 16.004 29 8.834 23.174 3 16.004 3zm0 23.62c-2.01 0-3.984-.54-5.71-1.56l-.41-.243-4.248 1.113 1.135-4.14-.267-.426a10.562 10.562 0 01-1.622-5.36c0-5.858 4.765-10.623 10.622-10.623 5.857 0 10.623 4.765 10.623 10.623 0 5.857-4.766 10.622-10.623 10.622zm5.826-7.957c-.32-.16-1.89-.932-2.183-1.038-.293-.107-.506-.16-.72.16-.213.32-.826 1.038-1.013 1.25-.186.214-.373.24-.692.08-.32-.16-1.348-.497-2.568-1.585-.949-.846-1.59-1.89-1.776-2.21-.186-.32-.02-.493.14-.652.144-.143.32-.373.48-.56.16-.186.213-.32.32-.533.106-.213.053-.4-.027-.56-.08-.16-.72-1.732-.986-2.37-.26-.624-.524-.54-.72-.55l-.613-.01c-.213 0-.56.08-.853.4-.293.32-1.12 1.093-1.12 2.665 0 1.573 1.146 3.092 1.306 3.305.16.214 2.256 3.445 5.465 4.83.763.33 1.358.527 1.823.675.766.243 1.463.209 2.014.127.614-.092 1.89-.773 2.156-1.519.267-.746.267-1.386.187-1.519-.08-.133-.293-.213-.613-.373z"/>
+                    </svg>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="font-display font-extrabold text-xl text-slate-900">
+                        Let's set up your shop for you!
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Don't want to set everything up on your own? Message us on WhatsApp and we will create your store and get you ready to sell.
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
+                    <a
+                        href="https://wa.me/2349046686176?text=Hello%20ShopManager%2C%20please%20help%20me%20set%20up%20my%20shop%20account."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="w-full sm:w-auto px-6 py-3 rounded-full bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold text-xs sm:text-sm shadow-lg shadow-emerald-600/20 transition active:scale-95"
+                    >
+                        Chat on WhatsApp &rarr;
+                    </a>
+                    <button
+                        type="button"
+                        onclick="closeSetupSupportModal()"
+                        class="w-full sm:w-auto px-5 py-3 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition cursor-pointer"
+                    >
+                        I'll set it up myself
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- ═══════════════════════════════════════════════════════════ -->
@@ -1169,6 +1222,23 @@
                 }
             }
 
+            function openSetupSupportModal() {
+                var modal = document.getElementById('setupSupportModal');
+                if (modal) {
+                    modal.style.display = 'flex';
+                }
+            }
+
+            function closeSetupSupportModal() {
+                var modal = document.getElementById('setupSupportModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+                try {
+                    sessionStorage.setItem('sm_setup_modal_shown', '1');
+                } catch (e) {}
+            }
+
             function dismissSetupSupportBubble() {
                 var bubble = document.getElementById('setupSupportBubble');
                 if (bubble) {
@@ -1186,6 +1256,14 @@
                         if (bubble) {
                             bubble.style.display = 'none';
                         }
+                    }
+                    if (sessionStorage.getItem('sm_setup_modal_shown') !== '1') {
+                        setTimeout(function() {
+                            openSetupSupportModal();
+                            try {
+                                sessionStorage.setItem('sm_setup_modal_shown', '1');
+                            } catch (e) {}
+                        }, 2500);
                     }
                 } catch (e) {}
 
