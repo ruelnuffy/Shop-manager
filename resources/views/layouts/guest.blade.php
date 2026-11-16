@@ -13,6 +13,8 @@
         @endphp
 
         <title>{{ $brandName }} &bull; {{ $currentTenant ? ($currentTenant->setting('branding.tagline') ?: 'Store Portal') : 'Retail & Inventory Operating System' }}</title>
+        <link rel="icon" type="image/png" href="{{ asset('images/shopmanager-icon.png') }}?v=2">
+        <link rel="apple-touch-icon" href="{{ asset('images/shopmanager-icon.png') }}?v=2">
 
         <!-- Fonts: Plus Jakarta Sans & Poppins (Sans-serif) -->
         <link rel="preconnect" href="https://fonts.googleapis.com">

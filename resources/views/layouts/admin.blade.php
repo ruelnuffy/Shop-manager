@@ -13,6 +13,8 @@
     @endphp
 
     <title>{{ $storeName }} &bull; {{ $platformName }} Console</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/shopmanager-icon.png') }}?v=2">
+    <link rel="apple-touch-icon" href="{{ asset('images/shopmanager-icon.png') }}?v=2">
 
     <!-- Modern Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
