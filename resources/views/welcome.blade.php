@@ -68,9 +68,6 @@
     </head>
     <body class="font-sans antialiased bg-[#fbfbfb] text-brand-charcoal selection:bg-brand-pink-100 selection:text-brand-pink-900 min-h-screen flex flex-col relative pb-20">
 
-        <!-- Luxury Boutique Preloader with Typing Effect & Curtain Transition -->
-        <x-preloader />
-
         <!-- Awwwards-Style Minimalist Top Header -->
         <header class="w-full bg-white/95 backdrop-blur-md border-b border-black/[0.06] sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
