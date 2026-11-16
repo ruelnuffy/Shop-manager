@@ -1012,28 +1012,28 @@
             x-transition:leave="transition ease-in duration-200"
             x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 translate-y-6"
-            class="fixed bottom-6 inset-x-4 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 z-40 max-w-md w-full"
+            class="fixed bottom-6 left-4 right-24 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 z-40 sm:w-full max-w-xs sm:max-w-sm"
         >
-            <div class="bg-slate-900/95 backdrop-blur-md text-white rounded-2xl p-3 px-4 shadow-2xl border border-slate-800 flex items-center justify-between gap-3">
-                <div class="flex items-center gap-2.5 min-w-0">
-                    <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
+            <div class="bg-slate-900/95 backdrop-blur-md text-white rounded-2xl p-2.5 px-3 shadow-2xl border border-slate-800 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                    <div class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-[11px] shrink-0">
                         SM
                     </div>
                     <div class="min-w-0">
-                        <div class="font-bold text-xs sm:text-sm text-white truncate">Open your free store in 2 mins</div>
-                        <div class="text-xs text-slate-400 flex items-center gap-1.5">
+                        <div class="font-bold text-[11px] sm:text-xs text-white truncate">Open your store in 2 mins</div>
+                        <div class="text-[10px] text-slate-400 flex items-center gap-1 truncate">
                             <span class="text-amber-400">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                            <span>Rated 4.9/5 by 300+ merchants</span>
+                            <span>4.9/5 by 300+ shops</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2 shrink-0">
+                <div class="flex items-center gap-1.5 shrink-0">
                     <a
                         href="{{ route('register') }}"
-                        class="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider transition active:scale-95"
+                        class="px-3 py-1.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px] uppercase tracking-wider transition active:scale-95 whitespace-nowrap"
                     >
-                        Try free &rarr;
+                        Start &rarr;
                     </a>
                     <button
                         type="button"
