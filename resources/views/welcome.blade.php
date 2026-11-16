@@ -625,7 +625,7 @@
                                         @else
                                             <div class="text-center p-6 space-y-2">
                                                 <div class="mx-auto w-14 h-14 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center font-display font-extrabold text-xl text-white">
-                                                    {{ $brandInitials }}
+                                                    {{ strtoupper(substr($brandName, 0, 2)) }}
                                                 </div>
                                                 <div class="font-display font-bold text-lg text-white">{{ $brandName }}</div>
                                                 <div class="text-xs text-white/60">{{ $location->address }}, {{ $location->city }}</div>
