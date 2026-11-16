@@ -221,7 +221,7 @@
                                 type="text"
                                 name="whatsapp_number"
                                 value="{{ $whatsappNumber }}"
-                                placeholder="e.g. 09069498376 or +234 906 949 8376"
+                                placeholder="e.g. 08012345678 or +234 801 234 5678"
                                 class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 font-mono shadow-xs"
                             />
                         </div>

@@ -78,13 +78,13 @@ class Tenant extends Model
      */
     public function whatsappNumber(): string
     {
-        $num = (string) $this->setting('contact.whatsapp', $this->setting('contact.phone', '2349069498376'));
+        $num = (string) $this->setting('contact.whatsapp', $this->setting('contact.phone', ''));
         $clean = preg_replace('/[^0-9]/', '', $num);
         if (str_starts_with($clean, '0') && strlen($clean) === 11) {
             $clean = '234'.substr($clean, 1);
         }
 
-        return $clean ?: '2349069498376';
+        return $clean;
     }
 
     /**
@@ -110,7 +110,7 @@ class Tenant extends Model
      */
     public function customerCarePhone(): string
     {
-        return (string) $this->setting('contact.phone', '+234 906 949 8376');
+        return (string) $this->setting('contact.phone', '');
     }
 
     /**
@@ -118,7 +118,7 @@ class Tenant extends Model
      */
     public function customerCareEmail(): string
     {
-        return (string) $this->setting('contact.email', 'support@jessiclassiq.com');
+        return (string) $this->setting('contact.email', '');
     }
 
     /**

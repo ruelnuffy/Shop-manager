@@ -20,9 +20,9 @@
             $storefrontFeaturing = $currentTenant ? $currentTenant->setting('storefront.featuring', []) : [];
 
             // Dynamic Customer Care, Chats & Editorial Badges
-            $whatsappNum = $currentTenant ? $currentTenant->whatsappNumber() : '2349069498376';
-            $whatsappMsg = $currentTenant ? $currentTenant->whatsappGreeting() : "Hello {$brandName}, I'd like to inquire about your boutique collection";
-            $whatsappUrl = 'https://wa.me/' . $whatsappNum . '?text=' . rawurlencode($whatsappMsg);
+            $whatsappNum = $currentTenant ? $currentTenant->whatsappNumber() : '';
+            $whatsappMsg = $currentTenant ? $currentTenant->whatsappGreeting() : "Hello {$brandName}, I'd like to inquire about your collection";
+            $whatsappUrl = $whatsappNum !== '' ? ('https://wa.me/' . $whatsappNum . '?text=' . rawurlencode($whatsappMsg)) : '';
             $customerCarePhone = $currentTenant ? $currentTenant->customerCarePhone() : '+234 906 949 8376';
             $customerCareEmail = $currentTenant ? $currentTenant->customerCareEmail() : 'support@shopmanager.test';
             $conciergeChatLabel = $currentTenant ? $currentTenant->conciergeChatLabel() : 'WhatsApp';
@@ -663,16 +663,18 @@
                 </div>
                 <span class="text-[9px] font-bold uppercase tracking-wider">Bag</span>
             </a>
-            <a href="{{ $whatsappUrl }}" target="_blank" class="flex flex-col items-center gap-0.5 text-emerald-600 hover:text-emerald-700 transition">
-                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.01 2.002C6.49 2.002 2.01 6.48 2.01 12c0 1.8.48 3.55 1.39 5.09L2 22l5.06-1.33c1.49.82 3.17 1.25 4.95 1.25 5.52 0 10-4.48 10-10 0-5.52-4.48-9.998-10-9.998zm0 18.28c-1.57 0-3.1-.42-4.44-1.21l-.32-.19-3.3.87.88-3.21-.21-.33C3.78 14.84 3.34 13.45 3.34 12c0-4.78 3.89-8.67 8.67-8.67 4.78 0 8.67 3.89 8.67 8.67 0 4.78-3.89 8.67-8.67 8.67zm4.76-6.49c-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.68.85-.83 1.02-.15.17-.31.2-.57.07-.26-.13-1.1-.41-2.1-1.3-.78-.7-1.3-1.56-1.45-1.82-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.43.09-.17.04-.33-.02-.46-.07-.13-.59-1.42-.81-1.95-.21-.51-.43-.44-.59-.45h-.51c-.17 0-.46.07-.7.33-.24.26-.92.9-.92 2.2 0 1.3 1.13 2.56 1.28 2.74.15.17 2.19 3.34 5.3 4.69.74.32 1.32.51 1.77.65.74.24 1.42.2 1.96.12.6-.09 1.54-.63 1.76-1.24.22-.61.22-1.13.15-1.24-.07-.11-.24-.17-.5-.3z"/></svg>
-                <span class="text-[9px] font-bold uppercase tracking-wider">WhatsApp</span>
-            </a>
+            @if ($whatsappUrl !== '')
+                <a href="{{ $whatsappUrl }}" target="_blank" class="flex flex-col items-center gap-0.5 text-emerald-600 hover:text-emerald-700 transition">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.01 2.002C6.49 2.002 2.01 6.48 2.01 12c0 1.8.48 3.55 1.39 5.09L2 22l5.06-1.33c1.49.82 3.17 1.25 4.95 1.25 5.52 0 10-4.48 10-10 0-5.52-4.48-9.998-10-9.998zm0 18.28c-1.57 0-3.1-.42-4.44-1.21l-.32-.19-3.3.87.88-3.21-.21-.33C3.78 14.84 3.34 13.45 3.34 12c0-4.78 3.89-8.67 8.67-8.67 4.78 0 8.67 3.89 8.67 8.67 0 4.78-3.89 8.67-8.67 8.67zm4.76-6.49c-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.68.85-.83 1.02-.15.17-.31.2-.57.07-.26-.13-1.1-.41-2.1-1.3-.78-.7-1.3-1.56-1.45-1.82-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.43.09-.17.04-.33-.02-.46-.07-.13-.59-1.42-.81-1.95-.21-.51-.43-.44-.59-.45h-.51c-.17 0-.46.07-.7.33-.24.26-.92.9-.92 2.2 0 1.3 1.13 2.56 1.28 2.74.15.17 2.19 3.34 5.3 4.69.74.32 1.32.51 1.77.65.74.24 1.42.2 1.96.12.6-.09 1.54-.63 1.76-1.24.22-.61.22-1.13.15-1.24-.07-.11-.24-.17-.5-.3z"/></svg>
+                    <span class="text-[9px] font-bold uppercase tracking-wider">WhatsApp</span>
+                </a>
+            @endif
         </nav>
 
         <!-- DESKTOP CONCIERGE FLOATING BUTTONS (>= 768px) -->
         <aside class="hidden md:flex fixed bottom-8 right-8 z-40 items-center gap-3">
-            @if ($isConciergeEnabled)
-                <a href="{{ $whatsappUrl }}" target="_blank" class="px-4 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-2xl shadow-emerald-600/30 transition duration-150 group" title="Chat on WhatsApp ({{ $customerCarePhone }})">
+            @if ($isConciergeEnabled && $whatsappUrl !== '')
+                <a href="{{ $whatsappUrl }}" target="_blank" class="px-4 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-2xl shadow-emerald-600/30 transition duration-150 group" title="Chat on WhatsApp ({{ $customerCarePhone ?: $whatsappNum }})">
                     <svg class="w-5 h-5 fill-current group-hover:scale-110 transition-transform shrink-0" viewBox="0 0 24 24"><path d="M12.01 2.002C6.49 2.002 2.01 6.48 2.01 12c0 1.8.48 3.55 1.39 5.09L2 22l5.06-1.33c1.49.82 3.17 1.25 4.95 1.25 5.52 0 10-4.48 10-10 0-5.52-4.48-9.998-10-9.998zm0 18.28c-1.57 0-3.1-.42-4.44-1.21l-.32-.19-3.3.87.88-3.21-.21-.33C3.78 14.84 3.34 13.45 3.34 12c0-4.78 3.89-8.67 8.67-8.67 4.78 0 8.67 3.89 8.67 8.67 0 4.78-3.89 8.67-8.67 8.67zm4.76-6.49c-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.68.85-.83 1.02-.15.17-.31.2-.57.07-.26-.13-1.1-.41-2.1-1.3-.78-.7-1.3-1.56-1.45-1.82-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.43.09-.17.04-.33-.02-.46-.07-.13-.59-1.42-.81-1.95-.21-.51-.43-.44-.59-.45h-.51c-.17 0-.46.07-.7.33-.24.26-.92.9-.92 2.2 0 1.3 1.13 2.56 1.28 2.74.15.17 2.19 3.34 5.3 4.69.74.32 1.32.51 1.77.65.74.24 1.42.2 1.96.12.6-.09 1.54-.63 1.76-1.24.22-.61.22-1.13.15-1.24-.07-.11-.24-.17-.5-.3z"/></svg>
                     @if (!empty($conciergeChatLabel))
                         <span>{{ $conciergeChatLabel }}</span>
@@ -718,20 +720,21 @@
                             {!! nl2br(e($storefrontAddress)) !!}<br>
                             {{ $storefrontOpeningHours }}
                         </p>
-                        <a
-                            href="{{ $whatsappUrl }}"
-                            target="_blank"
-                            class="inline-flex items-center gap-1.5 mt-2.5 text-emerald-700 hover:text-emerald-800 font-bold text-xs transition"
-                        >
-                            <svg class="w-4 h-4 fill-current shrink-0 text-emerald-600" viewBox="0 0 24 24"><path d="M12.01 2.002C6.49 2.002 2.01 6.48 2.01 12c0 1.8.48 3.55 1.39 5.09L2 22l5.06-1.33c1.49.82 3.17 1.25 4.95 1.25 5.52 0 10-4.48 10-10 0-5.52-4.48-9.998-10-9.998zm0 18.28c-1.57 0-3.1-.42-4.44-1.21l-.32-.19-3.3.87.88-3.21-.21-.33C3.78 14.84 3.34 13.45 3.34 12c0-4.78 3.89-8.67 8.67-8.67 4.78 0 8.67 3.89 8.67 8.67 0 4.78-3.89 8.67-8.67 8.67zm4.76-6.49c-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.68.85-.83 1.02-.15.17-.31.2-.57.07-.26-.13-1.1-.41-2.1-1.3-.78-.7-1.3-1.56-1.45-1.82-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.43.09-.17.04-.33-.02-.46-.07-.13-.59-1.42-.81-1.95-.21-.51-.43-.44-.59-.45h-.51c-.17 0-.46.07-.7.33-.24.26-.92.9-.92 2.2 0 1.3 1.13 2.56 1.28 2.74.15.17 2.19 3.34 5.3 4.69.74.32 1.32.51 1.77.65.74.24 1.42.2 1.96.12.6-.09 1.54-.63 1.76-1.24.22-.61.22-1.13.15-1.24-.07-.11-.24-.17-.5-.3z"/></svg>
-                            <span>WhatsApp: {{ $customerCarePhone }}</span>
-                        </a>
+                        @if ($whatsappUrl !== '')
+                            <a
+                                href="{{ $whatsappUrl }}"
+                                target="_blank"
+                                class="inline-flex items-center gap-1.5 mt-2.5 text-emerald-700 hover:text-emerald-800 font-bold text-xs transition"
+                            >
+                                <svg class="w-4 h-4 fill-current shrink-0 text-emerald-600" viewBox="0 0 24 24"><path d="M12.01 2.002C6.49 2.002 2.01 6.48 2.01 12c0 1.8.48 3.55 1.39 5.09L2 22l5.06-1.33c1.49.82 3.17 1.25 4.95 1.25 5.52 0 10-4.48 10-10 0-5.52-4.48-9.998-10-9.998zm0 18.28c-1.57 0-3.1-.42-4.44-1.21l-.32-.19-3.3.87.88-3.21-.21-.33C3.78 14.84 3.34 13.45 3.34 12c0-4.78 3.89-8.67 8.67-8.67 4.78 0 8.67 3.89 8.67 8.67 0 4.78-3.89 8.67-8.67 8.67zm4.76-6.49c-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.68.85-.83 1.02-.15.17-.31.2-.57.07-.26-.13-1.1-.41-2.1-1.3-.78-.7-1.3-1.56-1.45-1.82-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.43.09-.17.04-.33-.02-.46-.07-.13-.59-1.42-.81-1.95-.21-.51-.43-.44-.59-.45h-.51c-.17 0-.46.07-.7.33-.24.26-.92.9-.92 2.2 0 1.3 1.13 2.56 1.28 2.74.15.17 2.19 3.34 5.3 4.69.74.32 1.32.51 1.77.65.74.24 1.42.2 1.96.12.6-.09 1.54-.63 1.76-1.24.22-.61.22-1.13.15-1.24-.07-.11-.24-.17-.5-.3z"/></svg>
+                                <span>WhatsApp: {{ $customerCarePhone ?: $whatsappNum }}</span>
+                            </a>
+                        @endif
                     </div>
                 </div>
 
                 <div class="pt-8 border-t border-black/[0.06] flex flex-col sm:flex-row items-center justify-between text-[11px] text-brand-charcoal/50">
                     <p>&copy; {{ date('Y') }} {{ $brandName }}. All rights reserved.</p>
-                    <p class="mt-2 sm:mt-0 font-medium">Curated Boutique Platform &bull; Secured with Paystack</p>
                 </div>
             </div>
         </footer>

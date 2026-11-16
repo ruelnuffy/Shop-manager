@@ -1,7 +1,7 @@
 <x-app-layout>
     @php
         $tenant = app(\App\Services\CurrentTenant::class)->get() ?: $product->tenant;
-        $tenantWhatsapp = $tenant ? $tenant->whatsappNumber() : '2349069498376';
+        $tenantWhatsapp = $tenant ? $tenant->whatsappNumber() : '';
         $tenantPhone = $tenant ? $tenant->customerCarePhone() : '+234 906 949 8376';
         $tenantBrand = $tenant ? $tenant->setting('branding.name', $tenant->name) : 'Shop';
     @endphp
