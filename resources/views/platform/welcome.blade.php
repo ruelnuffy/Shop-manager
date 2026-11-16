@@ -1054,7 +1054,8 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <div
             id="setupSupportBubble"
-            class="fixed bottom-24 right-6 z-50 max-w-[260px] rounded-2xl bg-white border border-slate-200/90 shadow-2xl shadow-slate-900/15 p-3.5 pr-8 text-left transition-all duration-200"
+            style="position:fixed;bottom:92px;right:24px;z-index:60;max-width:250px;"
+            class="rounded-2xl bg-white border border-slate-200/90 shadow-2xl shadow-slate-900/15 p-3.5 pr-8 text-left transition-all duration-200"
         >
             <button
                 type="button"
