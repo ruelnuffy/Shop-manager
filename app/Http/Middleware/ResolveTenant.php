@@ -152,6 +152,21 @@ class ResolveTenant
                 }
             }
 
+            // 0c. Support shareable store URL /s/{slug}
+            if ($request->segment(1) === 's' && ($shareSlug = $request->segment(2))) {
+                $tenant = Tenant::where('slug', $shareSlug)
+                    ->orWhere('subdomain', $shareSlug)
+                    ->first();
+
+                if ($tenant) {
+                    if ($request->hasSession()) {
+                        $request->session()->put('active_tenant_id', $tenant->id);
+                    }
+
+                    return $tenant;
+                }
+            }
+
             $host = strtolower($request->getHost());
             $isIp = filter_var($host, FILTER_VALIDATE_IP) !== false;
             $baseDomain = strtolower((string) config('tenancy.base_domain', 'localhost'));

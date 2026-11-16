@@ -51,10 +51,13 @@ class AuthenticatedSessionController extends Controller
     {
         Auth::guard('web')->logout();
 
+        $request->session()->forget(['active_tenant_id', 'impersonator_id', 'impersonator_role', 'impersonator_name']);
+        app(CurrentTenant::class)->forget();
+
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 }

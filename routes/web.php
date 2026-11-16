@@ -73,6 +73,10 @@ Route::get('/storefront', function (Request $request) {
     return view('welcome');
 })->name('storefront');
 
+Route::get('/s/{slug}', function () {
+    return view('welcome');
+})->name('store.share');
+
 Route::get('/products', [Store\ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [Store\ProductController::class, 'show'])->name('products.show');
 

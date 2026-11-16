@@ -86,12 +86,23 @@
                     {{ $storeName }}
                 </h2>
 
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
                     @if ($planActive && $currentTenant && $currentTenant->hasFeature('storefront'))
-                        <a href="{{ route('storefront') }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-slate-700 text-xs font-semibold shadow-md shadow-slate-900/5 hover:shadow-lg transition">
+                        @php
+                            $shareStoreUrl = route('store.share', $currentTenant->slug);
+                        @endphp
+                        <a href="{{ $shareStoreUrl }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-slate-700 text-xs font-semibold shadow-md shadow-slate-900/5 hover:shadow-lg transition">
                             <span>View Storefront</span>
                             <span class="text-slate-400">&nearr;</span>
                         </a>
+                        <button
+                            type="button"
+                            onclick="navigator.clipboard?.writeText('{{ $shareStoreUrl }}'); this.querySelector('span').textContent = 'Copied!'; setTimeout(() => { this.querySelector('span').textContent = 'Copy Store Link'; }, 2000);"
+                            class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold transition cursor-pointer"
+                            title="{{ $shareStoreUrl }}"
+                        >
+                            <span>Copy Store Link</span>
+                        </button>
                     @endif
 
                     @if ($planActive && Auth::user()->isAdmin() && !session()->has('impersonator_id'))

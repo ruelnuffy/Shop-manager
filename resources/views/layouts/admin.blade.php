@@ -299,8 +299,8 @@
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="px-2.5 py-1.5 rounded-full bg-slate-100 text-[10px] font-bold text-slate-600 uppercase shadow-xs">
-                    Exit
+                <button type="submit" class="px-2.5 py-1.5 rounded-full bg-slate-900 text-[10px] font-bold text-white uppercase shadow-xs cursor-pointer">
+                    Sign Out
                 </button>
             </form>
         </div>
@@ -338,6 +338,14 @@
                 @endif
             @endif
             @endif
+        </div>
+        <div class="pt-2 border-t border-slate-100">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="w-full p-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold uppercase tracking-wider text-center cursor-pointer">
+                    Sign Out
+                </button>
+            </form>
         </div>
     </div>
 
