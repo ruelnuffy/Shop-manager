@@ -142,7 +142,7 @@ class Tenant extends Model
      */
     public function storefrontAddress(): string
     {
-        return (string) $this->setting('contact.address', 'Across Chrisbest Plaza, West of Mines, Jos, Plateau State, Nigeria');
+        return (string) $this->setting('contact.address', 'Main Storefront');
     }
 
     /**
@@ -158,7 +158,7 @@ class Tenant extends Model
      */
     public function seasonBadge(): string
     {
-        return (string) $this->setting('storefront.season_badge', 'SS / 2026 Collection');
+        return (string) $this->setting('storefront.season_badge', 'New Collection');
     }
 
     /**
@@ -166,7 +166,7 @@ class Tenant extends Model
      */
     public function locationBadge(): string
     {
-        return (string) $this->setting('storefront.location_badge', 'Flagship Atelier • West of Mines, Jos');
+        return (string) $this->setting('storefront.location_badge', 'Official Storefront');
     }
 
     /**
@@ -174,7 +174,7 @@ class Tenant extends Model
      */
     public function leadName(): string
     {
-        return (string) $this->setting('storefront.lead_name', 'Jessi O.');
+        return (string) $this->setting('storefront.lead_name', $this->name);
     }
 
     /**
@@ -182,7 +182,7 @@ class Tenant extends Model
      */
     public function leadRole(): string
     {
-        return (string) $this->setting('storefront.lead_role', 'Lead');
+        return (string) $this->setting('storefront.lead_role', 'Owner');
     }
 
     /**
@@ -190,7 +190,7 @@ class Tenant extends Model
      */
     public function leadStatus(): string
     {
-        return (string) $this->setting('storefront.lead_status', 'Jos Atelier Open');
+        return (string) $this->setting('storefront.lead_status', 'Open for Orders');
     }
 
     /**
@@ -198,7 +198,7 @@ class Tenant extends Model
      */
     public function aboutText(): string
     {
-        return (string) $this->setting('storefront.about_text', 'High-fashion atelier and boutique brand based across Chrisbest Plaza in West of Mines, Jos, Plateau State. Specializing in silk dresses, artisan leather handbags, and handcrafted footwear.');
+        return (string) $this->setting('storefront.about_text', "Welcome to {$this->name}. Browse our curated catalog and place orders online or via WhatsApp.");
     }
 
     public function users(): HasMany
