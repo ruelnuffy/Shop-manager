@@ -1070,15 +1070,11 @@
                 rel="noopener noreferrer"
                 class="block group"
             >
-                <div class="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-emerald-600">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Done-For-You Setup</span>
-                </div>
-                <p class="text-xs font-bold text-slate-900 mt-1 leading-snug">
-                    Don't want to set up on your own?
+                <p class="text-xs font-bold text-slate-900 leading-snug">
+                    Let's set up your shop for you!
                 </p>
                 <p class="text-[11px] font-semibold text-blue-600 group-hover:underline mt-1">
-                    Contact Support to set up your account &rarr;
+                    Tap here to chat on WhatsApp &rarr;
                 </p>
             </a>
         </div>
