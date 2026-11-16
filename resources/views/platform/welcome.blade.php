@@ -1050,6 +1050,40 @@
         </div>
 
         <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- HOVERING SETUP SUPPORT NOTIFICATION                         -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div
+            id="setupSupportBubble"
+            class="fixed bottom-24 right-6 z-50 max-w-[260px] rounded-2xl bg-white border border-slate-200/90 shadow-2xl shadow-slate-900/15 p-3.5 pr-8 text-left transition-all duration-200"
+        >
+            <button
+                type="button"
+                onclick="dismissSetupSupportBubble()"
+                aria-label="Close setup notice"
+                class="absolute top-2.5 right-2.5 w-5 h-5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center text-xs font-bold transition"
+            >
+                &times;
+            </button>
+            <a
+                href="https://wa.me/2349046686176?text=Hello%20ShopManager%2C%20please%20help%20me%20set%20up%20my%20store%20account."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block group"
+            >
+                <div class="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-emerald-600">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Done-For-You Setup</span>
+                </div>
+                <p class="text-xs font-bold text-slate-900 mt-1 leading-snug">
+                    Don't want to set up on your own?
+                </p>
+                <p class="text-[11px] font-semibold text-blue-600 group-hover:underline mt-1">
+                    Contact Support to set up your account &rarr;
+                </p>
+            </a>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
         <!-- HOVERING WHATSAPP SUPPORT ICON                              -->
         <!-- ═══════════════════════════════════════════════════════════ -->
         <a
@@ -1139,7 +1173,26 @@
                 }
             }
 
+            function dismissSetupSupportBubble() {
+                var bubble = document.getElementById('setupSupportBubble');
+                if (bubble) {
+                    bubble.style.display = 'none';
+                }
+                try {
+                    sessionStorage.setItem('sm_setup_bubble_dismissed', '1');
+                } catch (e) {}
+            }
+
             document.addEventListener('DOMContentLoaded', function() {
+                try {
+                    if (sessionStorage.getItem('sm_setup_bubble_dismissed') === '1') {
+                        var bubble = document.getElementById('setupSupportBubble');
+                        if (bubble) {
+                            bubble.style.display = 'none';
+                        }
+                    }
+                } catch (e) {}
+
                 var switcher = document.getElementById('langSwitcher');
                 if (switcher) {
                     switcher.value = getActiveTranslateLang();
