@@ -1054,15 +1054,13 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <div
             id="setupSupportBubble"
-            style="position:fixed;bottom:92px;right:24px;z-index:60;max-width:260px;padding:14px 34px 14px 14px;background:#ffffff;"
-            class="rounded-2xl border border-slate-200/90 shadow-2xl shadow-slate-900/15 text-left transition-all duration-200"
+            class="fixed bottom-24 right-6 z-50 w-64 rounded-2xl bg-white border border-slate-200/90 shadow-2xl shadow-slate-900/15 p-3.5 pr-9 text-left transition-all duration-200"
         >
             <button
                 type="button"
                 onclick="dismissSetupSupportBubble()"
                 aria-label="Close setup notice"
-                style="position:absolute;top:10px;right:10px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;"
-                class="rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 text-sm font-bold transition cursor-pointer"
+                class="absolute top-3 right-3 w-5 h-5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center text-sm leading-none font-bold transition cursor-pointer"
             >
                 &times;
             </button>
