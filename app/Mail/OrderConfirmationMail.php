@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -30,8 +31,12 @@ class OrderConfirmationMail extends Mailable
     public function envelope(): Envelope
     {
         $storeName = $this->tenant?->name ?? config('app.name', 'ShopManager');
+        $fromAddress = (string) config('mail.from.address', 'info@houseoframah.name.ng');
+        $replyToAddress = (string) ($this->tenant?->setting('contact.email') ?: $fromAddress);
 
         return new Envelope(
+            from: new Address($fromAddress, $storeName),
+            replyTo: [new Address($replyToAddress, $storeName)],
             subject: "Order Confirmation {$this->order->order_number} — {$storeName}",
         );
     }
@@ -40,6 +45,7 @@ class OrderConfirmationMail extends Mailable
     {
         return new Content(
             view: 'emails.order-confirmation',
+            text: 'emails.order-confirmation-text',
         );
     }
 
