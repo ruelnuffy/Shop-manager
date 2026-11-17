@@ -201,8 +201,8 @@
                                                 <span class="font-bold text-brand-charcoal">{{ $tenant->bank_account_name }}</span>
                                             </div>
                                         @else
-                                            <div class="text-[11px] text-amber-700 font-medium">
-                                                Place your order below and tap Confirm to receive the store's verified account details on WhatsApp.
+                                            <div class="text-[11px] text-rose-700 font-semibold">
+                                                Store bank account is not available yet. Checkout is disabled until the store adds its bank details.
                                             </div>
                                         @endif
                                     </div>
@@ -212,9 +212,12 @@
                             <!-- Submit Trigger -->
                             <button
                                 type="submit"
-                                class="w-full py-4 px-6 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition duration-150 shadow-xl cursor-pointer bg-[#25D366] hover:bg-[#1ebe5d] text-white shadow-emerald-600/25"
+                                @disabled(empty($hasVerifiedBank))
+                                class="w-full py-4 px-6 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition duration-150 {{ !empty($hasVerifiedBank) ? 'shadow-xl cursor-pointer bg-[#25D366] hover:bg-[#1ebe5d] text-white shadow-emerald-600/25' : 'bg-slate-200 text-slate-500 cursor-not-allowed shadow-none' }}"
                             >
-                                <span>I've Transferred &mdash; Confirm &amp; Send Proof on WhatsApp &rarr;</span>
+                                <span>
+                                    {{ !empty($hasVerifiedBank) ? "I've Transferred — Confirm & Send Proof on WhatsApp →" : 'Bank Account Not Available' }}
+                                </span>
                             </button>
 
                             <div class="text-center text-[11px] text-brand-charcoal/50 leading-relaxed pt-1">

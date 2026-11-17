@@ -136,4 +136,69 @@ class BankTransferCheckoutTest extends TestCase
                 && str_contains($mail->render(), 'Leather Tote');
         });
     }
+
+    public function test_bank_transfer_checkout_is_blocked_when_store_bank_account_is_not_configured(): void
+    {
+        Mail::fake();
+
+        $tenant = Tenant::factory()->create(['status' => 'active']);
+        app(CurrentTenant::class)->set($tenant);
+
+        $category = Category::create([
+            'tenant_id' => $tenant->id,
+            'name' => 'Bags',
+            'slug' => 'bags-no-bank-'.$tenant->id,
+        ]);
+        $product = Product::create([
+            'tenant_id' => $tenant->id,
+            'category_id' => $category->id,
+            'name' => 'Silk Scarf',
+            'slug' => 'silk-scarf-'.$tenant->id,
+            'base_price' => 10000,
+            'status' => 'active',
+        ]);
+        $variant = ProductVariant::create([
+            'tenant_id' => $tenant->id,
+            'product_id' => $product->id,
+            'sku' => 'SCARF-1',
+            'size' => 'Standard',
+            'color' => 'Red',
+            'price_override' => 10000,
+            'stock_quantity' => 5,
+            'is_active' => true,
+        ]);
+
+        $cart = [
+            $variant->id => [
+                'variant_id' => $variant->id,
+                'product_name' => $product->name,
+                'size' => 'Standard',
+                'color' => 'Red',
+                'price' => 10000,
+                'quantity' => 1,
+                'image' => null,
+            ],
+        ];
+
+        $this->withSession(['cart' => $cart, 'active_tenant_id' => $tenant->id])
+            ->get(route('checkout.index'))
+            ->assertOk()
+            ->assertSee('Bank Account Not Available')
+            ->assertSee('disabled', false);
+
+        $this->withSession(['cart' => $cart, 'active_tenant_id' => $tenant->id])
+            ->post(route('checkout.process'), [
+                'shipping_name' => 'Ada Buyer',
+                'shipping_email' => 'ada@example.com',
+                'shipping_phone' => '08012345678',
+                'shipping_address' => '12 Main Street',
+                'shipping_city' => 'Lagos',
+                'payment_method' => 'bank_transfer',
+            ])
+            ->assertRedirect(route('checkout.index'))
+            ->assertSessionHas('error');
+
+        $this->assertDatabaseCount('orders', 0);
+        Mail::assertNothingSent();
+    }
 }

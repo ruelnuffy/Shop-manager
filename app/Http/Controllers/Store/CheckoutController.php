@@ -166,6 +166,14 @@ class CheckoutController extends Controller
 
             // Option B: Direct Store Bank Transfer + WhatsApp Confirmation
             if ($paymentMethod === 'bank_transfer') {
+                $tenant = app(CurrentTenant::class)->get();
+                if (! $tenant?->hasVerifiedBankDetails()) {
+                    DB::rollBack();
+
+                    return redirect()->route('checkout.index')
+                        ->with('error', 'Store bank account details are not available yet. Please check back later.');
+                }
+
                 $order = Order::create([
                     'user_id' => Auth::id(),
                     'order_number' => $orderNumber,
