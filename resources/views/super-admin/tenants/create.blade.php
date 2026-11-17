@@ -23,6 +23,7 @@
 
     <!-- Creation Form -->
     <form
+        id="provisionStoreForm"
         method="POST"
         action="{{ route('super-admin.tenants.store') }}"
         enctype="multipart/form-data"
@@ -526,19 +527,97 @@
         </div>
 
         <!-- Form Actions -->
-        <div class="flex items-center justify-end gap-3 pt-4">
-            <a
-                href="{{ route('super-admin.tenants.index') }}"
-                class="px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition"
-            >
-                Cancel
-            </a>
-            <button
-                type="submit"
-                class="px-7 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider transition shadow-sm cursor-pointer"
-            >
-                Provision Store &amp; Brand &rarr;
-            </button>
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-4">
+            <div class="flex items-center gap-3 text-[11px] text-slate-400">
+                <span id="draftStatusText">Auto-saves in browser</span>
+                <button
+                    type="button"
+                    onclick="clearProvisionDraft()"
+                    class="text-rose-600 hover:underline font-semibold cursor-pointer"
+                >
+                    Clear Draft
+                </button>
+            </div>
+            <div class="flex items-center gap-3">
+                <a
+                    href="{{ route('super-admin.tenants.index') }}"
+                    class="px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition"
+                >
+                    Cancel
+                </a>
+                <button
+                    type="submit"
+                    class="px-7 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider transition shadow-sm cursor-pointer"
+                >
+                    Provision Store &amp; Brand &rarr;
+                </button>
+            </div>
         </div>
     </form>
+
+    <script>
+        (function () {
+            const DRAFT_KEY = 'sm_provision_store_draft_v1';
+            const form = document.getElementById('provisionStoreForm');
+            const statusEl = document.getElementById('draftStatusText');
+            if (!form) return;
+
+            function saveDraft() {
+                const data = {};
+                form.querySelectorAll('input, select, textarea').forEach(function (el) {
+                    if (!el.name || el.name === '_token' || el.name === 'admin_password' || el.type === 'file') {
+                        return;
+                    }
+                    if (el.type === 'checkbox' || el.type === 'radio') {
+                        data[el.name] = el.checked;
+                    } else {
+                        data[el.name] = el.value;
+                    }
+                });
+                try {
+                    localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+                    if (statusEl) {
+                        statusEl.textContent = 'Draft saved in browser';
+                    }
+                } catch (e) {}
+            }
+
+            function restoreDraft() {
+                try {
+                    const raw = localStorage.getItem(DRAFT_KEY);
+                    if (!raw) return;
+                    const data = JSON.parse(raw);
+                    Object.keys(data).forEach(function (fieldName) {
+                        const el = form.elements.namedItem(fieldName);
+                        if (!el || el.type === 'file' || fieldName === 'admin_password') return;
+                        if (el.type === 'checkbox' || el.type === 'radio') {
+                            el.checked = Boolean(data[fieldName]);
+                            el.dispatchEvent(new Event('change', { bubbles: true }));
+                        } else if (el.value === '' || !{{ $errors->any() ? 'true' : 'false' }}) {
+                            el.value = data[fieldName];
+                            el.dispatchEvent(new Event('input', { bubbles: true }));
+                            el.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    });
+                    if (statusEl) {
+                        statusEl.textContent = 'Restored saved draft';
+                    }
+                } catch (e) {}
+            }
+
+            window.clearProvisionDraft = function () {
+                try {
+                    localStorage.removeItem(DRAFT_KEY);
+                } catch (e) {}
+                form.reset();
+                if (statusEl) {
+                    statusEl.textContent = 'Draft cleared';
+                }
+            };
+
+            document.addEventListener('DOMContentLoaded', restoreDraft);
+            form.addEventListener('input', saveDraft);
+            form.addEventListener('change', saveDraft);
+        })();
+    </script>
 </x-super-admin-layout>
