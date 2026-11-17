@@ -140,13 +140,6 @@
             <!-- Boutique Location Info & Actions -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div class="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 border border-black/[0.06] shadow-sm space-y-6">
-                    <div class="flex items-center gap-2">
-                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black text-white">
-                            Primary Flagship
-                        </span>
-                        <span class="text-xs text-emerald-600 font-bold">&bull; Walk-ins Welcome</span>
-                    </div>
-
                     <h2 class="font-display font-extrabold text-3xl uppercase tracking-tight text-brand-charcoal">
                         {{ $primaryLocation?->name ?? ($tenant?->setting('branding.name', $tenant->name) ?? 'Main Storefront') }}
                     </h2>
