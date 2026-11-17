@@ -1,15 +1,20 @@
+@php
+    $navTenant = app(\App\Services\CurrentTenant::class)->get();
+    $navStoreName = $navTenant ? $navTenant->setting('branding.name', $navTenant->name) : config('app.platform_name', 'ShopManager');
+    $navHomeUrl = $navTenant ? route('store.share', $navTenant->slug) : route('home');
+@endphp
 <nav x-data="{ open: false }" class="bg-white/90 backdrop-blur-md border-b border-black/[0.06] sticky top-0 z-50">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <!-- Left: Logo & Direct Links -->
             <div class="flex items-center gap-6 sm:gap-8">
-                <a href="{{ route('home') }}" class="group" title="Jessi's ClassiQ Store — Return to Homepage">
+                <a href="{{ $navHomeUrl }}" class="group" title="{{ $navStoreName }} — Return to Storefront">
                     <x-application-logo />
                 </a>
 
                 <div class="hidden md:flex items-center space-x-6 text-xs font-semibold tracking-wider uppercase text-brand-charcoal/70">
-                    <a href="{{ route('home') }}" class="inline-flex items-center gap-1.5 py-1 text-brand-charcoal hover:text-brand-pink transition duration-150 font-bold">
+                    <a href="{{ $navHomeUrl }}" class="inline-flex items-center gap-1.5 py-1 text-brand-charcoal hover:text-brand-pink transition duration-150 font-bold">
                         <svg class="w-3.5 h-3.5 text-brand-pink shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
@@ -101,7 +106,7 @@
 
                             @if(Auth::user()->isStaff())
                                 <x-dropdown-link :href="route('admin.dashboard')">
-                                    <span class="text-brand-pink font-bold">Atelier Management &rarr;</span>
+                                    <span class="text-brand-pink font-bold">Store Admin &rarr;</span>
                                 </x-dropdown-link>
                             @endif
 
@@ -156,14 +161,14 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-white border-b border-black/10">
         <div class="pt-2 pb-3 space-y-1 px-4">
-            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
+            <x-responsive-nav-link :href="$navHomeUrl" :active="request()->routeIs('store.share', 'storefront')">
                 <span class="flex items-center gap-2 font-bold text-brand-charcoal">
                     <svg class="w-4 h-4 text-brand-pink shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     <span>Storefront Homepage</span>
                 </span>
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Member Dashboard') }}
+                {{ __('Dashboard') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('customer.orders')" :active="request()->routeIs('customer.orders')">
                 {{ __('My Orders') }}
@@ -172,7 +177,7 @@
                 {{ __('Catalog') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('store.location')" :active="request()->routeIs('store.location')">
-                {{ __('Flagship Boutique (Jos)') }}
+                {{ __('Store Location') }}
             </x-responsive-nav-link>
         </div>
 
@@ -196,7 +201,7 @@
 
                     @if(Auth::user()->isStaff())
                         <x-responsive-nav-link :href="route('admin.dashboard')">
-                            <span class="text-brand-pink font-bold">Atelier Management &rarr;</span>
+                            <span class="text-brand-pink font-bold">Store Admin &rarr;</span>
                         </x-responsive-nav-link>
                     @endif
 

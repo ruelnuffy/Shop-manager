@@ -8,7 +8,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <nav class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-charcoal/50">
-                <a href="/" class="hover:text-black">Home</a>
+                <a href="{{ $tenant ? route('store.share', $tenant->slug) : route('home') }}" class="hover:text-black">Home</a>
                 <span>&bull;</span>
                 <a href="{{ route('products.index', ['category' => $product->category->slug ?? '']) }}" class="hover:text-black">
                     {{ $product->category->name ?? 'Collection' }}
@@ -261,7 +261,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h2" />
                                     </svg>
-                                    <span>Jos &amp; Nationwide Delivery</span>
+                                    <span>Nationwide Delivery</span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <svg class="w-4 h-4 text-brand-charcoal shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

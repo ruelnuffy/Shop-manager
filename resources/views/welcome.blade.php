@@ -100,7 +100,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
-                            <input type="text" name="search" placeholder="Search silk gowns, leather bags, stilettos..." class="w-full pl-9 pr-4 py-2 bg-[#f0f0f0] hover:bg-[#eaeaea] focus:bg-white border-transparent focus:border-black/15 focus:ring-0 rounded-full text-xs font-medium placeholder-brand-charcoal/45 text-brand-charcoal transition duration-150">
+                            <input type="text" name="search" placeholder="Search products..." class="w-full pl-9 pr-4 py-2 bg-[#f0f0f0] hover:bg-[#eaeaea] focus:bg-white border-transparent focus:border-black/15 focus:ring-0 rounded-full text-xs font-medium placeholder-brand-charcoal/45 text-brand-charcoal transition duration-150">
                         </form>
                     </div>
 
@@ -121,25 +121,9 @@
                             @endif
                         </a>
 
-                        @if (Route::has('login'))
-                            @auth
-                                <a href="{{ url('/dashboard') }}" class="px-4 py-2 rounded-full bg-black text-white hover:bg-brand-pink hover:text-white text-xs font-bold tracking-wider uppercase transition duration-150 shadow-sm">
-                                    Dashboard
-                                </a>
-                            @else
-                                <a href="{{ route('login') }}" class="text-xs font-bold tracking-wider uppercase text-brand-charcoal hover:text-black px-2 py-1 transition duration-150">
-                                    Log in
-                                </a>
-                                @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="hidden sm:inline-block text-xs font-bold tracking-wider uppercase text-brand-charcoal/70 hover:text-black px-2 py-1 transition duration-150">
-                                        Sign Up
-                                    </a>
-                                @endif
-                                <a href="{{ route('products.index') }}" class="inline-flex items-center px-4 py-2 rounded-full bg-black text-white hover:bg-brand-pink hover:text-white text-xs font-bold tracking-wider uppercase transition duration-150 shadow-sm">
-                                    Shop Now
-                                </a>
-                            @endauth
-                        @endif
+                        <a href="{{ route('products.index') }}" class="inline-flex items-center px-4 py-2 rounded-full bg-black text-white hover:bg-brand-pink hover:text-white text-xs font-bold tracking-wider uppercase transition duration-150 shadow-sm">
+                            Shop Now
+                        </a>
                     </div>
                 </div>
             </div>

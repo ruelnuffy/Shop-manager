@@ -33,7 +33,7 @@
                 storeLat: {{ (float) ($primaryLocation->latitude ?? 9.9211) }},
                 storeLng: {{ (float) ($primaryLocation->longitude ?? 8.8825) }},
                 storeName: @js($primaryLocation->name ?? (app(\App\Services\CurrentTenant::class)->get()?->setting('branding.name') ?? config('app.platform_name', 'ShopManager'))),
-                storeAddress: @js(($primaryLocation->address ?? 'Across Chrisbest Plaza, West of Mines') . ', ' . ($primaryLocation->city ?? 'Jos') . ', ' . ($primaryLocation->state ?? 'Plateau State')),
+                storeAddress: @js(trim(($primaryLocation->address ?? 'Main Storefront') . ', ' . ($primaryLocation->city ?? '') . ', ' . ($primaryLocation->state ?? ''), ', ')),
                 userLat: null,
                 userLng: null,
                 distanceKm: null,
@@ -223,7 +223,7 @@
                             <div class="flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                                 <span class="text-xs font-bold uppercase tracking-wider text-brand-charcoal">
-                                    Jos Showroom Live Map
+                                    Store Showroom Live Map
                                 </span>
                             </div>
                             <div class="flex items-center bg-[#f4f4f4] rounded-full p-1 text-[11px] font-bold">
@@ -272,100 +272,6 @@
                 </div>
             </div>
 
-            <!-- Virtual Boutique Walkthrough Video Gallery -->
-            <div class="bg-black text-white rounded-3xl p-6 sm:p-12 shadow-2xl space-y-8" x-data="{
-                activeTourVideo: '{{ asset('videos/shop/boutique-interior-tour.mp4') }}',
-                activeTourTitle: 'Flagship Studio & Luxury Handbag Salon Walkthrough',
-                activeTourDesc: 'Take a virtual walk through our Jos showroom across Chrisbest Plaza in West of Mines, featuring hand-selected designer bags, ambient neon ceiling lighting, and private client mirror consoles.',
-                switchTour(url, title, desc) {
-                    this.activeTourVideo = url;
-                    this.activeTourTitle = title;
-                    this.activeTourDesc = desc;
-                }
-            }">
-                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-6">
-                    <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/10 text-brand-pink-200 border border-white/15 mb-3">
-                            <svg class="w-3 h-3 text-brand-pink" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                            </svg>
-                            Virtual Boutique Tour
-                        </div>
-                        <h2 class="font-display font-extrabold text-2xl sm:text-4xl tracking-tight text-white">
-                            Step Inside Jessi's <span class="text-brand-pink">ClassiQ</span> Store
-                        </h2>
-                    </div>
-                    <p class="text-xs text-white/60 max-w-md font-medium">
-                        Preview the actual in-store atmosphere, lighting, and showroom displays before planning your private consultation or walk-in visit.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                    <!-- Video Player Display -->
-                    <div class="lg:col-span-8">
-                        <div class="aspect-[16/10] rounded-2xl overflow-hidden bg-neutral-900 border border-white/20 shadow-2xl relative">
-                            <video
-                                :src="activeTourVideo"
-                                controls
-                                autoplay
-                                muted
-                                loop
-                                playsinline
-                                class="w-full h-full object-cover"
-                            ></video>
-                        </div>
-                    </div>
-
-                    <!-- Tour Clip Navigation & Descriptions -->
-                    <div class="lg:col-span-4 space-y-4">
-                        <div class="space-y-2">
-                            <h3 class="font-display font-bold text-lg text-white" x-text="activeTourTitle"></h3>
-                            <p class="text-xs text-white/70 leading-relaxed" x-text="activeTourDesc"></p>
-                        </div>
-
-                        <div class="pt-4 space-y-3">
-                            <button
-                                type="button"
-                                @click="switchTour('{{ asset('videos/shop/boutique-interior-tour.mp4') }}', 'Flagship Studio & Luxury Handbag Salon Walkthrough', 'Take a virtual walk through our Jos showroom across Chrisbest Plaza in West of Mines, featuring hand-selected designer bags, ambient neon ceiling lighting, and private client mirror consoles.')"
-                                class="w-full p-3.5 rounded-2xl text-left border transition duration-150 flex items-center gap-3"
-                                :class="activeTourVideo.includes('interior-tour') ? 'bg-white text-black border-white shadow-lg' : 'bg-white/5 text-white/80 border-white/10 hover:bg-white/10'"
-                            >
-                                <span class="w-8 h-8 rounded-full bg-brand-pink text-white flex items-center justify-center font-bold text-xs shrink-0">1</span>
-                                <div>
-                                    <div class="text-xs font-bold">Studio &amp; Salon Tour</div>
-                                    <div class="text-[10px] opacity-70">360° Showroom overview</div>
-                                </div>
-                            </button>
-
-                            <button
-                                type="button"
-                                @click="switchTour('{{ asset('videos/shop/boutique-shelves-showcase.mp4') }}', 'Artisan Handbag Showcase Shelves', 'High-definition close up of our luxury boutique shelves displaying croc totes, Birkin-inspired padlock bags, and quilted evening clutches.')"
-                                class="w-full p-3.5 rounded-2xl text-left border transition duration-150 flex items-center gap-3"
-                                :class="activeTourVideo.includes('shelves-showcase') ? 'bg-white text-black border-white shadow-lg' : 'bg-white/5 text-white/80 border-white/10 hover:bg-white/10'"
-                            >
-                                <span class="w-8 h-8 rounded-full bg-brand-pink text-white flex items-center justify-center font-bold text-xs shrink-0">2</span>
-                                <div>
-                                    <div class="text-xs font-bold">Designer Shelves</div>
-                                    <div class="text-[10px] opacity-70">Handbag collection close-up</div>
-                                </div>
-                            </button>
-
-                            <button
-                                type="button"
-                                @click="switchTour('{{ asset('videos/shop/boutique-lights-apparel.mp4') }}', 'Apparel Suite & Chandelier Ambience', 'Explore our clothing racks, silk evening gown displays, and boutique ceiling chandelier in full evening glory.')"
-                                class="w-full p-3.5 rounded-2xl text-left border transition duration-150 flex items-center gap-3"
-                                :class="activeTourVideo.includes('lights-apparel') ? 'bg-white text-black border-white shadow-lg' : 'bg-white/5 text-white/80 border-white/10 hover:bg-white/10'"
-                            >
-                                <span class="w-8 h-8 rounded-full bg-brand-pink text-white flex items-center justify-center font-bold text-xs shrink-0">3</span>
-                                <div>
-                                    <div class="text-xs font-bold">Apparel &amp; Chandelier Lounge</div>
-                                    <div class="text-[10px] opacity-70">Silks, co-ords &amp; gowns</div>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </x-app-layout>

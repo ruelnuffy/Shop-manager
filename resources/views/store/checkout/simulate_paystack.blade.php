@@ -1,9 +1,13 @@
+@php
+    $simTenant = app(\App\Services\CurrentTenant::class)->get();
+    $simBrandName = $simTenant ? $simTenant->setting('branding.name', $simTenant->name) : config('app.platform_name', 'ShopManager');
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Paystack Checkout Simulation &bull; Jessi's ClassiQ</title>
+    <title>Paystack Checkout Simulation &bull; {{ $simBrandName }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -31,7 +35,7 @@
         <div class="bg-[#f8fafc] rounded-2xl p-5 border border-black/[0.05] space-y-2.5 text-xs">
             <div class="flex justify-between">
                 <span class="text-brand-charcoal/60">Merchant:</span>
-                <strong class="text-brand-charcoal">Jessi's ClassiQ Store</strong>
+                <strong class="text-brand-charcoal">{{ $simBrandName }}</strong>
             </div>
             <div class="flex justify-between">
                 <span class="text-brand-charcoal/60">Customer Email:</span>

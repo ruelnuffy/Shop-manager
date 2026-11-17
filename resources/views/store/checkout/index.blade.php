@@ -68,7 +68,7 @@
                                 <label class="block text-xs font-bold uppercase tracking-wider text-brand-charcoal/70 mb-1.5">
                                     State / City *
                                 </label>
-                                <input type="text" name="shipping_city" value="{{ old('shipping_city', $user?->city ?? 'Jos') }}" required class="w-full px-4 py-2.5 bg-[#f4f4f4] border-transparent focus:border-black/20 focus:bg-white focus:ring-0 rounded-xl text-xs font-medium text-brand-charcoal" placeholder="e.g. West of Mines, Jos">
+                                <input type="text" name="shipping_city" value="{{ old('shipping_city', $user?->city ?? '') }}" required class="w-full px-4 py-2.5 bg-[#f4f4f4] border-transparent focus:border-black/20 focus:bg-white focus:ring-0 rounded-xl text-xs font-medium text-brand-charcoal" placeholder="e.g. Lagos, Abuja">
                                 @error('shipping_city') <p class="text-[11px] text-red-600 mt-1">{{ $message }}</p> @enderror
                             </div>
                         </div>

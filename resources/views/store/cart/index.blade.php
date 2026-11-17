@@ -58,12 +58,12 @@
                                                 >
                                                 <div class="hidden w-full h-full flex flex-col items-center justify-center bg-[#f3f3f3] p-2 text-center text-[10px] text-brand-charcoal/50 uppercase font-bold tracking-wider">
                                                     <svg class="w-5 h-5 mb-1 text-brand-charcoal/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                                                    ClassiQ
+                                                    Store Item
                                                 </div>
                                             @else
                                                 <div class="w-full h-full flex flex-col items-center justify-center bg-[#f3f3f3] p-2 text-center text-[10px] text-brand-charcoal/50 uppercase font-bold tracking-wider">
                                                     <svg class="w-5 h-5 mb-1 text-brand-charcoal/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                                                    ClassiQ
+                                                    Store Item
                                                 </div>
                                             @endif
                                         </div>

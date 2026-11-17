@@ -1,17 +1,21 @@
+@php
+    $storeTenant = app(\App\Services\CurrentTenant::class)->get();
+    $storeBrandName = $storeTenant ? $storeTenant->setting('branding.name', $storeTenant->name) : 'Store';
+@endphp
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <div class="flex items-center gap-2 mb-1">
                     <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-black text-white">
-                        SS / 2026
+                        {{ $storeBrandName }}
                     </span>
                     <span class="text-xs text-brand-charcoal/50 font-medium">
                         {{ $products->total() }} {{ Str::plural('piece', $products->total()) }} available
                     </span>
                 </div>
                 <h1 class="font-display font-extrabold text-3xl sm:text-5xl uppercase tracking-tight text-brand-charcoal">
-                    Curated Atelier Catalog &bull; {{ request('category') ? strtoupper(request('category')) : 'ALL PIECES' }}
+                    Store Catalog &bull; {{ request('category') ? strtoupper(request('category')) : 'ALL PIECES' }}
                 </h1>
             </div>
             <div class="flex items-center gap-3">
@@ -134,7 +138,7 @@
 
                                 <div class="absolute top-3 left-3 z-10">
                                     <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/95 text-brand-charcoal border border-black/5 shadow-sm">
-                                        {{ $prod->category->name ?? 'ClassiQ' }}
+                                        {{ $prod->category->name ?? $storeBrandName }}
                                     </span>
                                 </div>
 
@@ -185,7 +189,7 @@
 
                                 <div class="pt-4 border-t border-black/[0.06] flex items-center justify-between">
                                     <span class="text-[11px] font-semibold text-brand-charcoal/50 uppercase tracking-wider">
-                                        Jos Atelier
+                                        {{ $storeBrandName }}
                                     </span>
                                     <a href="{{ route('products.show', $prod->slug) }}" class="px-4 py-2 rounded-full bg-black hover:bg-brand-pink text-white text-xs font-bold uppercase tracking-wider transition duration-150">
                                         View Piece &rarr;
