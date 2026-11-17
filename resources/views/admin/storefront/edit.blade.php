@@ -17,7 +17,7 @@
 
         <div class="flex items-center gap-2">
             <a
-                href="{{ route('storefront') }}"
+                href="{{ route('store.share', $tenant->slug) }}"
                 target="_blank"
                 class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold shadow-md shadow-slate-900/10 transition"
             >
@@ -35,7 +35,7 @@
                 </svg>
                 <span>{{ session('status') }}</span>
             </div>
-            <a href="{{ route('storefront') }}" target="_blank" class="underline font-bold hover:text-emerald-950">
+            <a href="{{ route('store.share', $tenant->slug) }}" target="_blank" class="underline font-bold hover:text-emerald-950">
                 View Live Store &rarr;
             </a>
         </div>
@@ -1138,7 +1138,7 @@
 
             <div class="flex items-center gap-3">
                 <a
-                    href="{{ route('storefront') }}"
+                    href="{{ route('store.share', $tenant->slug) }}"
                     target="_blank"
                     class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition"
                 >

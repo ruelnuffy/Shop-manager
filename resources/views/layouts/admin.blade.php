@@ -164,7 +164,7 @@
 
                 @if ($planActive && $currentTenant && $currentTenant->hasFeature('storefront'))
                     <a
-                        href="{{ route('storefront') }}"
+                        href="{{ $currentTenant ? route('store.share', $currentTenant->slug) : route('storefront') }}"
                         target="_blank"
                         class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 transition shadow-xs"
                         title="View Live Storefront"

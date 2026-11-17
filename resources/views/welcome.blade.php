@@ -74,7 +74,7 @@
                 <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
                     <!-- Left: Logo & Micro Links -->
                     <div class="flex items-center gap-6 sm:gap-8">
-                        <a href="{{ route('storefront') }}" class="group">
+                        <a href="{{ $currentTenant ? route('store.share', $currentTenant->slug) : route('storefront') }}" class="group">
                             <x-application-logo />
                         </a>
 
@@ -511,6 +511,14 @@
             </section>
 
             <!-- SECTION 3: CATEGORY EDITORIAL TILES -->
+            @php
+                $categories = \App\Models\Category::withCount('products')
+                    ->orderBy('sort_order')
+                    ->get()
+                    ->filter(fn ($cat) => $cat->products_count > 0)
+                    ->values();
+            @endphp
+            @if ($categories->count() > 0)
             <section id="categories" class="py-20 sm:py-28 bg-white border-t border-black/[0.06]">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 border-b border-black/[0.08] pb-6">
@@ -521,13 +529,9 @@
                             </h2>
                         </div>
                         <div class="mt-3 sm:mt-0 text-xs font-semibold text-brand-charcoal/60 uppercase tracking-wider">
-                            {{ \App\Models\Category::count() }} Departments &bull; 100% Curated
+                            {{ $categories->count() }} {{ Str::plural('Department', $categories->count()) }} &bull; 100% Curated
                         </div>
                     </div>
-
-                    @php
-                        $categories = \App\Models\Category::withCount('products')->orderBy('sort_order')->get();
-                    @endphp
 
                     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
                         @foreach ($categories as $index => $cat)
@@ -564,6 +568,7 @@
                     </div>
                 </div>
             </section>
+            @endif
 
             <!-- SECTION 4: JOS BOUTIQUE PHYSICAL LOCATION & VIDEO WALKTHROUGH -->
             @php

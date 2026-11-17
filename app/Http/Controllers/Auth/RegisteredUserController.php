@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\NewAccountRegisteredMail;
-use App\Models\Category;
 use App\Models\ShopLocation;
 use App\Models\Tenant;
 use App\Models\User;
@@ -105,15 +104,6 @@ class RegisteredUserController extends Controller
 
                 foreach (['admin', 'staff', 'customer'] as $roleName) {
                     Role::firstOrCreate(['name' => $roleName, 'guard_name' => 'web']);
-                }
-
-                foreach (['Clothes', 'Bags', 'Shoes', 'Accessories'] as $categoryName) {
-                    Category::create([
-                        'tenant_id' => $tenant->id,
-                        'name' => $categoryName,
-                        'slug' => Str::slug($categoryName),
-                        'description' => "{$categoryName} collection for {$storeName}",
-                    ]);
                 }
 
                 ShopLocation::create([
