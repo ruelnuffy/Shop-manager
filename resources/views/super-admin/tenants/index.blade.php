@@ -262,6 +262,18 @@
                                             {{ $tenant->status === 'active' ? 'Suspend' : 'Activate' }}
                                         </button>
                                     </form>
+
+                                    <form method="POST" action="{{ route('super-admin.tenants.destroy', $tenant) }}" onsubmit="return confirm('Delete {{ addslashes($tenant->name) }} and all its data permanently?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button
+                                            type="submit"
+                                            class="px-2.5 py-1.5 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-600 hover:text-white text-xs font-semibold transition cursor-pointer"
+                                            title="Delete Store"
+                                        >
+                                            Delete
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>

@@ -5,11 +5,13 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ImpersonationController;
 use App\Models\Order;
+use App\Models\SiteVisit;
 use App\Models\Tenant;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -431,5 +433,21 @@ class TenantController extends Controller
     public function enter(Request $request, Tenant $tenant): RedirectResponse
     {
         return app(ImpersonationController::class)->superAdminEnterAdmin($request, $tenant);
+    }
+
+    /**
+     * Permanently delete a store and its associated records.
+     */
+    public function destroy(Tenant $tenant): RedirectResponse
+    {
+        $storeName = $tenant->name;
+
+        DB::transaction(function () use ($tenant): void {
+            User::withoutTenancy()->where('tenant_id', $tenant->id)->delete();
+            SiteVisit::where('tenant_id', $tenant->id)->delete();
+            $tenant->delete();
+        });
+
+        return back()->with('status', "Store '{$storeName}' has been deleted.");
     }
 }

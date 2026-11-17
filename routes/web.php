@@ -230,6 +230,7 @@ Route::prefix('super-admin')
         Route::get('/tenants/{tenant}', [SuperAdmin\TenantController::class, 'show'])->name('tenants.show');
         Route::get('/tenants/{tenant}/edit', [SuperAdmin\TenantController::class, 'edit'])->name('tenants.edit');
         Route::put('/tenants/{tenant}', [SuperAdmin\TenantController::class, 'update'])->name('tenants.update');
+        Route::delete('/tenants/{tenant}', [SuperAdmin\TenantController::class, 'destroy'])->name('tenants.destroy');
         Route::post('/tenants/{tenant}/toggle-status', [SuperAdmin\TenantController::class, 'toggleStatus'])->name('tenants.toggle-status');
         Route::post('/tenants/{tenant}/enter', [SuperAdmin\TenantController::class, 'enter'])->name('tenants.enter');
         Route::post('/tenants/{tenant}/impersonate-admin', [ImpersonationController::class, 'superAdminEnterAdmin'])->name('tenants.impersonate-admin');

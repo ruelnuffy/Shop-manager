@@ -77,6 +77,25 @@ class CpanelDeployController extends Controller
                     $output = Artisan::output();
                     break;
 
+                case 'cleanup_test_stores':
+                    $testTenants = DB::table('tenants')
+                        ->whereIn('slug', ['tester', 'jessis-classiq-store'])
+                        ->get(['id', 'name', 'slug']);
+                    $tenantIds = $testTenants->pluck('id')->all();
+
+                    if ($tenantIds !== []) {
+                        DB::transaction(function () use ($tenantIds): void {
+                            DB::table('users')->whereIn('tenant_id', $tenantIds)->delete();
+                            DB::table('site_visits')->whereIn('tenant_id', $tenantIds)->delete();
+                            DB::table('tenants')->whereIn('id', $tenantIds)->delete();
+                        });
+                    }
+
+                    $output = json_encode([
+                        'deleted_tenants' => $testTenants,
+                    ], JSON_PRETTY_PRINT);
+                    break;
+
                 case 'list_users':
                     $users = DB::table('users')->select('id', 'name', 'email', 'role', 'tenant_id', 'created_at')->get();
                     $output = json_encode($users, JSON_PRETTY_PRINT);
