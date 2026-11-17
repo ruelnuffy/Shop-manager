@@ -8,7 +8,7 @@
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6 py-2">
             <div class="space-y-2">
                 <div class="flex items-center gap-2.5">
-                    <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-900 text-white">
+                    <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-primary text-white">
                         {{ $storeBrandName }}
                     </span>
                     <span class="text-xs text-slate-500 font-medium">
@@ -35,14 +35,14 @@
                     <div class="flex items-center gap-2 flex-wrap">
                         <a
                             href="{{ route('products.index', request()->except('category', 'page')) }}"
-                            class="px-4 py-2 rounded-full text-xs font-bold transition {{ !request('category') ? 'bg-slate-900 text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300' }}"
+                            class="px-4 py-2 rounded-full text-xs font-bold transition {{ !request('category') ? 'bg-brand-primary text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300' }}"
                         >
                             All Items
                         </a>
                         @foreach ($categories->where('products_count', '>', 0) as $cat)
                             <a
                                 href="{{ route('products.index', array_merge(request()->except('page'), ['category' => $cat->slug])) }}"
-                                class="px-4 py-2 rounded-full text-xs font-bold transition {{ request('category') === $cat->slug ? 'bg-slate-900 text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300' }}"
+                                class="px-4 py-2 rounded-full text-xs font-bold transition {{ request('category') === $cat->slug ? 'bg-brand-primary text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300' }}"
                             >
                                 {{ $cat->name }}
                             </a>
@@ -137,7 +137,7 @@
                                     <span class="text-[11px] font-medium text-slate-400">
                                         {{ $prod->inStock() ? 'In Stock' : 'Out of Stock' }}
                                     </span>
-                                    <a href="{{ route('products.show', $prod->slug) }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition">
+                                    <a href="{{ route('products.show', $prod->slug) }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-secondary hover:bg-brand-pink text-white text-xs font-bold transition">
                                         <span>View Item</span>
                                         <span>&rarr;</span>
                                     </a>
