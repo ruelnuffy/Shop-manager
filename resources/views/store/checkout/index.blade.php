@@ -176,6 +176,9 @@
 
                                     <div x-show="method === 'bank_transfer'" class="mt-3 p-3.5 rounded-xl bg-white border border-emerald-200/80 space-y-2 text-xs">
                                         @if (!empty($hasVerifiedBank) && $tenant)
+                                            <div class="text-[11px] font-bold text-emerald-800 pb-1 border-b border-emerald-100">
+                                                Transfer ₦{{ number_format($total, 0) }} to this account, then click Confirm below:
+                                            </div>
                                             <div class="flex items-center justify-between">
                                                 <span class="text-brand-charcoal/60">Bank Name</span>
                                                 <span class="font-bold text-brand-charcoal">{{ $tenant->bank_name }}</span>
@@ -209,11 +212,9 @@
                             <!-- Submit Trigger -->
                             <button
                                 type="submit"
-                                class="w-full py-4 px-6 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition duration-150 shadow-xl cursor-pointer"
-                                :class="method === 'wallet' ? 'bg-brand-pink hover:bg-brand-pink-600 text-white shadow-brand-pink/25' : 'bg-[#25D366] hover:bg-[#1ebe5d] text-white shadow-emerald-600/25'"
+                                class="w-full py-4 px-6 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition duration-150 shadow-xl cursor-pointer bg-[#25D366] hover:bg-[#1ebe5d] text-white shadow-emerald-600/25"
                             >
-                                <span x-show="method === 'wallet'">Pay with Wallet (₦{{ number_format($total, 0) }})</span>
-                                <span x-show="method === 'bank_transfer'">I've Transferred &mdash; Confirm on WhatsApp &rarr;</span>
+                                <span>I've Transferred &mdash; Confirm &amp; Send Proof on WhatsApp &rarr;</span>
                             </button>
 
                             <div class="text-center text-[11px] text-brand-charcoal/50 leading-relaxed pt-1">

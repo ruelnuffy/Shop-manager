@@ -37,11 +37,14 @@
 
                 <div class="space-y-3 pt-2">
                     @if ($whatsappConfirmUrl !== '')
+                        <p class="text-[11px] text-slate-500">
+                            Your order, product, and delivery details are pre-filled &mdash; just attach your transfer receipt in WhatsApp.
+                        </p>
                         <a
                             href="{{ $whatsappConfirmUrl }}"
                             class="w-full py-4 px-6 rounded-full bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 transition"
                         >
-                            <span>Send Confirmation on WhatsApp &rarr;</span>
+                            <span>Send Transfer Proof on WhatsApp &rarr;</span>
                         </a>
                     @endif
 

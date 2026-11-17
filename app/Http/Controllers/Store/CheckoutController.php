@@ -461,10 +461,11 @@ class CheckoutController extends Controller
         $whatsappText = rawurlencode(
             "Hello {$storeName}! I just transferred ₦".number_format((float) $order->total_amount, 0)." for Order #{$order->order_number}.\n"
             ."Name: {$order->shipping_name}\n"
+            ."Email: {$order->shipping_email}\n"
             ."Phone: {$order->shipping_phone}\n"
             ."Items: {$itemsSummary}\n"
             ."Delivery: {$order->shipping_address}, {$order->shipping_city}\n"
-            .'Please confirm my payment!'
+            .'I am sending my transfer proof/receipt now. Please confirm my payment!'
         );
 
         return "https://wa.me/{$whatsapp}?text={$whatsappText}";
