@@ -157,10 +157,54 @@
                         </div>
 
                         <!-- Payment Method Selector -->
-                        <div class="space-y-3 pt-3 border-t border-black/[0.06]" x-data="{ method: '{{ $user && $user->wallet_balance >= $total ? 'wallet' : 'paystack' }}' }">
+                        <div class="space-y-3 pt-3 border-t border-black/[0.06]" x-data="{ method: '{{ $user && $user->wallet_balance >= $total ? 'wallet' : 'bank_transfer' }}' }">
                             <span class="text-xs font-bold uppercase tracking-wider text-brand-charcoal block">Choose Payment Method:</span>
 
                             <div class="space-y-2">
+                                <label class="block p-3.5 rounded-2xl border transition duration-150 cursor-pointer" :class="method === 'bank_transfer' ? 'border-emerald-500 bg-emerald-50/40' : 'border-black/10 hover:border-black/20 bg-[#fafafa]'">
+                                    <div class="flex items-center gap-3">
+                                        <input type="radio" name="payment_method" value="bank_transfer" x-model="method" class="text-emerald-600 focus:ring-emerald-500">
+                                        <div>
+                                            <div class="text-xs font-bold text-brand-charcoal">
+                                                Bank Transfer &amp; Confirm on WhatsApp
+                                            </div>
+                                            <div class="text-[10px] text-brand-charcoal/55 mt-0.5">
+                                                Transfer to the store account below, then tap Confirm to message on WhatsApp
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div x-show="method === 'bank_transfer'" class="mt-3 p-3.5 rounded-xl bg-white border border-emerald-200/80 space-y-2 text-xs">
+                                        @if (!empty($hasVerifiedBank) && $tenant)
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-brand-charcoal/60">Bank Name</span>
+                                                <span class="font-bold text-brand-charcoal">{{ $tenant->bank_name }}</span>
+                                            </div>
+                                            <div class="flex items-center justify-between gap-2">
+                                                <span class="text-brand-charcoal/60">Account Number</span>
+                                                <div class="flex items-center gap-2">
+                                                    <span class="font-mono font-extrabold text-sm text-emerald-700">{{ $tenant->bank_account_number }}</span>
+                                                    <button
+                                                        type="button"
+                                                        onclick="event.preventDefault(); navigator.clipboard?.writeText('{{ $tenant->bank_account_number }}'); this.textContent = 'Copied!'; setTimeout(() => this.textContent = 'Copy', 1500);"
+                                                        class="px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[10px] font-bold cursor-pointer"
+                                                    >
+                                                        Copy
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-brand-charcoal/60">Account Name</span>
+                                                <span class="font-bold text-brand-charcoal">{{ $tenant->bank_account_name }}</span>
+                                            </div>
+                                        @else
+                                            <div class="text-[11px] text-amber-700 font-medium">
+                                                Place your order below and tap Confirm to receive the store's verified account details on WhatsApp.
+                                            </div>
+                                        @endif
+                                    </div>
+                                </label>
+
                                 @auth
                                     <label class="flex items-center justify-between p-3.5 rounded-2xl border transition duration-150 cursor-pointer" :class="method === 'wallet' ? 'border-brand-pink bg-brand-pink-50/50' : 'border-black/10 hover:border-black/20 bg-[#fafafa]'">
                                         <div class="flex items-center gap-3">
@@ -183,37 +227,20 @@
                                         </div>
                                     </label>
                                 @endauth
-
-                                <label class="flex items-center justify-between p-3.5 rounded-2xl border transition duration-150 cursor-pointer" :class="method === 'paystack' ? 'border-brand-pink bg-brand-pink-50/50' : 'border-black/10 hover:border-black/20 bg-[#fafafa]'">
-                                    <div class="flex items-center gap-3">
-                                        <input type="radio" name="payment_method" value="paystack" x-model="method" class="text-brand-pink focus:ring-brand-pink">
-                                        <div>
-                                            <div class="text-xs font-bold text-brand-charcoal flex items-center gap-2">
-                                                <span>Paystack (Debit Card / Bank Transfer / USSD)</span>
-                                            </div>
-                                            <div class="text-[10px] text-brand-charcoal/50 mt-0.5">
-                                                Secured 256-bit payment gateway
-                                            </div>
-                                        </div>
-                                    </div>
-                                </label>
                             </div>
 
                             <!-- Submit Trigger -->
                             <button
                                 type="submit"
                                 class="w-full py-4 px-6 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition duration-150 shadow-xl cursor-pointer"
-                                :class="method === 'wallet' ? 'bg-brand-pink hover:bg-brand-pink-600 text-white shadow-brand-pink/25' : 'bg-black hover:bg-brand-pink text-white shadow-black/10'"
+                                :class="method === 'wallet' ? 'bg-brand-pink hover:bg-brand-pink-600 text-white shadow-brand-pink/25' : 'bg-[#25D366] hover:bg-[#1ebe5d] text-white shadow-emerald-600/25'"
                             >
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                </svg>
-                                <span x-show="method === 'wallet'">Pay with Boutique Wallet (₦{{ number_format($total, 0) }})</span>
-                                <span x-show="method === 'paystack'">Pay with Paystack (₦{{ number_format($total, 0) }})</span>
+                                <span x-show="method === 'wallet'">Pay with Wallet (₦{{ number_format($total, 0) }})</span>
+                                <span x-show="method === 'bank_transfer'">I've Transferred &mdash; Confirm on WhatsApp &rarr;</span>
                             </button>
 
                             <div class="text-center text-[11px] text-brand-charcoal/50 leading-relaxed pt-1">
-                                Stock will be reserved and confirmed upon successful transaction.
+                                Stock is reserved while you confirm your transfer with the store on WhatsApp.
                             </div>
                         </div>
                     </div>

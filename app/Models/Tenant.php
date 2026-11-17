@@ -20,6 +20,10 @@ class Tenant extends Model
         'settings',
         'paystack_public_key',
         'paystack_secret_key',
+        'bank_name',
+        'bank_account_number',
+        'bank_account_name',
+        'bank_details_signature',
         'plan',
         'status',
         'subscription_started_at',
@@ -33,6 +37,9 @@ class Tenant extends Model
             'settings' => 'array',
             'paystack_public_key' => 'encrypted',
             'paystack_secret_key' => 'encrypted',
+            'bank_name' => 'encrypted',
+            'bank_account_number' => 'encrypted',
+            'bank_account_name' => 'encrypted',
             'subscription_started_at' => 'datetime',
             'subscription_expires_at' => 'datetime',
             'expiry_reminder_sent_at' => 'datetime',
@@ -55,6 +62,44 @@ class Tenant extends Model
             'subscription_expires_at' => now()->addMonth(),
             'expiry_reminder_sent_at' => null,
         ];
+    }
+
+    /**
+     * Compute HMAC-SHA256 integrity signature for the store's bank account details.
+     */
+    public function computeBankDetailsSignature(string $bankName, string $accountNumber, string $accountName): string
+    {
+        $payload = implode('|', [
+            (string) $this->id,
+            trim($bankName),
+            trim($accountNumber),
+            trim($accountName),
+        ]);
+
+        return hash_hmac('sha256', $payload, (string) config('app.key'));
+    }
+
+    /**
+     * Verify that the store's bank account details exist and have not been tampered with.
+     */
+    public function hasVerifiedBankDetails(): bool
+    {
+        if (
+            empty($this->bank_name)
+            || empty($this->bank_account_number)
+            || empty($this->bank_account_name)
+            || empty($this->bank_details_signature)
+        ) {
+            return false;
+        }
+
+        $expected = $this->computeBankDetailsSignature(
+            (string) $this->bank_name,
+            (string) $this->bank_account_number,
+            (string) $this->bank_account_name,
+        );
+
+        return hash_equals($expected, (string) $this->bank_details_signature);
     }
 
     /**

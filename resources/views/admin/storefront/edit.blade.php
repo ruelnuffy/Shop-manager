@@ -106,6 +106,88 @@
         </div>
     </div>
 
+    <!-- Secure Store Bank Account Form (Password-Protected) -->
+    <div x-show="activeTab === 'contact'" class="mb-6 p-6 sm:p-8 rounded-3xl bg-white border border-emerald-200/80 shadow-xs space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
+            <div>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider mb-1">
+                    Encrypted &amp; HMAC Signed
+                </span>
+                <h2 class="font-display font-bold text-lg text-slate-900">Store Payment Bank Account</h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Customers will transfer to this account at checkout and confirm on your WhatsApp. Changing this requires your login password.
+                </p>
+            </div>
+            @if ($tenant->hasVerifiedBankDetails())
+                <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold self-start sm:self-center">
+                    Verified &amp; Active
+                </span>
+            @endif
+        </div>
+
+        <form method="POST" action="{{ route('admin.storefront.bank-account') }}" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @csrf
+            @method('PUT')
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Bank Name *</label>
+                <input
+                    type="text"
+                    name="bank_name"
+                    value="{{ old('bank_name', $tenant->bank_name) }}"
+                    required
+                    placeholder="e.g. Access Bank, OPay, GTBank"
+                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-xs text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white"
+                />
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Account Number *</label>
+                <input
+                    type="text"
+                    name="bank_account_number"
+                    value="{{ old('bank_account_number', $tenant->bank_account_number) }}"
+                    required
+                    inputmode="numeric"
+                    placeholder="e.g. 0123456789"
+                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-xs text-slate-900 font-mono focus:outline-none focus:border-emerald-600 focus:bg-white"
+                />
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Account Name *</label>
+                <input
+                    type="text"
+                    name="bank_account_name"
+                    value="{{ old('bank_account_name', $tenant->bank_account_name) }}"
+                    required
+                    placeholder="e.g. Decency Wears & Bag Ventures"
+                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-xs text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white"
+                />
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Confirm Your Login Password *</label>
+                <input
+                    type="password"
+                    name="current_password"
+                    required
+                    placeholder="Enter your Store Admin password to save"
+                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-xs text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white"
+                />
+            </div>
+
+            <div class="md:col-span-2 flex justify-end pt-1">
+                <button
+                    type="submit"
+                    class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-xs cursor-pointer"
+                >
+                    Save Protected Bank Account
+                </button>
+            </div>
+        </form>
+    </div>
+
     <form method="POST" action="{{ route('admin.storefront.update') }}" enctype="multipart/form-data" class="space-y-6">
         @csrf
         @method('PUT')

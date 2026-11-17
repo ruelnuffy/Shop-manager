@@ -41,8 +41,10 @@ class CheckoutController extends Controller
         $shippingFee = 3500.00; // Flat Lagos / Nigeria courier shipping
         $total = $subtotal + $shippingFee;
         $user = Auth::user();
+        $tenant = app(CurrentTenant::class)->get();
+        $hasVerifiedBank = (bool) $tenant?->hasVerifiedBankDetails();
 
-        return view('store.checkout.index', compact('items', 'subtotal', 'shippingFee', 'total', 'user'));
+        return view('store.checkout.index', compact('items', 'subtotal', 'shippingFee', 'total', 'user', 'tenant', 'hasVerifiedBank'));
     }
 
     public function process(Request $request): RedirectResponse
@@ -54,7 +56,7 @@ class CheckoutController extends Controller
             'shipping_address' => 'required|string|max:500',
             'shipping_city' => 'required|string|max:100',
             'notes' => 'nullable|string|max:500',
-            'payment_method' => 'nullable|in:paystack,wallet',
+            'payment_method' => 'nullable|in:bank_transfer,paystack,wallet',
         ]);
 
         $items = $this->cartService->getItems();
@@ -77,8 +79,8 @@ class CheckoutController extends Controller
         $subtotal = $this->cartService->getSubtotal();
         $shippingFee = 3500.00;
         $total = $subtotal + $shippingFee;
-        $orderNumber = 'JC-'.strtoupper(Str::random(8));
-        $paymentMethod = $request->input('payment_method', 'paystack');
+        $orderNumber = 'SM-'.strtoupper(Str::random(8));
+        $paymentMethod = $request->input('payment_method', 'bank_transfer');
 
         DB::beginTransaction();
 
@@ -158,7 +160,67 @@ class CheckoutController extends Controller
                     ->with('success', 'Order placed successfully using your Boutique Wallet balance!');
             }
 
-            // Option B: Pay with Paystack
+            // Option B: Direct Store Bank Transfer + WhatsApp Confirmation
+            if ($paymentMethod === 'bank_transfer') {
+                $order = Order::create([
+                    'user_id' => Auth::id(),
+                    'order_number' => $orderNumber,
+                    'status' => 'pending',
+                    'subtotal' => $subtotal,
+                    'shipping_fee' => $shippingFee,
+                    'tax' => 0.00,
+                    'total_amount' => $total,
+                    'shipping_name' => $request->shipping_name,
+                    'shipping_email' => $request->shipping_email,
+                    'shipping_phone' => $request->shipping_phone,
+                    'shipping_address' => $request->shipping_address,
+                    'shipping_city' => $request->shipping_city,
+                    'payment_status' => 'pending',
+                    'payment_method' => 'bank_transfer',
+                    'notes' => $request->notes,
+                ]);
+
+                foreach ($items as $item) {
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_variant_id' => $item['variant_id'],
+                        'product_name' => $item['product_name'],
+                        'variant_description' => "{$item['size']} - {$item['color']}",
+                        'unit_price' => $item['price'],
+                        'quantity' => $item['quantity'],
+                        'subtotal' => $item['price'] * $item['quantity'],
+                    ]);
+
+                    $variant = ProductVariant::find($item['variant_id']);
+                    if ($variant) {
+                        $variant->decrement('stock_quantity', $item['quantity']);
+                    }
+                }
+
+                Payment::create([
+                    'order_id' => $order->id,
+                    'paystack_reference' => 'BANK-'.$orderNumber,
+                    'status' => 'pending',
+                    'amount' => $total,
+                    'currency' => 'NGN',
+                    'customer_email' => $request->shipping_email,
+                ]);
+
+                $this->cartService->clear();
+
+                DB::commit();
+
+                if ($tenant = Tenant::find($order->tenant_id) ?? app(CurrentTenant::class)->get()) {
+                    try {
+                        app(StoreNotificationService::class)->notifyStorefrontOrder($tenant, $order);
+                    } catch (\Throwable) {
+                    }
+                }
+
+                return redirect()->route('checkout.bank-transfer', $order->order_number);
+            }
+
+            // Option C: Pay with Paystack
             $order = Order::create([
                 'user_id' => Auth::id(),
                 'order_number' => $orderNumber,
@@ -361,6 +423,34 @@ class CheckoutController extends Controller
             ->paginate(10);
 
         return view('store.orders.index', compact('orders'));
+    }
+
+    /**
+     * Show bank transfer confirmation page with direct WhatsApp confirmation link.
+     */
+    public function bankTransferSuccess(string $orderNumber): View
+    {
+        $order = Order::with('items')->where('order_number', $orderNumber)->firstOrFail();
+        $tenant = Tenant::find($order->tenant_id) ?? app(CurrentTenant::class)->get();
+        $whatsapp = $tenant?->whatsappNumber() ?? '';
+        $storeName = $tenant ? $tenant->setting('branding.name', $tenant->name) : config('app.platform_name', 'ShopManager');
+
+        $itemsSummary = $order->items->map(function ($item) {
+            return "{$item->quantity}x {$item->product_name} (₦".number_format((float) $item->subtotal, 0).')';
+        })->implode(', ');
+
+        $whatsappText = rawurlencode(
+            "Hello {$storeName}! I just transferred ₦".number_format((float) $order->total_amount, 0)." for Order #{$order->order_number}.\n"
+            ."Name: {$order->shipping_name}\n"
+            ."Phone: {$order->shipping_phone}\n"
+            ."Items: {$itemsSummary}\n"
+            ."Delivery: {$order->shipping_address}, {$order->shipping_city}\n"
+            .'Please confirm my payment!'
+        );
+
+        $whatsappConfirmUrl = $whatsapp !== '' ? "https://wa.me/{$whatsapp}?text={$whatsappText}" : '';
+
+        return view('store.checkout.bank-transfer', compact('order', 'tenant', 'storeName', 'whatsappConfirmUrl'));
     }
 
     protected function resolveTenantHost(Tenant $tenant): ?string

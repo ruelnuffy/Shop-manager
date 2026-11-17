@@ -235,6 +235,44 @@ class StorefrontController extends Controller
     }
 
     /**
+     * Securely update the store's bank account details (requires current admin password).
+     */
+    public function updateBankAccount(Request $request): RedirectResponse
+    {
+        $tenant = $this->resolveCurrentTenant();
+
+        if (! $tenant) {
+            return redirect()->route('admin.dashboard')
+                ->with('error', 'No active store tenant found.');
+        }
+
+        $validated = $request->validate([
+            'bank_name' => ['required', 'string', 'max:120'],
+            'bank_account_number' => ['required', 'digits_between:8,20'],
+            'bank_account_name' => ['required', 'string', 'max:150'],
+            'current_password' => ['required', 'current_password:web'],
+        ], [
+            'current_password.current_password' => 'Your current password is incorrect. Bank account details were not changed.',
+        ]);
+
+        $bankName = trim($validated['bank_name']);
+        $accountNumber = trim($validated['bank_account_number']);
+        $accountName = trim($validated['bank_account_name']);
+
+        $tenant->update([
+            'bank_name' => $bankName,
+            'bank_account_number' => $accountNumber,
+            'bank_account_name' => $accountName,
+            'bank_details_signature' => $tenant->computeBankDetailsSignature($bankName, $accountNumber, $accountName),
+        ]);
+
+        app(CurrentTenant::class)->set($tenant->fresh());
+
+        return redirect()->route('admin.storefront.edit')
+            ->with('status', 'Store bank account details updated and cryptographically signed.');
+    }
+
+    /**
      * Resolve the active tenant model for the current authenticated user.
      */
     protected function resolveCurrentTenant(): ?Tenant

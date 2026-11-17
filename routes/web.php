@@ -88,6 +88,7 @@ Route::post('/cart/clear', [Store\CartController::class, 'clear'])->name('cart.c
 
 Route::get('/checkout', [Store\CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout', [Store\CheckoutController::class, 'process'])->name('checkout.process');
+Route::get('/checkout/bank-transfer/{orderNumber}', [Store\CheckoutController::class, 'bankTransferSuccess'])->name('checkout.bank-transfer');
 Route::get('/checkout/simulate-paystack', [Store\CheckoutController::class, 'simulatePaystack'])->name('checkout.simulate');
 Route::get('/checkout/callback', [Store\CheckoutController::class, 'callback'])->name('checkout.callback');
 Route::get('/orders/confirmation/{orderNumber}', [Store\CheckoutController::class, 'confirmation'])->name('order.confirmation');
@@ -212,6 +213,7 @@ Route::prefix('admin')
             // Storefront Template Customization (Hero & Featuring Images)
             Route::get('/storefront-customization', [Admin\StorefrontController::class, 'edit'])->name('storefront.edit');
             Route::put('/storefront-customization', [Admin\StorefrontController::class, 'update'])->name('storefront.update');
+            Route::put('/storefront-customization/bank-account', [Admin\StorefrontController::class, 'updateBankAccount'])->name('storefront.bank-account');
         });
     });
 
