@@ -112,6 +112,11 @@ Route::get('/dashboard', function () {
         return redirect()->route('super-admin.dashboard');
     }
 
+    // 1b. If store admin or staff, redirect to their Store Admin console
+    if ($user?->isStaff()) {
+        return redirect()->route('admin.dashboard');
+    }
+
     // 2. Ensure active tenant is bound in context for this user
     if (! app(CurrentTenant::class)->check()) {
         $tenantId = $user?->tenant_id ?? session('active_tenant_id');

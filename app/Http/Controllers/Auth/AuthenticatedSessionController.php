@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('super-admin.dashboard', absolute: false));
         }
 
-        if ($request->attributes->get('resolved_from_platform_login') && $request->user()?->isStaff()) {
+        if ($request->user()?->isStaff()) {
             return redirect()->intended(route('admin.dashboard', absolute: false));
         }
 
