@@ -86,9 +86,8 @@
                                 Collections <span class="text-[9px]">▾</span>
                             </a>
                             <a href="{{ route('store.location') }}" class="hover:text-black transition duration-150">
-                                Flagship Store
+                                Store Location
                             </a>
-                            <a href="#values" class="hover:text-black transition duration-150">About</a>
                         </nav>
                     </div>
 

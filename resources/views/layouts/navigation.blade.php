@@ -45,9 +45,6 @@
                     <a href="{{ route('store.location') }}" class="hover:text-black transition duration-150 {{ request()->routeIs('store.location') ? 'text-black font-bold' : '' }}">
                         Store Location
                     </a>
-                    <a href="{{ $navHomeUrl }}#boutique" class="hover:text-black transition duration-150">
-                        About
-                    </a>
                 </nav>
             </div>
 
