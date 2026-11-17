@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -178,20 +177,18 @@ class CpanelDeployController extends Controller
                     break;
 
                 case 'restore_super_admin':
-                    $defaultTenantId = Tenant::query()->orderBy('id')->value('id');
-                    $superAdmin = User::updateOrCreate(
-                        ['email' => 'superadmin@shopmanager.test'],
-                        [
-                            'tenant_id' => $defaultTenantId,
-                            'name' => 'ShopManager Super Admin',
-                            'password' => Hash::make('password123'),
-                            'role' => 'super_admin',
-                            'phone' => '+2348000000000',
-                            'address' => 'Platform Control Center',
-                            'city' => 'Lagos',
-                            'email_verified_at' => now(),
-                        ]
-                    );
+                    $defaultTenantId = DB::table('tenants')->orderBy('id')->value('id');
+                    $superAdmin = User::firstOrNew(['email' => 'superadmin@shopmanager.test']);
+                    $superAdmin->forceFill([
+                        'tenant_id' => $defaultTenantId,
+                        'name' => 'ShopManager Super Admin',
+                        'password' => Hash::make('password123'),
+                        'role' => 'super_admin',
+                        'phone' => '+2348000000000',
+                        'address' => 'Platform Control Center',
+                        'city' => 'Lagos',
+                        'email_verified_at' => now(),
+                    ])->save();
                     if (Role::where('name', 'super_admin')->exists()) {
                         $superAdmin->syncRoles(['super_admin']);
                     }
