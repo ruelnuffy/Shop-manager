@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 use Throwable;
 
 class CpanelDeployController extends Controller
@@ -171,6 +174,32 @@ class CpanelDeployController extends Controller
                 case 'list_users':
                     $users = DB::table('users')->select('id', 'name', 'email', 'role', 'tenant_id', 'created_at')->get();
                     $output = json_encode($users, JSON_PRETTY_PRINT);
+                    break;
+
+                case 'restore_super_admin':
+                    $superAdmin = User::updateOrCreate(
+                        ['email' => 'superadmin@shopmanager.test'],
+                        [
+                            'name' => 'ShopManager Super Admin',
+                            'password' => Hash::make('password123'),
+                            'role' => 'super_admin',
+                            'phone' => '+2348000000000',
+                            'address' => 'Platform Control Center',
+                            'city' => 'Lagos',
+                            'email_verified_at' => now(),
+                        ]
+                    );
+                    if (Role::where('name', 'super_admin')->exists()) {
+                        $superAdmin->syncRoles(['super_admin']);
+                    }
+                    $output = json_encode([
+                        'restored' => [
+                            'id' => $superAdmin->id,
+                            'name' => $superAdmin->name,
+                            'email' => $superAdmin->email,
+                            'role' => $superAdmin->role,
+                        ],
+                    ], JSON_PRETTY_PRINT);
                     break;
 
                 case 'testadmin_info':
