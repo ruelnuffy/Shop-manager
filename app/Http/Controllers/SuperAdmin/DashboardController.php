@@ -61,13 +61,13 @@ class DashboardController extends Controller
 
         // Estimated Platform Monthly Recurring Revenue (MRR) based on active tiers
         $mrrPricing = [
-            'starter' => 25000,
-            'pro' => 65000,
-            'enterprise' => 180000,
-            'standard' => 45000,
+            'starter' => 8000,
+            'pro' => 18000,
+            'enterprise' => 45000,
+            'standard' => 8000,
         ];
         $platformMrr = (float) Tenant::where('status', 'active')->get()->sum(function (Tenant $tenant) use ($mrrPricing) {
-            return $mrrPricing[$tenant->plan] ?? 35000;
+            return $mrrPricing[$tenant->plan] ?? 8000;
         });
 
         // Plan distribution

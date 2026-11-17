@@ -413,10 +413,10 @@
                         required
                         class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:bg-white transition"
                     >
-                        <option value="starter" {{ old('plan', $tenant->plan) === 'starter' ? 'selected' : '' }}>Starter Boutique (₦25,000/mo)</option>
-                        <option value="pro" {{ old('plan', $tenant->plan) === 'pro' ? 'selected' : '' }}>Multi-Store Pro (₦65,000/mo)</option>
-                        <option value="enterprise" {{ old('plan', $tenant->plan) === 'enterprise' ? 'selected' : '' }}>Enterprise Chain (₦180,000/mo)</option>
-                        <option value="standard" {{ old('plan', $tenant->plan) === 'standard' ? 'selected' : '' }}>Standard Legacy</option>
+                        <option value="starter" {{ old('plan', $tenant->plan) === 'starter' ? 'selected' : '' }}>Starter (₦8,000/mo)</option>
+                        <option value="pro" {{ old('plan', $tenant->plan) === 'pro' ? 'selected' : '' }}>Pro (₦18,000/mo)</option>
+                        <option value="enterprise" {{ old('plan', $tenant->plan) === 'enterprise' ? 'selected' : '' }}>Multi-Store (₦45,000/mo)</option>
+                        <option value="standard" {{ old('plan', $tenant->plan) === 'standard' ? 'selected' : '' }}>Standard</option>
                     </select>
                 </div>
 
