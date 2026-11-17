@@ -189,7 +189,8 @@ class CpanelDeployController extends Controller
                         'city' => 'Lagos',
                         'email_verified_at' => now(),
                     ])->save();
-                    if (Role::where('name', 'super_admin')->exists()) {
+                    if ($defaultTenantId && Role::where('name', 'super_admin')->exists()) {
+                        setPermissionsTeamId($defaultTenantId);
                         $superAdmin->syncRoles(['super_admin']);
                     }
                     $output = json_encode([
