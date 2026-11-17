@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Store;
 
 use App\Exceptions\PaymentsNotConfiguredException;
 use App\Http\Controllers\Controller;
+use App\Mail\OrderConfirmationMail;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
@@ -19,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -152,9 +154,11 @@ class CheckoutController extends Controller
 
                 DB::commit();
 
-                if ($tenant = Tenant::find($order->tenant_id) ?? app(CurrentTenant::class)->get()) {
+                $tenant = Tenant::find($order->tenant_id) ?? app(CurrentTenant::class)->get();
+                if ($tenant) {
                     app(StoreNotificationService::class)->notifyStorefrontOrder($tenant, $order);
                 }
+                $this->sendOrderConfirmationEmail($order, $tenant);
 
                 return redirect()->route('order.confirmation', $order->order_number)
                     ->with('success', 'Order placed successfully using your Boutique Wallet balance!');
@@ -210,12 +214,14 @@ class CheckoutController extends Controller
 
                 DB::commit();
 
-                if ($tenant = Tenant::find($order->tenant_id) ?? app(CurrentTenant::class)->get()) {
+                $tenant = Tenant::find($order->tenant_id) ?? app(CurrentTenant::class)->get();
+                if ($tenant) {
                     try {
                         app(StoreNotificationService::class)->notifyStorefrontOrder($tenant, $order);
                     } catch (\Throwable) {
                     }
                 }
+                $this->sendOrderConfirmationEmail($order, $tenant);
 
                 return redirect()->route('checkout.bank-transfer', $order->order_number);
             }
@@ -432,7 +438,20 @@ class CheckoutController extends Controller
     {
         $order = Order::with('items')->where('order_number', $orderNumber)->firstOrFail();
         $tenant = Tenant::find($order->tenant_id) ?? app(CurrentTenant::class)->get();
+        $storeName = $tenant ? $tenant->setting('branding.name', $tenant->name) : config('app.platform_name', 'ShopManager');
+        $whatsappConfirmUrl = $this->buildWhatsappConfirmUrl($order, $tenant);
+
+        return view('store.checkout.bank-transfer', compact('order', 'tenant', 'storeName', 'whatsappConfirmUrl'));
+    }
+
+    protected function buildWhatsappConfirmUrl(Order $order, ?Tenant $tenant): string
+    {
         $whatsapp = $tenant?->whatsappNumber() ?? '';
+        if ($whatsapp === '') {
+            return '';
+        }
+
+        $order->loadMissing('items');
         $storeName = $tenant ? $tenant->setting('branding.name', $tenant->name) : config('app.platform_name', 'ShopManager');
 
         $itemsSummary = $order->items->map(function ($item) {
@@ -448,9 +467,41 @@ class CheckoutController extends Controller
             .'Please confirm my payment!'
         );
 
-        $whatsappConfirmUrl = $whatsapp !== '' ? "https://wa.me/{$whatsapp}?text={$whatsappText}" : '';
+        return "https://wa.me/{$whatsapp}?text={$whatsappText}";
+    }
 
-        return view('store.checkout.bank-transfer', compact('order', 'tenant', 'storeName', 'whatsappConfirmUrl'));
+    protected function sendOrderConfirmationEmail(Order $order, ?Tenant $tenant): void
+    {
+        if (empty($order->shipping_email)) {
+            return;
+        }
+
+        try {
+            $order->loadMissing('items');
+            $bankAccount = ($order->payment_method === 'bank_transfer' && $tenant?->hasVerifiedBankDetails())
+                ? [
+                    'bank_name' => (string) $tenant->bank_name,
+                    'account_number' => (string) $tenant->bank_account_number,
+                    'account_name' => (string) $tenant->bank_account_name,
+                ]
+                : null;
+            $whatsappConfirmUrl = $order->payment_method === 'bank_transfer'
+                ? $this->buildWhatsappConfirmUrl($order, $tenant)
+                : '';
+
+            Mail::to($order->shipping_email)->send(new OrderConfirmationMail(
+                order: $order,
+                tenant: $tenant,
+                bankAccount: $bankAccount,
+                whatsappConfirmUrl: $whatsappConfirmUrl,
+            ));
+        } catch (\Throwable $e) {
+            Log::warning('Failed to send order confirmation email', [
+                'order_number' => $order->order_number,
+                'email' => $order->shipping_email,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     protected function resolveTenantHost(Tenant $tenant): ?string

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Mail\OrderConfirmationMail;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductVariant;
@@ -9,6 +10,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Services\CurrentTenant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class BankTransferCheckoutTest extends TestCase
@@ -55,6 +57,8 @@ class BankTransferCheckoutTest extends TestCase
 
     public function test_bank_transfer_checkout_creates_order_and_links_to_store_whatsapp(): void
     {
+        Mail::fake();
+
         $tenant = Tenant::factory()->create([
             'status' => 'active',
             'settings' => [
@@ -126,5 +130,10 @@ class BankTransferCheckoutTest extends TestCase
             ->assertOk()
             ->assertSee('Confirm Your Transfer on WhatsApp')
             ->assertSee('https://wa.me/2348107584591');
+
+        Mail::assertSent(OrderConfirmationMail::class, function (OrderConfirmationMail $mail): bool {
+            return $mail->hasTo('ada@example.com')
+                && str_contains($mail->render(), 'Leather Tote');
+        });
     }
 }
