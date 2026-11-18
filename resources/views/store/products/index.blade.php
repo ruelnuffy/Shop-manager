@@ -133,14 +133,37 @@
                                     </p>
                                 @endif
 
-                                <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-                                    <span class="text-[11px] font-medium text-slate-400">
-                                        {{ $prod->inStock() ? 'In Stock' : 'Out of Stock' }}
-                                    </span>
-                                    <a href="{{ route('products.show', $prod->slug) }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-secondary hover:bg-brand-pink text-white text-xs font-bold transition">
-                                        <span>View Item</span>
-                                        <span>&rarr;</span>
-                                    </a>
+                                @php
+                                    $productUrl = route('products.show', $prod->slug);
+                                    $whatsappShareText = $prod->name.' — ₦'.number_format($prod->base_price, 0)."\n".$productUrl;
+                                @endphp
+                                <div class="pt-4 border-t border-slate-100 space-y-3">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <button
+                                            type="button"
+                                            onclick="event.preventDefault(); navigator.clipboard?.writeText('{{ $productUrl }}'); this.textContent = 'Copied!'; setTimeout(() => this.textContent = 'Copy Link', 1500);"
+                                            class="px-3 py-1.5 rounded-full border border-slate-200 hover:border-slate-400 text-slate-700 text-[11px] font-bold transition cursor-pointer"
+                                        >
+                                            Copy Link
+                                        </button>
+                                        <a
+                                            href="https://wa.me/?text={{ rawurlencode($whatsappShareText) }}"
+                                            target="_blank"
+                                            rel="noopener"
+                                            class="px-3 py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[11px] font-bold transition inline-flex items-center gap-1"
+                                        >
+                                            <span>Post to WhatsApp</span>
+                                        </a>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[11px] font-medium text-slate-400">
+                                            {{ $prod->inStock() ? 'In Stock' : 'Out of Stock' }}
+                                        </span>
+                                        <a href="{{ $productUrl }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-secondary hover:bg-brand-pink text-white text-xs font-bold transition">
+                                            <span>View Item</span>
+                                            <span>&rarr;</span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
