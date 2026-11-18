@@ -252,6 +252,28 @@
                                     <svg class="w-3.5 h-3.5 fill-current text-emerald-600 shrink-0" viewBox="0 0 24 24"><path d="M12.01 2.002C6.49 2.002 2.01 6.48 2.01 12c0 1.8.48 3.55 1.39 5.09L2 22l5.06-1.33c1.49.82 3.17 1.25 4.95 1.25 5.52 0 10-4.48 10-10 0-5.52-4.48-9.998-10-9.998zm0 18.28c-1.57 0-3.1-.42-4.44-1.21l-.32-.19-3.3.87.88-3.21-.21-.33C3.78 14.84 3.34 13.45 3.34 12c0-4.78 3.89-8.67 8.67-8.67 4.78 0 8.67 3.89 8.67 8.67 0 4.78-3.89 8.67-8.67 8.67zm4.76-6.49c-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.26-.68.85-.83 1.02-.15.17-.31.2-.57.07-.26-.13-1.1-.41-2.1-1.3-.78-.7-1.3-1.56-1.45-1.82-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.43.09-.17.04-.33-.02-.46-.07-.13-.59-1.42-.81-1.95-.21-.51-.43-.44-.59-.45h-.51c-.17 0-.46.07-.7.33-.24.26-.92.9-.92 2.2 0 1.3 1.13 2.56 1.28 2.74.15.17 2.19 3.34 5.3 4.69.74.32 1.32.51 1.77.65.74.24 1.42.2 1.96.12.6-.09 1.54-.63 1.76-1.24.22-.61.22-1.13.15-1.24-.07-.11-.24-.17-.5-.3z"/></svg>
                                     <span>WhatsApp Support: {{ $tenantPhone }}</span>
                                 </a>
+
+                                @php
+                                    $shareUrl = route('products.show', $product->slug);
+                                    $whatsappStatusText = $product->name.' — ₦'.number_format($product->base_price, 0)."\n".$shareUrl;
+                                @endphp
+                                <div class="grid grid-cols-2 gap-2.5 pt-1">
+                                    <button
+                                        type="button"
+                                        onclick="event.preventDefault(); navigator.clipboard?.writeText('{{ $shareUrl }}'); this.textContent = 'Copied!'; setTimeout(() => this.textContent = 'Copy Page Link', 1500);"
+                                        class="py-2.5 px-4 rounded-full border border-black/15 hover:border-black text-brand-charcoal text-[11px] font-bold uppercase tracking-wider transition cursor-pointer text-center"
+                                    >
+                                        Copy Page Link
+                                    </button>
+                                    <a
+                                        href="https://wa.me/?text={{ rawurlencode($whatsappStatusText) }}"
+                                        target="_blank"
+                                        rel="noopener"
+                                        class="py-2.5 px-4 rounded-full bg-[#25D366]/15 hover:bg-[#25D366]/25 text-emerald-800 border border-[#25D366]/30 text-[11px] font-bold uppercase tracking-wider transition flex items-center justify-center text-center"
+                                    >
+                                        Share to WhatsApp Status
+                                    </a>
+                                </div>
                             </form>
 
                             <!-- Guarantee Badges -->
