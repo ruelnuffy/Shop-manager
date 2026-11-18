@@ -165,7 +165,6 @@
                                 <span class="font-display font-extrabold text-3xl text-brand-charcoal">
                                     ₦<span x-text="Number(selectedPrice).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })"></span>
                                 </span>
-                                <span class="text-xs text-brand-charcoal/50 font-medium">VAT inclusive &bull; In-Store &amp; Online</span>
                             </div>
 
                             <!-- Description -->

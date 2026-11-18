@@ -153,30 +153,6 @@
                         {{ $brandName }}
                     </h1>
 
-                    <!-- Creator / Boutique Byline -->
-                    <div class="flex items-center justify-center gap-3 sm:gap-4 mt-4 sm:mt-6 text-xs text-brand-charcoal/70">
-                        @if ($leadName)
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-full bg-black text-white text-[10px] font-bold flex items-center justify-center">
-                                    {{ strtoupper(substr($leadName, 0, 1)) }}
-                                </div>
-                                <span class="font-semibold text-brand-charcoal">{{ $leadName }}</span>
-                                @if ($leadRole)
-                                    <span class="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-black/5 font-bold text-brand-charcoal/60">{{ $leadRole }}</span>
-                                @endif
-                            </div>
-                        @endif
-                        @if ($leadName && $leadStatus)
-                            <span class="text-black/20">&bull;</span>
-                        @endif
-                        @if ($leadStatus)
-                            <div class="flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                <span class="font-medium">{{ $leadStatus }}</span>
-                            </div>
-                        @endif
-                    </div>
-
                     <!-- Hero Visual Showcase (Editable from Store Admin -> Storefront) -->
                     <div class="mt-8 sm:mt-14 max-w-5xl mx-auto">
                         <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-black border border-black/[0.08] shadow-2xl shadow-black/10 aspect-[16/10] sm:aspect-[21/9] group">
@@ -384,23 +360,11 @@
             <!-- SECTION 2: "NOMINEES" STYLE ARRIVALS GRID -->
             <section id="arrivals" class="py-20 sm:py-28 bg-[#fafafa]">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <!-- Editorial Header -->
-                    <div class="text-center max-w-2xl mx-auto mb-16">
-                        <span class="text-xs font-bold uppercase tracking-[0.2em] text-brand-charcoal/50">Curated Drops</span>
-                        <div class="flex items-center justify-center gap-3 mt-2">
-                            <h2 class="font-display font-extrabold text-4xl sm:text-6xl md:text-7xl tracking-tightest uppercase text-brand-charcoal">
-                                NEW DROPS
-                            </h2>
-                            <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-amber-100/80 border border-amber-300 flex items-center justify-center text-amber-800 text-lg shadow-sm">
-                                <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 3l3.057 5.176a1 1 0 001.688.083L12 5.5l2.255 2.76a1 1 0 001.688-.084L19 3l1 15H4L5 3z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 21h16" />
-                                </svg>
-                            </div>
-                        </div>
-                        <p class="text-xs sm:text-sm text-brand-charcoal/60 mt-3 font-medium">
-                            Explore the latest releases from {{ $brandName }}
-                        </p>
+                    <!-- Header -->
+                    <div class="text-center max-w-2xl mx-auto mb-14">
+                        <h2 class="font-display font-extrabold text-4xl sm:text-6xl md:text-7xl tracking-tightest uppercase text-brand-charcoal">
+                            NEW DROPS
+                        </h2>
                     </div>
 
                     @php
@@ -440,9 +404,9 @@
                                     </div>
                                 </a>
 
-                                <!-- Editorial Metadata Line (Awwwards Nominee style) -->
+                                <!-- Product Metadata -->
                                 <div class="p-6 flex flex-col flex-grow">
-                                    <div class="flex items-start justify-between gap-2 mb-2">
+                                    <div class="flex items-start justify-between gap-2 mb-3">
                                         <a href="{{ route('products.show', $prod->slug) }}">
                                             <h3 class="font-display font-bold text-lg text-brand-charcoal group-hover:underline underline-offset-4 transition duration-150 leading-snug">
                                                 {{ $prod->name }}
@@ -453,23 +417,9 @@
                                         </span>
                                     </div>
 
-                                    <div class="text-xs text-brand-charcoal/50 mb-4 flex items-center gap-1.5">
-                                        <span>by</span>
-                                        <span class="font-semibold text-brand-charcoal underline underline-offset-2">{{ $brandName }}</span>
-                                    </div>
-
-                                    <p class="text-xs text-brand-charcoal/60 line-clamp-2 leading-relaxed mb-4 flex-grow">
+                                    <p class="text-xs text-brand-charcoal/60 line-clamp-2 leading-relaxed mb-5 flex-grow">
                                         {{ $prod->description }}
                                     </p>
-
-                                    <!-- Variant Tags -->
-                                    <div class="flex flex-wrap gap-1 mb-5">
-                                        @foreach ($prod->variants as $variant)
-                                            <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-[#f5f5f5] text-brand-charcoal/70 border border-black/[0.04]">
-                                                {{ $variant->size }} &bull; {{ $variant->color }}
-                                            </span>
-                                        @endforeach
-                                    </div>
 
                                     @php
                                         $productUrl = route('products.show', $prod->slug);
