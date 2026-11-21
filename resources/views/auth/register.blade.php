@@ -50,32 +50,32 @@
             <!-- Starting Plan Selection -->
             <div>
                 <x-input-label for="plan" :value="__('Select Plan')" />
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-1">
-                    <label class="cursor-pointer border rounded-xl p-2.5 flex flex-col justify-between transition hover:border-blue-400 bg-white" :class="plan === 'starter' ? 'border-blue-600 bg-blue-50/40 ring-1 ring-blue-600' : 'border-slate-200'">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-slate-900">Starter Store</span>
-                            <input type="radio" name="plan" value="starter" x-model="plan" class="text-blue-600 focus:ring-blue-500">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-1.5">
+                    <label class="cursor-pointer border rounded-xl p-3 flex flex-col justify-between gap-2 transition hover:border-blue-400 bg-white" :class="plan === 'starter' ? 'border-blue-600 bg-blue-50/40 ring-1 ring-blue-600' : 'border-slate-200'">
+                        <div class="flex items-start justify-between gap-2">
+                            <span class="text-xs font-bold text-slate-900 leading-tight">Starter Store</span>
+                            <input type="radio" name="plan" value="starter" x-model="plan" class="text-blue-600 focus:ring-blue-500 shrink-0 mt-0.5">
                         </div>
-                        <span class="text-[10px] text-emerald-700 font-semibold mt-1">₦8,000 / month</span>
+                        <span class="text-[11px] text-emerald-700 font-semibold">₦8,000 / month</span>
                     </label>
 
-                    <label class="cursor-pointer border rounded-xl p-2.5 flex flex-col justify-between transition hover:border-blue-400 bg-white" :class="plan === 'pro' ? 'border-blue-600 bg-blue-50/40 ring-1 ring-blue-600' : 'border-slate-200'">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-1">
-                                <span class="text-xs font-bold text-slate-900">Pro Retailer</span>
-                                <span class="text-[9px] bg-blue-100 text-blue-700 px-1 py-0.2 rounded font-extrabold uppercase">Popular</span>
+                    <label class="relative cursor-pointer border rounded-xl p-3 flex flex-col justify-between gap-2 transition hover:border-blue-400 bg-white" :class="plan === 'pro' ? 'border-blue-600 bg-blue-50/40 ring-1 ring-blue-600' : 'border-slate-200'">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="min-w-0">
+                                <span class="text-xs font-bold text-slate-900 leading-tight block">Pro Retailer</span>
+                                <span class="inline-block mt-1 text-[9px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-extrabold uppercase tracking-wider">Popular</span>
                             </div>
-                            <input type="radio" name="plan" value="pro" x-model="plan" class="text-blue-600 focus:ring-blue-500">
+                            <input type="radio" name="plan" value="pro" x-model="plan" class="text-blue-600 focus:ring-blue-500 shrink-0 mt-0.5">
                         </div>
-                        <span class="text-[10px] text-blue-700 font-semibold mt-1">₦18,000 / month</span>
+                        <span class="text-[11px] text-blue-700 font-semibold">₦18,000 / month</span>
                     </label>
 
-                    <label class="cursor-pointer border rounded-xl p-2.5 flex flex-col justify-between transition hover:border-blue-400 bg-white" :class="plan === 'enterprise' ? 'border-blue-600 bg-blue-50/40 ring-1 ring-blue-600' : 'border-slate-200'">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-slate-900">Enterprise Chain</span>
-                            <input type="radio" name="plan" value="enterprise" x-model="plan" class="text-blue-600 focus:ring-blue-500">
+                    <label class="cursor-pointer border rounded-xl p-3 flex flex-col justify-between gap-2 transition hover:border-blue-400 bg-white" :class="plan === 'enterprise' ? 'border-blue-600 bg-blue-50/40 ring-1 ring-blue-600' : 'border-slate-200'">
+                        <div class="flex items-start justify-between gap-2">
+                            <span class="text-xs font-bold text-slate-900 leading-tight">Enterprise Chain</span>
+                            <input type="radio" name="plan" value="enterprise" x-model="plan" class="text-blue-600 focus:ring-blue-500 shrink-0 mt-0.5">
                         </div>
-                        <span class="text-[10px] text-purple-700 font-semibold mt-1">₦45,000 / month</span>
+                        <span class="text-[11px] text-purple-700 font-semibold">₦45,000 / month</span>
                     </label>
                 </div>
             </div>
