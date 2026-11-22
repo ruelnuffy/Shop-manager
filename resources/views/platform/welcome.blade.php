@@ -939,7 +939,7 @@
                     Join modern fashion boutiques and retail merchants taking full control of their counter, inventory, and revenue.
                 </p>
 
-                <div class="pt-2">
+                <div class="pt-2 space-y-6">
                     <a
                         href="{{ route('register') }}"
                         class="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider transition shadow-2xl shadow-blue-600/40 active:scale-95"
@@ -947,6 +947,32 @@
                         <span>Create Your Store</span>
                         <span>&rarr;</span>
                     </a>
+
+                    <div class="flex flex-col items-center gap-3 pt-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                            Follow us for merchant tips &amp; updates
+                        </span>
+                        <div class="flex flex-wrap items-center justify-center gap-3">
+                            <a
+                                href="https://www.instagram.com/shopmanager19/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white text-xs font-bold transition"
+                            >
+                                <svg class="w-4 h-4 text-pink-400" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5A4.25 4.25 0 007.75 20.5h8.5a4.25 4.25 0 004.25-4.25v-8.5A4.25 4.25 0 0016.25 3.5h-8.5zm8.75 2.25a1 1 0 110 2 1 1 0 010-2zM12 7a5 5 0 110 10 5 5 0 010-10zm0 1.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"/></svg>
+                                <span>Instagram @shopmanager19</span>
+                            </a>
+                            <a
+                                href="https://x.com/ShopManager19"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white text-xs font-bold transition"
+                            >
+                                <svg class="w-3.5 h-3.5 text-slate-200" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                <span>Follow @ShopManager19 on X</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -970,6 +996,28 @@
                         <p class="text-xs sm:text-sm text-slate-500 max-w-sm leading-relaxed">
                             The modern retail POS and multi-store inventory operating system for African boutiques, fashion merchants, and walk-in retailers.
                         </p>
+                        <div class="flex items-center gap-2.5 pt-1">
+                            <a
+                                href="https://www.instagram.com/shopmanager19/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="ShopManager on Instagram"
+                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-pink-50 text-slate-700 hover:text-pink-600 text-xs font-bold transition"
+                            >
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5A4.25 4.25 0 007.75 20.5h8.5a4.25 4.25 0 004.25-4.25v-8.5A4.25 4.25 0 0016.25 3.5h-8.5zm8.75 2.25a1 1 0 110 2 1 1 0 010-2zM12 7a5 5 0 110 10 5 5 0 010-10zm0 1.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"/></svg>
+                                <span>Instagram</span>
+                            </a>
+                            <a
+                                href="https://x.com/ShopManager19"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="ShopManager on X"
+                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-900 text-slate-700 hover:text-white text-xs font-bold transition"
+                            >
+                                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                <span>X</span>
+                            </a>
+                        </div>
                     </div>
 
                     <!-- Col 2: Product -->
