@@ -30,7 +30,8 @@ class VisitorController extends Controller
             $baseQuery->where(function ($q) use ($search) {
                 $q->where('path', 'like', "%{$search}%")
                     ->orWhere('ip_address', 'like', "%{$search}%")
-                    ->orWhere('referer', 'like', "%{$search}%");
+                    ->orWhere('referer', 'like', "%{$search}%")
+                    ->orWhere('user_agent', 'like', "%{$search}%");
             });
         }
 

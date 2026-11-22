@@ -70,6 +70,9 @@
             <!-- Mobile Card View (< 768px) -->
             <div class="md:hidden divide-y divide-slate-100">
                 @forelse ($visits as $visit)
+                    @php
+                        $deviceInfo = $visit->deviceSummary();
+                    @endphp
                     <div class="p-4 space-y-2 text-xs">
                         <div class="flex items-center justify-between gap-2">
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-bold {{ $visit->tenant ? 'bg-emerald-50 text-emerald-700' : 'bg-indigo-50 text-indigo-700' }}">
@@ -78,6 +81,14 @@
                             <span class="text-[11px] text-slate-400">{{ $visit->created_at?->format('M d, g:i A') }}</span>
                         </div>
                         <div class="font-mono text-[11px] text-slate-800 break-all">{{ $visit->path }}</div>
+                        <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
+                            <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-semibold">
+                                {{ $deviceInfo['device'] }}
+                            </span>
+                            <span class="px-2 py-0.5 rounded-md bg-slate-50 text-slate-500">
+                                {{ $deviceInfo['os'] }} &bull; {{ $deviceInfo['browser'] }}
+                            </span>
+                        </div>
                         <div class="flex items-center justify-between gap-2 text-[11px] text-slate-500">
                             <span>IP: {{ $visit->ip_address ?: 'Unknown' }}</span>
                             <span class="truncate max-w-[180px]">{{ $visit->referer ?: 'Direct' }}</span>
@@ -97,6 +108,7 @@
                         <tr>
                             <th class="px-5 py-3">Destination</th>
                             <th class="px-5 py-3">Page Path</th>
+                            <th class="px-5 py-3">Device &amp; Browser</th>
                             <th class="px-5 py-3">IP Address</th>
                             <th class="px-5 py-3">Referrer</th>
                             <th class="px-5 py-3 text-right">Visited</th>
@@ -104,17 +116,24 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @forelse ($visits as $visit)
+                            @php
+                                $deviceInfo = $visit->deviceSummary();
+                            @endphp
                             <tr class="hover:bg-slate-50/70 transition">
                                 <td class="px-5 py-3 whitespace-nowrap">
                                     <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold {{ $visit->tenant ? 'bg-emerald-50 text-emerald-700' : 'bg-indigo-50 text-indigo-700' }}">
                                         {{ $visit->tenant ? $visit->tenant->name : 'Platform' }}
                                     </span>
                                 </td>
-                                <td class="px-5 py-3 font-mono text-[11px] text-slate-700 max-w-[240px] truncate" title="{{ $visit->path }}">
+                                <td class="px-5 py-3 font-mono text-[11px] text-slate-700 max-w-[200px] truncate" title="{{ $visit->path }}">
                                     {{ $visit->path }}
                                 </td>
+                                <td class="px-5 py-3 whitespace-nowrap" title="{{ $visit->user_agent }}">
+                                    <div class="font-semibold text-slate-800">{{ $deviceInfo['device'] }}</div>
+                                    <div class="text-[11px] text-slate-400">{{ $deviceInfo['os'] }} &bull; {{ $deviceInfo['browser'] }}</div>
+                                </td>
                                 <td class="px-5 py-3 text-slate-500 whitespace-nowrap font-mono text-[11px]">{{ $visit->ip_address ?: 'Unknown' }}</td>
-                                <td class="px-5 py-3 text-slate-400 max-w-[220px] truncate" title="{{ $visit->referer ?: 'Direct' }}">
+                                <td class="px-5 py-3 text-slate-400 max-w-[180px] truncate" title="{{ $visit->referer ?: 'Direct' }}">
                                     {{ $visit->referer ?: 'Direct' }}
                                 </td>
                                 <td class="px-5 py-3 text-right text-slate-400 whitespace-nowrap">
@@ -123,7 +142,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-5 py-10 text-center text-slate-400">
+                                <td colspan="6" class="px-5 py-10 text-center text-slate-400">
                                     No visitor records found.
                                 </td>
                             </tr>
