@@ -54,108 +54,116 @@
     @endif
 
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- FLOATING TOP PILL NAVIGATION (Desktop >= 768px)             -->
-    <!-- Borderless with soft modern ambient shadow                  -->
+    <!-- TOP NAVIGATION BAR (Desktop >= 768px)                       -->
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <header class="hidden md:block sticky top-3 z-50 px-4 sm:px-6 pt-1 pb-3">
-        <div class="max-w-6xl mx-auto bg-white/95 backdrop-blur-md shadow-xl shadow-slate-900/5 rounded-full px-5 py-2.5 flex items-center justify-between gap-4 transition-all">
+    <header class="hidden md:block sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
 
-            <!-- Left: Store Logo & Brand Badge -->
+            <!-- Left: Store Logo & Brand -->
             <div class="flex items-center gap-3 shrink-0">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5 group">
-                    <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-extrabold text-xs shadow-sm group-hover:scale-105 transition-transform">
+                    <div class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-xs shadow-xs group-hover:scale-105 transition-transform">
                         {{ strtoupper(substr($storeName, 0, 2)) }}
                     </div>
-                    <span class="text-xs font-extrabold text-slate-900 tracking-tight hidden lg:inline truncate max-w-[140px]">
+                    <span class="text-xs font-extrabold text-slate-900 tracking-tight hidden xl:inline truncate max-w-[150px]">
                         {{ $storeName }}
                     </span>
                 </a>
             </div>
 
-            <!-- Center: Navigation Links as Modern Rounded Pills -->
-            <nav class="flex items-center gap-1 text-xs font-semibold overflow-x-auto py-0.5">
+            <!-- Center: Clean Non-Wrapping Navigation -->
+            <nav class="flex items-center gap-1 text-xs font-semibold">
                 <a
                     href="{{ route('admin.dashboard') }}"
-                    class="px-3.5 py-1.5 rounded-full transition {{ request()->routeIs('admin.dashboard') ? 'bg-slate-900 text-white font-bold shadow-md shadow-slate-900/10' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
+                    class="px-3 py-1.5 rounded-lg whitespace-nowrap transition {{ request()->routeIs('admin.dashboard') ? 'bg-slate-900 text-white font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}"
                 >
-                    HOME
+                    Home
                 </a>
 
                 @if ($planActive)
                 <a
                     href="{{ route('admin.sales.create') }}"
-                    class="px-3.5 py-1.5 rounded-full transition {{ request()->routeIs('admin.sales.*') ? 'bg-emerald-600 text-white font-bold shadow-md shadow-emerald-950/15' : 'text-emerald-700 bg-emerald-50 hover:bg-emerald-100 font-bold' }}"
+                    class="px-3 py-1.5 rounded-lg whitespace-nowrap transition {{ request()->routeIs('admin.sales.*') ? 'bg-emerald-600 text-white font-bold' : 'text-emerald-700 bg-emerald-50 hover:bg-emerald-100 font-bold' }}"
                 >
-                    POS SALE
+                    POS
                 </a>
 
                 <a
                     href="{{ route('admin.orders.index') }}"
-                    class="px-3.5 py-1.5 rounded-full transition {{ request()->routeIs('admin.orders.*') ? 'bg-slate-900 text-white font-bold shadow-md shadow-slate-900/10' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
+                    class="px-3 py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1.5 transition {{ request()->routeIs('admin.orders.*') ? 'bg-slate-900 text-white font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}"
                 >
-                    ORDERS
+                    <span>Orders</span>
+                    <span data-orders-badge class="hidden min-w-[18px] h-[18px] px-1 rounded-full bg-emerald-600 text-white text-[10px] font-extrabold inline-flex items-center justify-center">0</span>
                 </a>
 
                 <a
                     href="{{ route('admin.products.index') }}"
-                    class="px-3.5 py-1.5 rounded-full transition {{ request()->routeIs('admin.products.*') ? 'bg-slate-900 text-white font-bold shadow-md shadow-slate-900/10' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
+                    class="px-3 py-1.5 rounded-lg whitespace-nowrap transition {{ request()->routeIs('admin.products.*') ? 'bg-slate-900 text-white font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}"
                 >
-                    PRODUCTS
+                    Products
                 </a>
 
                 <a
                     href="{{ route('admin.stock.index') }}"
-                    class="px-3.5 py-1.5 rounded-full transition {{ request()->routeIs('admin.stock.*') ? 'bg-slate-900 text-white font-bold shadow-md shadow-slate-900/10' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
+                    class="px-3 py-1.5 rounded-lg whitespace-nowrap transition {{ request()->routeIs('admin.stock.*') ? 'bg-slate-900 text-white font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}"
                 >
-                    STOCK
-                </a>
-
-                <a
-                    href="{{ route('admin.ocr.index') }}"
-                    class="px-3.5 py-1.5 rounded-full transition {{ request()->routeIs('admin.ocr.*') ? 'bg-slate-900 text-white font-bold shadow-md shadow-slate-900/10' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
-                >
-                    RECEIPTS
+                    Stock
                 </a>
 
                 @if(Auth::user()->isAdmin())
                     <a
                         href="{{ route('admin.storefront.edit') }}"
-                        class="px-3.5 py-1.5 rounded-full transition {{ request()->routeIs('admin.storefront.*') ? 'bg-slate-900 text-white font-bold shadow-md shadow-slate-900/10' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
+                        class="px-3 py-1.5 rounded-lg whitespace-nowrap transition {{ request()->routeIs('admin.storefront.*') ? 'bg-slate-900 text-white font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}"
                     >
-                        STOREFRONT
+                        Storefront
                     </a>
-
 
                     <a
                         href="{{ route('admin.reports.index') }}"
-                        class="px-3.5 py-1.5 rounded-full transition {{ request()->routeIs('admin.reports.*') ? 'bg-slate-900 text-white font-bold shadow-md shadow-slate-900/10' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
+                        class="px-3 py-1.5 rounded-lg whitespace-nowrap transition {{ request()->routeIs('admin.reports.*') ? 'bg-slate-900 text-white font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}"
                     >
-                        REPORTS
+                        Reports
                     </a>
 
+                    <div x-data="{ moreOpen: false }" class="relative">
+                        <button
+                            type="button"
+                            @click="moreOpen = !moreOpen"
+                            @click.outside="moreOpen = false"
+                            class="px-3 py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 transition cursor-pointer {{ request()->routeIs('admin.staff.*') || request()->routeIs('admin.payroll.*') || request()->routeIs('admin.ocr.*') || request()->routeIs('admin.visitors.*') ? 'bg-slate-900 text-white font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}"
+                        >
+                            <span>More</span>
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div
+                            x-show="moreOpen"
+                            x-cloak
+                            x-transition
+                            class="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-200/80 py-1.5 z-50"
+                        >
+                            <a href="{{ route('admin.staff.index') }}" class="block px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50">Staff &amp; Team</a>
+                            <a href="{{ route('admin.payroll.index') }}" class="block px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50">Salaries &amp; Payroll</a>
+                            <a href="{{ route('admin.ocr.index') }}" class="block px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50">Scan Receipts</a>
+                            <a href="{{ route('admin.visitors.index') }}" class="block px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50">Store Visitors</a>
+                        </div>
+                    </div>
+                @else
                     <a
-                        href="{{ route('admin.staff.index') }}"
-                        class="px-3.5 py-1.5 rounded-full transition {{ request()->routeIs('admin.staff.*') ? 'bg-slate-900 text-white font-bold shadow-md shadow-slate-900/10' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
+                        href="{{ route('admin.ocr.index') }}"
+                        class="px-3 py-1.5 rounded-lg whitespace-nowrap transition {{ request()->routeIs('admin.ocr.*') ? 'bg-slate-900 text-white font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}"
                     >
-                        STAFF
-                    </a>
-
-                    <a
-                        href="{{ route('admin.payroll.index') }}"
-                        class="px-3.5 py-1.5 rounded-full transition {{ request()->routeIs('admin.payroll.*') ? 'bg-slate-900 text-white font-bold shadow-md shadow-slate-900/10' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
-                    >
-                        PAYROLL
+                        Receipts
                     </a>
                 @endif
                 @else
-                    <span class="px-3.5 py-1.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-bold">
-                        PLAN PENDING ACTIVATION
+                    <span class="px-3 py-1.5 rounded-lg bg-amber-50 text-amber-700 border border-amber-200 font-bold whitespace-nowrap">
+                        Plan Pending Activation
                     </span>
                 @endif
             </nav>
 
-            <!-- Right: Tenant Status Pill & Sign Out -->
-            <div class="flex items-center gap-2.5 shrink-0">
+            <!-- Right: Actions & Sign Out -->
+            <div class="flex items-center gap-2 shrink-0">
                 @if (Auth::user()?->isSuperAdmin())
                     <a href="{{ route('super-admin.dashboard') }}" class="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 transition hidden xl:inline">
                         Super Admin &nearr;

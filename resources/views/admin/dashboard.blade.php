@@ -157,269 +157,136 @@
             </div>
         @endif
 
-        <div class="{{ $planActive ? 'space-y-8' : 'space-y-8 pointer-events-none opacity-45 select-none grayscale' }}" @if (! $planActive) aria-disabled="true" @endif>
-        <!-- Cloud Workspace Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
-
-            <!-- Cloud 1: Make a Sale (POS) -->
-            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-amber-50/40 to-amber-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(217,119,6,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
-                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-amber-200/35 blur-md pointer-events-none"></div>
-                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
-
-                <div class="relative">
-                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-amber-100/80 text-[10px] font-bold uppercase tracking-wider text-amber-800">Walk-In Register</span>
-                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Make a Sale</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
-                        <div class="flex items-center gap-2 text-slate-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                            <span><strong>Today's Revenue:</strong> <span data-live-today-revenue>₦{{ number_format($todayRevenue, 0) }}</span></span>
-                        </div>
-                        <div class="pl-3.5 text-[11px]">Barcode scan, cash &amp; card checkout</div>
-                        <div class="pl-3.5 text-[11px]">Instant receipt generation</div>
-                    </div>
+        <div class="{{ $planActive ? 'space-y-6' : 'space-y-6 pointer-events-none opacity-45 select-none grayscale' }}" @if (! $planActive) aria-disabled="true" @endif>
+        <!-- Row 1: 4 Crisp Live KPI Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <a href="{{ route('admin.reports.index') }}" class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-slate-300 hover:shadow-md transition">
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Today's Revenue</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </span>
                 </div>
-
-                <div class="relative pt-5">
-                    <a href="{{ route('admin.sales.create') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-amber-900 group-hover:bg-amber-500 group-hover:text-white transition">
-                        <span>Open register</span>
-                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
-                    </a>
+                <div class="font-display font-extrabold text-2xl text-slate-900 mt-2" data-live-today-revenue>
+                    ₦{{ number_format($todayRevenue, 0) }}
                 </div>
-            </div>
-
-            <!-- Cloud 2: Orders -->
-            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-emerald-50/40 to-emerald-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(16,185,129,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
-                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-emerald-200/35 blur-md pointer-events-none"></div>
-                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
-
-                <div class="relative">
-                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-100/80 text-[10px] font-bold uppercase tracking-wider text-emerald-800">Fulfillment &amp; Shipping</span>
-                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Orders</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
-                        <div class="flex items-center gap-2 text-slate-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                            <span><strong data-live-pending-orders>{{ $pendingOrdersCount }}</strong> pending to pack</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-slate-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                            <span><strong data-live-processing-orders>{{ $processingOrdersCount }}</strong> out in delivery</span>
-                        </div>
-                        <div class="pl-3.5 text-[11px]"><span data-live-total-orders>{{ $totalOrdersCount }}</span> all-time customer orders</div>
-                    </div>
+                <div class="text-[11px] text-slate-500 mt-1">
+                    <span data-live-month-revenue class="font-semibold text-slate-700">₦{{ number_format($monthRevenue, 0) }}</span> this month &bull;
+                    <span data-live-week-revenue>₦{{ number_format($weekRevenue, 0) }}</span> wk
                 </div>
+            </a>
 
-                <div class="relative pt-5">
-                    <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-emerald-900 group-hover:bg-emerald-600 group-hover:text-white transition">
-                        <span>Open orders</span>
-                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
-                    </a>
+            <a href="{{ route('admin.orders.index') }}" class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-slate-300 hover:shadow-md transition">
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Pending Orders</span>
+                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                    </span>
                 </div>
-            </div>
-
-            <!-- Cloud 3: Products -->
-            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-rose-50/40 to-rose-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(244,63,94,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
-                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-rose-200/35 blur-md pointer-events-none"></div>
-                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
-
-                <div class="relative">
-                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-rose-100/80 text-[10px] font-bold uppercase tracking-wider text-rose-800">Store Catalog</span>
-                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Products</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
-                        <div class="text-slate-700 font-semibold">Curated items, sizes &amp; colors</div>
-                        <div class="text-[11px]">Pricing, discounts, and photo uploads</div>
-                        <div class="text-[11px]">Active in online store &amp; counter POS</div>
-                    </div>
+                <div class="font-display font-extrabold text-2xl text-slate-900 mt-2" data-live-pending-orders>
+                    {{ $pendingOrdersCount }}
                 </div>
+                <div class="text-[11px] text-slate-500 mt-1">
+                    <span data-live-processing-orders class="font-semibold text-slate-700">{{ $processingOrdersCount }}</span> processing &bull;
+                    <span data-live-total-orders>{{ $totalOrdersCount }}</span> total
+                </div>
+            </a>
 
-                <div class="relative pt-5 flex items-center justify-between gap-2">
-                    <a href="{{ route('admin.products.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-rose-900 group-hover:bg-rose-600 group-hover:text-white transition">
-                        <span>{{ Auth::user()->isAdmin() ? 'Manage catalog' : 'View catalog' }}</span>
-                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
-                    </a>
-                    @if(Auth::user()->isAdmin())
-                        <a href="{{ route('admin.products.create') }}" class="px-3 py-1.5 rounded-full bg-white/70 hover:bg-white text-[11px] font-bold text-rose-800 transition">
-                            + Add Item
-                        </a>
+            <a href="{{ route('admin.stock.index') }}" class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-slate-300 hover:shadow-md transition">
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Inventory Worth</span>
+                    <span class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    </span>
+                </div>
+                <div class="font-display font-extrabold text-2xl text-slate-900 mt-2" data-live-inventory-valuation>
+                    ₦{{ number_format($totalInventoryValuation, 0) }}
+                </div>
+                <div class="mt-1" data-live-low-stock-status>
+                    @if ($lowStockVariants->count() > 0)
+                        <div class="text-rose-600 font-semibold text-[11px]">{{ $lowStockVariants->count() }} variants low on stock</div>
+                    @else
+                        <div class="text-emerald-600 font-semibold text-[11px]">All stock levels healthy</div>
                     @endif
                 </div>
-            </div>
+            </a>
 
-            <!-- Cloud 4: Inventory Valuation & Health -->
-            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-purple-50/40 to-purple-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(147,51,234,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
-                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-purple-200/35 blur-md pointer-events-none"></div>
-                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
-
-                <div class="relative">
-                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-purple-100/80 text-[10px] font-bold uppercase tracking-wider text-purple-800">Inventory Health</span>
-                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Inventory Valuation</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
-                        <div class="flex items-center gap-2 text-slate-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
-                            <span><strong data-live-inventory-valuation>₦{{ number_format($totalInventoryValuation, 0) }}</strong> total stock worth</span>
-                        </div>
-                        <div data-live-low-stock-status>
-                        @if ($lowStockVariants->count() > 0)
-                            <div class="text-rose-700 font-bold pl-3.5 text-[11px]">
-                                &bull; {{ $lowStockVariants->count() }} variants low on stock
-                            </div>
-                        @else
-                            <div class="text-emerald-700 font-semibold pl-3.5 text-[11px]">
-                                &bull; All item quantities healthy
-                            </div>
-                        @endif
-                        </div>
-                        <div class="pl-3.5 text-[11px]">Audit counts &amp; restock logs</div>
-                    </div>
+            <a href="{{ route('admin.visitors.index') }}" class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-slate-300 hover:shadow-md transition">
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Store Visitors</span>
+                    <span class="w-8 h-8 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    </span>
                 </div>
-
-                <div class="relative pt-5">
-                    <a href="{{ route('admin.stock.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-purple-900 group-hover:bg-purple-600 group-hover:text-white transition">
-                        <span>Check stock</span>
-                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
-                    </a>
+                <div class="font-display font-extrabold text-2xl text-slate-900 mt-2" data-live-visits-today>
+                    {{ number_format($storefrontVisitsToday ?? 0) }}
                 </div>
-            </div>
-
-            <!-- Cloud 5: Sales Reports -->
-            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-orange-50/40 to-orange-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(249,115,22,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
-                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-orange-200/35 blur-md pointer-events-none"></div>
-                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
-
-                <div class="relative">
-                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-orange-100/80 text-[10px] font-bold uppercase tracking-wider text-orange-800">Sales &amp; Finance</span>
-                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Analytics</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
-                        <div class="flex items-center gap-2 text-slate-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
-                            <span><strong data-live-month-revenue>₦{{ number_format($monthRevenue, 0) }}</strong> this month</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-slate-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>
-                            <span><strong data-live-week-revenue>₦{{ number_format($weekRevenue, 0) }}</strong> rolling week</span>
-                        </div>
-                        <div class="pl-3.5 text-[11px]">Download reports &amp; CSV spreadsheets</div>
-                    </div>
+                <div class="text-[11px] text-slate-500 mt-1">
+                    <span data-live-unique-visitors class="font-semibold text-slate-700">{{ number_format($storefrontUniqueVisitors ?? 0) }}</span> unique &bull;
+                    <span data-live-visits-total>{{ number_format($storefrontVisitsTotal ?? 0) }}</span> views
                 </div>
+            </a>
+        </div>
 
-                <div class="relative pt-5">
-                    <a href="{{ route('admin.reports.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-orange-900 group-hover:bg-orange-600 group-hover:text-white transition">
-                        <span>View insights</span>
-                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
-                    </a>
-                </div>
-            </div>
+        <!-- Row 2: Quick Actions Strip -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <a href="{{ route('admin.sales.create') }}" class="flex items-center gap-3 p-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition shadow-xs">
+                <span class="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                </span>
+                <span class="text-xs font-bold leading-tight">Make a Sale</span>
+            </a>
 
-            <!-- Cloud 6: Scan Paper Daybook -->
-            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-sky-50/40 to-sky-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(14,165,233,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
-                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-sky-200/35 blur-md pointer-events-none"></div>
-                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
+            <a href="{{ route('admin.orders.index') }}" class="flex items-center gap-3 p-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/80 text-slate-800 transition shadow-xs">
+                <span class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                </span>
+                <span class="text-xs font-bold leading-tight">Orders</span>
+            </a>
 
-                <div class="relative">
-                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-sky-100/80 text-[10px] font-bold uppercase tracking-wider text-sky-800">Paper Daybook</span>
-                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Scan Receipts</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
-                        <div class="text-slate-700 font-semibold">Snap photo of written paper ledger</div>
-                        <div class="text-[11px]">AI reads items, quantities &amp; prices</div>
-                        <div class="text-[11px]">Imports automatically into store records</div>
-                    </div>
-                </div>
+            <a href="{{ Auth::user()->isAdmin() ? route('admin.products.create') : route('admin.products.index') }}" class="flex items-center gap-3 p-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/80 text-slate-800 transition shadow-xs">
+                <span class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                </span>
+                <span class="text-xs font-bold leading-tight">{{ Auth::user()->isAdmin() ? 'Add Product' : 'Products' }}</span>
+            </a>
 
-                <div class="relative pt-5">
-                    <a href="{{ route('admin.ocr.create') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-sky-900 group-hover:bg-sky-600 group-hover:text-white transition">
-                        <span>Scan page</span>
-                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
-                    </a>
-                </div>
-            </div>
+            <a href="{{ route('admin.ocr.create') }}" class="flex items-center gap-3 p-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/80 text-slate-800 transition shadow-xs">
+                <span class="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>
+                </span>
+                <span class="text-xs font-bold leading-tight">Scan Receipt</span>
+            </a>
 
-            <!-- Cloud: Storefront Visitors -->
-            <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-cyan-50/40 to-cyan-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(6,182,212,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
-                <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-cyan-200/35 blur-md pointer-events-none"></div>
-                <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
-
-                <div class="relative">
-                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-cyan-100/80 text-[10px] font-bold uppercase tracking-wider text-cyan-800">Storefront Traffic</span>
-                    <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Store Visitors</h3>
-                    <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
-                        <div class="flex items-center gap-2 text-slate-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
-                            <span><strong data-live-visits-today>{{ number_format($storefrontVisitsToday ?? 0) }}</strong> visits today</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-slate-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-                            <span><strong data-live-unique-visitors>{{ number_format($storefrontUniqueVisitors ?? 0) }}</strong> unique visitors</span>
-                        </div>
-                        <div class="pl-3.5 text-[11px]"><span data-live-visits-total>{{ number_format($storefrontVisitsTotal ?? 0) }}</span> total storefront views</div>
-                    </div>
-                </div>
-
-                <div class="relative pt-5">
-                    <a href="{{ route('admin.visitors.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-cyan-900 group-hover:bg-cyan-600 group-hover:text-white transition">
-                        <span>View visitors</span>
-                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Cloud 7: Staff & Payroll (Admin Only) -->
             @if(Auth::user()->isAdmin())
-                <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-lime-50/40 to-lime-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(132,204,22,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
-                    <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-lime-200/35 blur-md pointer-events-none"></div>
-                    <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
+                <a href="{{ route('admin.storefront.edit') }}" class="flex items-center gap-3 p-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/80 text-slate-800 transition shadow-xs">
+                    <span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6z"/></svg>
+                    </span>
+                    <span class="text-xs font-bold leading-tight">Storefront</span>
+                </a>
 
-                    <div class="relative">
-                        <span class="inline-block px-2.5 py-0.5 rounded-full bg-lime-100/80 text-[10px] font-bold uppercase tracking-wider text-lime-800">Store Team</span>
-                        <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Staff &amp; Payroll</h3>
-                        <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
-                            <div class="text-slate-700 font-semibold">Cashiers, attendants &amp; sales staff</div>
-                            <div class="text-[11px]">Sales commissions &amp; monthly salary sheets</div>
-                            <div class="text-[11px]">Track attendance &amp; roles</div>
-                        </div>
-                    </div>
+                <a href="{{ route('admin.staff.index') }}" class="flex items-center gap-3 p-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/80 text-slate-800 transition shadow-xs">
+                    <span class="w-8 h-8 rounded-lg bg-lime-50 text-lime-700 flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </span>
+                    <span class="text-xs font-bold leading-tight">Staff &amp; Team</span>
+                </a>
+            @else
+                <a href="{{ route('admin.stock.index') }}" class="flex items-center gap-3 p-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/80 text-slate-800 transition shadow-xs">
+                    <span class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    </span>
+                    <span class="text-xs font-bold leading-tight">Check Stock</span>
+                </a>
 
-                    <div class="relative pt-5 flex items-center justify-between gap-2">
-                        <a href="{{ route('admin.staff.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-lime-900 group-hover:bg-lime-600 group-hover:text-white transition">
-                            <span>Manage team</span>
-                            <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
-                        </a>
-                        <a href="{{ route('admin.payroll.index') }}" class="px-3 py-1.5 rounded-full bg-white/70 hover:bg-white text-[11px] font-bold text-lime-800 transition">
-                            Payroll &rarr;
-                        </a>
-                    </div>
-                </div>
-
-                @if(Auth::user()->isSuperAdmin())
-                <!-- Cloud 8: Store Admin Accounts & Subscriptions (Super Admin Only) -->
-                <div class="group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br from-white via-indigo-50/40 to-indigo-100/50 border border-white/90 shadow-[0_14px_35px_-10px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(99,102,241,0.16)] hover:-translate-y-1 transition duration-200 flex flex-col justify-between min-h-[210px]">
-                    <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-indigo-200/35 blur-md pointer-events-none"></div>
-                    <div class="absolute top-3 right-6 w-14 h-14 rounded-full bg-white/80 blur-xs pointer-events-none"></div>
-
-                    <div class="relative">
-                        <span class="inline-block px-2.5 py-0.5 rounded-full bg-indigo-100/80 text-[10px] font-bold uppercase tracking-wider text-indigo-800">Store Admins</span>
-                        <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">Users &amp; Plans</h3>
-                        <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
-                            <div class="flex items-center gap-2 text-slate-700">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                <span><strong>{{ $subscribedUsersCount }}</strong> Subscribed Users</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-slate-700">
-                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                <span><strong>{{ $freeUsersCount }}</strong> Free / Trial Users</span>
-                            </div>
-                            <div class="pl-3.5 text-[11px]">{{ $totalAdminUsersCount }} total store admin accounts</div>
-                        </div>
-                    </div>
-
-                    <div class="relative pt-5 flex items-center justify-between">
-                        <a href="#stores-section" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 shadow-xs text-xs font-bold text-indigo-900 group-hover:bg-indigo-600 group-hover:text-white transition">
-                            <span>View accounts</span>
-                            <span class="transition-transform group-hover:translate-y-0.5">&darr;</span>
-                        </a>
-                    </div>
-                </div>
-                @endif
+                <a href="{{ route('admin.reports.index') }}" class="flex items-center gap-3 p-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/80 text-slate-800 transition shadow-xs">
+                    <span class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    </span>
+                    <span class="text-xs font-bold leading-tight">Reports</span>
+                </a>
             @endif
-
         </div>
 
         <!-- Store Admins Directory Section (Super Admin Only - Staff & Customers nested under each Admin) -->
