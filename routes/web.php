@@ -156,6 +156,7 @@ Route::prefix('admin')
     ->middleware(['auth', EnsureUserIsAdminOrStaff::class])
     ->group(function () {
         Route::get('/', [Admin\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard/live-data', [Admin\DashboardController::class, 'liveData'])->name('dashboard.live-data');
 
         // Products: Index/Catalog viewable by Admin & Staff
         Route::get('/products', [Admin\ProductController::class, 'index'])->name('products.index');

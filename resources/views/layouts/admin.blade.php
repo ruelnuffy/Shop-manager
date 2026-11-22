@@ -352,7 +352,7 @@
     <!-- ═══════════════════════════════════════════════════════════ -->
     <!-- MAIN CANVAS WORKSPACE                                       -->
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 pt-3 pb-16">
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 pt-3 pb-24 md:pb-16">
         @isset($header)
             <div class="mb-6 pb-2">
                 {{ $header }}
@@ -387,12 +387,114 @@
         @endisset
     </main>
 
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- MOBILE BOTTOM NAVBAR (< 768px) WITH LIVE NOTIFICATION COUNTS -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <nav class="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200/80 shadow-[0_-8px_30px_rgba(15,23,42,0.08)]">
+        <div class="grid grid-cols-5 items-center h-16 px-2 text-[10px] font-bold">
+            <a
+                href="{{ route('admin.dashboard') }}"
+                class="flex flex-col items-center justify-center gap-1 py-1 rounded-xl transition {{ request()->routeIs('admin.dashboard') ? 'text-slate-900' : 'text-slate-400 hover:text-slate-700' }}"
+            >
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span>Home</span>
+            </a>
+
+            @if ($planActive)
+                <a
+                    href="{{ route('admin.orders.index') }}"
+                    class="relative flex flex-col items-center justify-center gap-1 py-1 rounded-xl transition {{ request()->routeIs('admin.orders.*') ? 'text-slate-900' : 'text-slate-400 hover:text-slate-700' }}"
+                >
+                    <div class="relative">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                        <span
+                            data-orders-badge
+                            class="hidden absolute -top-1.5 -right-2.5 min-w-[16px] h-4 px-1 rounded-full bg-emerald-600 text-white text-[9px] font-extrabold flex items-center justify-center shadow-xs"
+                        >0</span>
+                    </div>
+                    <span>Orders</span>
+                </a>
+
+                <a
+                    href="{{ route('admin.sales.create') }}"
+                    class="flex flex-col items-center justify-center gap-0.5 py-1 transition"
+                >
+                    <span class="w-10 h-10 -mt-4 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-600/30 border-2 border-white">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                    </span>
+                    <span class="text-emerald-700 font-extrabold">POS</span>
+                </a>
+
+                <a
+                    href="{{ route('admin.notifications.index') }}"
+                    class="relative flex flex-col items-center justify-center gap-1 py-1 rounded-xl transition {{ request()->routeIs('admin.notifications.*') ? 'text-slate-900' : 'text-slate-400 hover:text-slate-700' }}"
+                >
+                    <div class="relative">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span
+                            data-notif-badge
+                            class="hidden absolute -top-1.5 -right-2.5 min-w-[16px] h-4 px-1 rounded-full bg-rose-600 text-white text-[9px] font-extrabold flex items-center justify-center shadow-xs"
+                        >0</span>
+                    </div>
+                    <span>Alerts</span>
+                </a>
+            @else
+                <span class="flex flex-col items-center justify-center gap-1 py-1 text-slate-300">Orders</span>
+                <span class="flex flex-col items-center justify-center gap-1 py-1 text-slate-300">POS</span>
+                <span class="flex flex-col items-center justify-center gap-1 py-1 text-slate-300">Alerts</span>
+            @endif
+
+            <button
+                type="button"
+                @click="mobileMenuOpen = !mobileMenuOpen; window.scrollTo({ top: 0, behavior: 'smooth' });"
+                class="flex flex-col items-center justify-center gap-1 py-1 rounded-xl text-slate-500 hover:text-slate-900 transition cursor-pointer"
+            >
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                <span>Menu</span>
+            </button>
+        </div>
+    </nav>
+
     <script>
         (function () {
             var pollUrl = @json(route('admin.notifications.poll'));
             var indexUrl = @json(route('admin.notifications.index'));
             var seenIds = new Set();
             var initialized = false;
+
+            window.updateAdminNavBadges = function (unreadCount, pendingOrdersCount) {
+                if (typeof unreadCount === 'number') {
+                    document.querySelectorAll('[data-notif-badge]').forEach(function (badge) {
+                        if (unreadCount > 0) {
+                            badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                            badge.classList.remove('hidden');
+                        } else {
+                            badge.classList.add('hidden');
+                        }
+                    });
+                }
+
+                if (typeof pendingOrdersCount === 'number') {
+                    document.querySelectorAll('[data-orders-badge]').forEach(function (badge) {
+                        if (pendingOrdersCount > 0) {
+                            badge.textContent = pendingOrdersCount > 99 ? '99+' : pendingOrdersCount;
+                            badge.classList.remove('hidden');
+                        } else {
+                            badge.classList.add('hidden');
+                        }
+                    });
+                }
+            };
 
             window.requestStoreNotificationPermission = function () {
                 if (!('Notification' in window)) return;
@@ -409,15 +511,7 @@
             };
 
             function renderNotifications(data) {
-                var badges = document.querySelectorAll('[data-notif-badge]');
-                badges.forEach(function (badge) {
-                    if (data.unread_count > 0) {
-                        badge.textContent = data.unread_count > 99 ? '99+' : data.unread_count;
-                        badge.classList.remove('hidden');
-                    } else {
-                        badge.classList.add('hidden');
-                    }
-                });
+                window.updateAdminNavBadges(data.unread_count, data.pending_orders_count);
 
                 var list = document.querySelector('[data-notif-list]');
                 if (list) {

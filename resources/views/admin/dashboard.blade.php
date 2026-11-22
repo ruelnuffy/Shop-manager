@@ -87,6 +87,18 @@
                 </h2>
 
                 <div class="flex flex-wrap items-center gap-2">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white text-slate-600 text-[11px] font-semibold shadow-sm border border-slate-200/70">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Live &bull; <span data-live-updated>just now</span></span>
+                        <button
+                            type="button"
+                            id="dashboard-live-refresh-btn"
+                            class="ml-1 text-indigo-600 hover:text-indigo-800 font-bold cursor-pointer"
+                            title="Refresh dashboard stats"
+                        >
+                            Refresh
+                        </button>
+                    </div>
                     @if ($planActive && $currentTenant && $currentTenant->hasFeature('storefront'))
                         @php
                             $shareStoreUrl = route('store.share', $currentTenant->slug);
@@ -160,7 +172,7 @@
                     <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
                         <div class="flex items-center gap-2 text-slate-700">
                             <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                            <span><strong>Today's Revenue:</strong> ₦{{ number_format($todayRevenue, 0) }}</span>
+                            <span><strong>Today's Revenue:</strong> <span data-live-today-revenue>₦{{ number_format($todayRevenue, 0) }}</span></span>
                         </div>
                         <div class="pl-3.5 text-[11px]">Barcode scan, cash &amp; card checkout</div>
                         <div class="pl-3.5 text-[11px]">Instant receipt generation</div>
@@ -186,13 +198,13 @@
                     <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
                         <div class="flex items-center gap-2 text-slate-700">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                            <span><strong>{{ $pendingOrdersCount }}</strong> pending to pack</span>
+                            <span><strong data-live-pending-orders>{{ $pendingOrdersCount }}</strong> pending to pack</span>
                         </div>
                         <div class="flex items-center gap-2 text-slate-700">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                            <span><strong>{{ $processingOrdersCount }}</strong> out in delivery</span>
+                            <span><strong data-live-processing-orders>{{ $processingOrdersCount }}</strong> out in delivery</span>
                         </div>
-                        <div class="pl-3.5 text-[11px]">{{ $totalOrdersCount }} all-time customer orders</div>
+                        <div class="pl-3.5 text-[11px]"><span data-live-total-orders>{{ $totalOrdersCount }}</span> all-time customer orders</div>
                     </div>
                 </div>
 
@@ -243,8 +255,9 @@
                     <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
                         <div class="flex items-center gap-2 text-slate-700">
                             <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
-                            <span><strong>₦{{ number_format($totalInventoryValuation, 0) }}</strong> total stock worth</span>
+                            <span><strong data-live-inventory-valuation>₦{{ number_format($totalInventoryValuation, 0) }}</strong> total stock worth</span>
                         </div>
+                        <div data-live-low-stock-status>
                         @if ($lowStockVariants->count() > 0)
                             <div class="text-rose-700 font-bold pl-3.5 text-[11px]">
                                 &bull; {{ $lowStockVariants->count() }} variants low on stock
@@ -254,6 +267,7 @@
                                 &bull; All item quantities healthy
                             </div>
                         @endif
+                        </div>
                         <div class="pl-3.5 text-[11px]">Audit counts &amp; restock logs</div>
                     </div>
                 </div>
@@ -277,11 +291,11 @@
                     <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
                         <div class="flex items-center gap-2 text-slate-700">
                             <span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
-                            <span><strong>₦{{ number_format($monthRevenue, 0) }}</strong> this month</span>
+                            <span><strong data-live-month-revenue>₦{{ number_format($monthRevenue, 0) }}</strong> this month</span>
                         </div>
                         <div class="flex items-center gap-2 text-slate-700">
                             <span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>
-                            <span><strong>₦{{ number_format($weekRevenue, 0) }}</strong> rolling week</span>
+                            <span><strong data-live-week-revenue>₦{{ number_format($weekRevenue, 0) }}</strong> rolling week</span>
                         </div>
                         <div class="pl-3.5 text-[11px]">Download reports &amp; CSV spreadsheets</div>
                     </div>
@@ -329,13 +343,13 @@
                     <div class="space-y-1.5 mt-3 text-xs text-slate-600 font-medium">
                         <div class="flex items-center gap-2 text-slate-700">
                             <span class="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
-                            <span><strong>{{ number_format($storefrontVisitsToday ?? 0) }}</strong> visits today</span>
+                            <span><strong data-live-visits-today>{{ number_format($storefrontVisitsToday ?? 0) }}</strong> visits today</span>
                         </div>
                         <div class="flex items-center gap-2 text-slate-700">
                             <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-                            <span><strong>{{ number_format($storefrontUniqueVisitors ?? 0) }}</strong> unique visitors</span>
+                            <span><strong data-live-unique-visitors>{{ number_format($storefrontUniqueVisitors ?? 0) }}</strong> unique visitors</span>
                         </div>
-                        <div class="pl-3.5 text-[11px]">{{ number_format($storefrontVisitsTotal ?? 0) }} total storefront views</div>
+                        <div class="pl-3.5 text-[11px]"><span data-live-visits-total>{{ number_format($storefrontVisitsTotal ?? 0) }}</span> total storefront views</div>
                     </div>
                 </div>
 
@@ -670,10 +684,11 @@
                     <p class="text-xs text-slate-400 mt-0.5">Latest sales made at the counter and online</p>
                 </div>
                 <a href="{{ route('admin.orders.index') }}" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition">
-                    View all ({{ $totalOrdersCount }}) &rarr;
+                    View all (<span data-live-total-orders>{{ $totalOrdersCount }}</span>) &rarr;
                 </a>
             </div>
 
+            <div data-live-recent-orders>
             @if ($recentOrders->count() > 0)
                 <div class="divide-y divide-slate-100/80">
                     @foreach ($recentOrders as $order)
@@ -709,7 +724,112 @@
                     <p class="text-xs text-slate-400 mt-1">When transactions occur, they will display here in real time.</p>
                 </div>
             @endif
+            </div>
         </div>
         </div>
     </div>
+
+    <script>
+        (function () {
+            var liveUrl = @json(route('admin.dashboard.live-data'));
+            var refreshBtn = document.getElementById('dashboard-live-refresh-btn');
+            var updatedEl = document.querySelector('[data-live-updated]');
+            var isFetching = false;
+
+            function formatNaira(amount) {
+                return '₦' + Math.round(Number(amount || 0)).toLocaleString('en-US');
+            }
+
+            function escapeHtml(str) {
+                return String(str || '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
+            }
+
+            function setText(selector, value) {
+                document.querySelectorAll(selector).forEach(function (el) {
+                    el.textContent = value;
+                });
+            }
+
+            function applyDashboardData(data) {
+                setText('[data-live-today-revenue]', formatNaira(data.today_revenue));
+                setText('[data-live-week-revenue]', formatNaira(data.week_revenue));
+                setText('[data-live-month-revenue]', formatNaira(data.month_revenue));
+                setText('[data-live-pending-orders]', data.pending_orders_count);
+                setText('[data-live-processing-orders]', data.processing_orders_count);
+                setText('[data-live-total-orders]', data.total_orders_count);
+                setText('[data-live-inventory-valuation]', formatNaira(data.total_inventory_valuation));
+                setText('[data-live-visits-today]', Number(data.storefront_visits_today || 0).toLocaleString('en-US'));
+                setText('[data-live-unique-visitors]', Number(data.storefront_unique_visitors || 0).toLocaleString('en-US'));
+                setText('[data-live-visits-total]', Number(data.storefront_visits_total || 0).toLocaleString('en-US'));
+
+                var lowStockStatus = document.querySelector('[data-live-low-stock-status]');
+                if (lowStockStatus) {
+                    if (data.low_stock_count > 0) {
+                        lowStockStatus.innerHTML = '<div class="text-rose-700 font-bold pl-3.5 text-[11px]">&bull; ' + data.low_stock_count + ' variants low on stock</div>';
+                    } else {
+                        lowStockStatus.innerHTML = '<div class="text-emerald-700 font-semibold pl-3.5 text-[11px]">&bull; All item quantities healthy</div>';
+                    }
+                }
+
+                var ordersWrap = document.querySelector('[data-live-recent-orders]');
+                if (ordersWrap && Array.isArray(data.recent_orders)) {
+                    if (data.recent_orders.length === 0) {
+                        ordersWrap.innerHTML = '<div class="text-center py-10"><div class="text-sm font-semibold text-slate-700">No orders recorded yet</div><p class="text-xs text-slate-400 mt-1">When transactions occur, they will display here in real time.</p></div>';
+                    } else {
+                        ordersWrap.innerHTML = '<div class="divide-y divide-slate-100/80">' + data.recent_orders.map(function (order) {
+                            var badgeClass = order.payment_status === 'paid' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800';
+                            return '<div class="py-3.5 first:pt-0 last:pb-0 flex items-center justify-between gap-4 text-xs">' +
+                                '<div class="min-w-0 flex-1">' +
+                                    '<div class="flex items-center gap-2">' +
+                                        '<a href="' + escapeHtml(order.show_url) + '" class="font-bold text-slate-900 hover:text-indigo-600 transition">#' + escapeHtml(order.order_number) + '</a>' +
+                                        '<span class="text-slate-300">&bull;</span>' +
+                                        '<span class="text-slate-600 font-medium truncate">' + escapeHtml(order.customer_name) + '</span>' +
+                                    '</div>' +
+                                    '<div class="text-slate-400 text-[11px] mt-0.5">' + order.items_count + ' ' + escapeHtml(order.items_label) + ' &bull; ' + escapeHtml(order.time_ago) + '</div>' +
+                                '</div>' +
+                                '<div class="flex items-center gap-3 shrink-0">' +
+                                    '<span class="font-bold text-sm text-slate-900">' + formatNaira(order.total_amount) + '</span>' +
+                                    '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ' + badgeClass + '">' + escapeHtml(order.status) + '</span>' +
+                                '</div>' +
+                            '</div>';
+                        }).join('') + '</div>';
+                    }
+                }
+
+                if (window.updateAdminNavBadges) {
+                    window.updateAdminNavBadges(data.unread_notifications_count, data.pending_orders_count);
+                }
+                if (updatedEl && data.updated_at) {
+                    updatedEl.textContent = data.updated_at;
+                }
+            }
+
+            function fetchLiveDashboard() {
+                if (isFetching) return;
+                isFetching = true;
+                if (refreshBtn) refreshBtn.textContent = 'Syncing...';
+
+                fetch(liveUrl, { headers: { 'Accept': 'application/json' } })
+                    .then(function (res) { return res.ok ? res.json() : null; })
+                    .then(function (data) { if (data) applyDashboardData(data); })
+                    .catch(function () {})
+                    .finally(function () {
+                        isFetching = false;
+                        if (refreshBtn) refreshBtn.textContent = 'Refresh';
+                    });
+            }
+
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', fetchLiveDashboard);
+            }
+            document.addEventListener('visibilitychange', function () {
+                if (document.visibilityState === 'visible') fetchLiveDashboard();
+            });
+            setInterval(fetchLiveDashboard, 15000);
+        })();
+    </script>
 </x-admin-layout>

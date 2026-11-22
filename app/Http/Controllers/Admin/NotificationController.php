@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -49,6 +50,7 @@ class NotificationController extends Controller
 
         return response()->json([
             'unread_count' => $unreadCount,
+            'pending_orders_count' => Order::where('status', 'pending')->count(),
             'notifications' => $recent,
         ]);
     }
