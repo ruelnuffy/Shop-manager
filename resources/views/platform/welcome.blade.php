@@ -48,6 +48,32 @@
         <!-- ═══════════════════════════════════════════════════════════ -->
         <div class="relative bg-gradient-to-br from-[#1d4ed8] via-[#2563eb] to-[#1e40af] text-white overflow-hidden">
 
+            <!-- TOP SOCIAL BAR -->
+            <div class="bg-blue-950/35 border-b border-white/10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 h-9 flex items-center justify-center sm:justify-end gap-4 text-[11px] font-semibold text-white/90">
+                    <span class="hidden sm:inline text-white/60">Follow ShopManager:</span>
+                    <a
+                        href="https://www.instagram.com/shopmanager19/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 hover:text-pink-300 transition"
+                    >
+                        <svg class="w-3.5 h-3.5 text-pink-300" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5A4.25 4.25 0 007.75 20.5h8.5a4.25 4.25 0 004.25-4.25v-8.5A4.25 4.25 0 0016.25 3.5h-8.5zm8.75 2.25a1 1 0 110 2 1 1 0 010-2zM12 7a5 5 0 110 10 5 5 0 010-10zm0 1.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"/></svg>
+                        <span>Instagram</span>
+                    </a>
+                    <span class="text-white/25">|</span>
+                    <a
+                        href="https://x.com/ShopManager19"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 hover:text-blue-200 transition"
+                    >
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        <span>X (@ShopManager19)</span>
+                    </a>
+                </div>
+            </div>
+
             <!-- FLOATING iOS DYNAMIC CAPSULE NAVBAR -->
             <header class="sticky top-2 sm:top-4 z-50 px-3 sm:px-6 max-w-7xl mx-auto pt-2 sm:pt-3">
                 <div class="relative bg-white/95 backdrop-blur-2xl border border-white/60 shadow-xl shadow-blue-950/20 rounded-full px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between ring-1 ring-white/30 transition-all">
