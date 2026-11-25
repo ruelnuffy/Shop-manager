@@ -160,6 +160,7 @@ Route::prefix('admin')
 
         // Products: Index/Catalog viewable by Admin & Staff
         Route::get('/products', [Admin\ProductController::class, 'index'])->name('products.index');
+        Route::get('/product-analytics', [Admin\ProductAnalyticsController::class, 'index'])->name('product-analytics.index');
 
         // Stock: Audit log viewable by Admin & Staff
         Route::get('/stock', [Admin\StockController::class, 'index'])->name('stock.index');

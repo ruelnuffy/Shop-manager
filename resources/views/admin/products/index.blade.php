@@ -6,11 +6,16 @@
                     Curated Catalog &amp; Collections ({{ $products->total() }})
                 </h1>
             </div>
-            @if(Auth::user()->isAdmin())
-                <a href="{{ route('admin.products.create') }}" class="px-5 py-2.5 rounded-full bg-slate-900 text-white hover:bg-indigo-600 text-xs font-bold uppercase tracking-wider transition shadow-sm">
-                    + Add New Product
+            <div class="flex flex-wrap items-center gap-2">
+                <a href="{{ route('admin.product-analytics.index') }}" class="px-4 py-2.5 rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 text-xs font-bold uppercase tracking-wider transition">
+                    Clicks &amp; Best Sellers &rarr;
                 </a>
-            @endif
+                @if(Auth::user()->isAdmin())
+                    <a href="{{ route('admin.products.create') }}" class="px-5 py-2.5 rounded-full bg-slate-900 text-white hover:bg-indigo-600 text-xs font-bold uppercase tracking-wider transition shadow-sm">
+                        + Add New Product
+                    </a>
+                @endif
+            </div>
         </div>
     </x-slot>
 
@@ -61,6 +66,7 @@
                             <th class="p-4">Category</th>
                             <th class="p-4">Base Price</th>
                             <th class="p-4">Total Stock</th>
+                            <th class="p-4">Link Clicks</th>
                             <th class="p-4">Status</th>
                             <th class="p-4 pr-6 text-right">Actions</th>
                         </tr>
@@ -89,6 +95,11 @@
                                     @php $stock = $prod->totalStock(); @endphp
                                     <span class="px-2.5 py-1 rounded-full text-[10px] font-bold {{ $stock <= 5 ? 'bg-red-100 text-red-800' : 'bg-emerald-100 text-emerald-800' }}">
                                         {{ $stock }} units
+                                    </span>
+                                </td>
+                                <td class="p-4">
+                                    <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700">
+                                        {{ number_format($prod->link_clicks ?? 0) }} clicks
                                     </span>
                                 </td>
                                 <td class="p-4">

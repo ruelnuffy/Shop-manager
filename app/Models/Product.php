@@ -25,6 +25,7 @@ class Product extends Model
         'brand_tags',
         'status',
         'is_featured',
+        'link_clicks',
     ];
 
     protected function casts(): array
@@ -34,6 +35,7 @@ class Product extends Model
             'images' => 'array',
             'brand_tags' => 'array',
             'is_featured' => 'boolean',
+            'link_clicks' => 'integer',
         ];
     }
 

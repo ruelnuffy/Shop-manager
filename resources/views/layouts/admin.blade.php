@@ -141,6 +141,7 @@
                             x-transition
                             class="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-200/80 py-1.5 z-50"
                         >
+                            <a href="{{ route('admin.product-analytics.index') }}" class="block px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50">Product Clicks &amp; Best Sellers</a>
                             <a href="{{ route('admin.staff.index') }}" class="block px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50">Staff &amp; Team</a>
                             <a href="{{ route('admin.payroll.index') }}" class="block px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50">Salaries &amp; Payroll</a>
                             <a href="{{ route('admin.ocr.index') }}" class="block px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50">Scan Receipts</a>
@@ -328,6 +329,7 @@
             <a href="{{ route('admin.sales.create') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 shadow-xs">Make Sale (POS)</a>
             <a href="{{ route('admin.orders.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Orders</a>
             <a href="{{ route('admin.products.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Products</a>
+            <a href="{{ route('admin.product-analytics.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 font-bold shadow-xs">Clicks &amp; Best Sellers</a>
             <a href="{{ route('admin.stock.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Stock Inventory</a>
             <a href="{{ route('admin.ocr.index') }}" @click="mobileMenuOpen = false" class="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 shadow-xs">Scan Receipts</a>
             @if(Auth::user()->isAdmin())

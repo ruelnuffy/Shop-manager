@@ -109,6 +109,7 @@ class ProductController extends Controller
     public function show(string $slug): View
     {
         $product = Product::with(['category', 'activeVariants'])->where('slug', $slug)->firstOrFail();
+        $product->increment('link_clicks');
 
         $relatedProducts = Product::with(['category', 'activeVariants'])
             ->where('category_id', $product->category_id)
