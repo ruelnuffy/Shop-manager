@@ -22,7 +22,7 @@
             <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
                 <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Link Clicks</div>
                 <div class="font-display font-extrabold text-2xl text-slate-900 mt-2">{{ number_format($totalClicks) }}</div>
-                <div class="text-[11px] text-slate-500 mt-1">Across {{ $products->count() }} products</div>
+                <div class="text-[11px] text-slate-500 mt-1">Avg. {{ $formattedAvgTimeOverall }} on page</div>
             </div>
 
             <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
@@ -37,7 +37,7 @@
                     {{ $topClickedProduct ? $topClickedProduct['product']->name : 'N/A' }}
                 </div>
                 <div class="text-[11px] text-indigo-600 font-semibold mt-1">
-                    {{ $topClickedProduct ? number_format($topClickedProduct['clicks']).' clicks' : '0 clicks' }}
+                    {{ $topClickedProduct ? number_format($topClickedProduct['clicks']).' clicks • '.$topClickedProduct['formatted_avg_time'].' avg' : '0 clicks' }}
                 </div>
             </div>
 
@@ -77,8 +77,9 @@
                                     <span class="text-xs font-extrabold text-slate-900">₦{{ number_format($prod->base_price, 0) }}</span>
                                 </div>
                                 <div class="font-display font-bold text-base text-slate-900 line-clamp-1">{{ $prod->name }}</div>
-                                <div class="flex items-center gap-4 text-xs text-slate-600">
-                                    <span><strong class="text-slate-900">{{ number_format($row['clicks']) }}</strong> link clicks</span>
+                                <div class="flex flex-wrap items-center gap-3 text-xs text-slate-600">
+                                    <span><strong class="text-slate-900">{{ number_format($row['clicks']) }}</strong> clicks</span>
+                                    <span><strong class="text-slate-900">{{ $row['formatted_avg_time'] }}</strong> avg time</span>
                                     <span><strong class="text-emerald-700">{{ number_format($row['units_sold']) }}</strong> sold</span>
                                 </div>
                             </div>
@@ -122,6 +123,7 @@
                             <th class="px-4 py-3">Category</th>
                             <th class="px-4 py-3">Price</th>
                             <th class="px-4 py-3">Link Clicks</th>
+                            <th class="px-4 py-3">Avg. Time</th>
                             <th class="px-4 py-3">Units Sold</th>
                             <th class="px-4 py-3">Conv. Rate</th>
                             <th class="px-4 py-3">Suggestion</th>
@@ -142,6 +144,7 @@
                                         {{ number_format($row['clicks']) }}
                                     </span>
                                 </td>
+                                <td class="px-4 py-3.5 font-semibold text-slate-700">{{ $row['formatted_avg_time'] }}</td>
                                 <td class="px-4 py-3.5 font-bold text-emerald-700">{{ number_format($row['units_sold']) }}</td>
                                 <td class="px-4 py-3.5 text-slate-600">{{ $row['conversion_rate'] }}%</td>
                                 <td class="px-4 py-3.5">

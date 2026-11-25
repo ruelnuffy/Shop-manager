@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -119,5 +120,27 @@ class ProductController extends Controller
             ->get();
 
         return view('store.products.show', compact('product', 'relatedProducts'));
+    }
+
+    /**
+     * Record active time spent on a product page (in seconds).
+     */
+    public function trackEngagement(Request $request, string $slug): JsonResponse
+    {
+        $seconds = (int) $request->input('seconds', 0);
+        if ($seconds < 1) {
+            return response()->json(['ok' => false], 422);
+        }
+
+        $cappedSeconds = min($seconds, 1800);
+        $product = Product::where('slug', $slug)->first();
+
+        if (! $product) {
+            return response()->json(['ok' => false], 404);
+        }
+
+        $product->increment('total_time_seconds', $cappedSeconds);
+
+        return response()->json(['ok' => true]);
     }
 }

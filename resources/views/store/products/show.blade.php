@@ -334,4 +334,60 @@
             @endif
         </div>
     </div>
+
+    <script>
+        (function () {
+            var endpoint = @json(route('products.engagement', $product->slug));
+            var csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || @json(csrf_token());
+            var activeStart = document.visibilityState === 'visible' ? Date.now() : null;
+            var accumulatedMs = 0;
+
+            function flushTime(useBeacon) {
+                if (activeStart !== null) {
+                    accumulatedMs += Date.now() - activeStart;
+                    activeStart = document.visibilityState === 'visible' ? Date.now() : null;
+                }
+
+                var seconds = Math.floor(accumulatedMs / 1000);
+                if (seconds < 1) {
+                    return;
+                }
+                accumulatedMs -= seconds * 1000;
+
+                var payload = new FormData();
+                payload.append('_token', csrf);
+                payload.append('seconds', String(Math.min(seconds, 1800)));
+
+                if (useBeacon && navigator.sendBeacon) {
+                    navigator.sendBeacon(endpoint, payload);
+                    return;
+                }
+
+                fetch(endpoint, {
+                    method: 'POST',
+                    body: payload,
+                    keepalive: true,
+                    headers: { 'Accept': 'application/json' }
+                }).catch(function () {});
+            }
+
+            document.addEventListener('visibilitychange', function () {
+                if (document.visibilityState === 'hidden') {
+                    flushTime(true);
+                } else {
+                    activeStart = Date.now();
+                }
+            });
+
+            window.addEventListener('pagehide', function () {
+                flushTime(true);
+            });
+
+            setInterval(function () {
+                if (document.visibilityState === 'visible') {
+                    flushTime(false);
+                }
+            }, 30000);
+        })();
+    </script>
 </x-app-layout>

@@ -79,6 +79,7 @@ Route::get('/s/{slug}', function () {
 
 Route::get('/products', [Store\ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [Store\ProductController::class, 'show'])->name('products.show');
+Route::post('/products/{slug}/engagement', [Store\ProductController::class, 'trackEngagement'])->name('products.engagement');
 
 Route::get('/cart', [Store\CartController::class, 'index'])->name('cart.index');
 Route::post('/cart', [Store\CartController::class, 'store'])->name('cart.store');

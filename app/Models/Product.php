@@ -26,6 +26,7 @@ class Product extends Model
         'status',
         'is_featured',
         'link_clicks',
+        'total_time_seconds',
     ];
 
     protected function casts(): array
@@ -36,6 +37,7 @@ class Product extends Model
             'brand_tags' => 'array',
             'is_featured' => 'boolean',
             'link_clicks' => 'integer',
+            'total_time_seconds' => 'integer',
         ];
     }
 

@@ -71,6 +71,14 @@ class ProductClickAnalyticsTest extends TestCase
         $this->assertSame(2, $topProduct->fresh()->link_clicks);
         $this->assertSame(0, $otherProduct->fresh()->link_clicks);
 
+        // Simulate 90 seconds active time on Signature Tote
+        $this->withSession(['active_tenant_id' => $tenant->id])
+            ->postJson(route('products.engagement', $topProduct->slug), ['seconds' => 90])
+            ->assertOk()
+            ->assertJson(['ok' => true]);
+
+        $this->assertSame(90, $topProduct->fresh()->total_time_seconds);
+
         // Simulate 3 units sold for Signature Tote
         $order = Order::create([
             'tenant_id' => $tenant->id,
@@ -104,6 +112,7 @@ class ProductClickAnalyticsTest extends TestCase
             ->assertSee('Product Clicks &amp; Best-Seller Suggestions', false)
             ->assertSee('Signature Tote')
             ->assertSee('2 clicks')
+            ->assertSee('45s')
             ->assertSee('3 sold');
 
         $this->actingAs($admin)
