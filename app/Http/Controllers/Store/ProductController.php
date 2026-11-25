@@ -16,9 +16,10 @@ class ProductController extends Controller
         $query = Product::with(['category', 'activeVariants'])
             ->where('status', 'active');
 
-        // Search query
-        if ($request->filled('q')) {
-            $searchTerm = '%'.trim($request->q).'%';
+        // Search query (supports both `search` from storefront navbars and `q`)
+        $rawSearch = trim((string) ($request->input('search') ?? $request->input('q', '')));
+        if ($rawSearch !== '') {
+            $searchTerm = '%'.$rawSearch.'%';
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('name', 'like', $searchTerm)
                     ->orWhere('description', 'like', $searchTerm);

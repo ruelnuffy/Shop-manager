@@ -99,7 +99,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
-                            <input type="text" name="search" placeholder="Search products..." class="w-full pl-9 pr-4 py-2 bg-[#f0f0f0] hover:bg-[#eaeaea] focus:bg-white border-transparent focus:border-black/15 focus:ring-0 rounded-full text-xs font-medium placeholder-brand-charcoal/45 text-brand-charcoal transition duration-150">
+                            <input type="text" name="search" value="{{ request('search', request('q')) }}" placeholder="Search products..." class="w-full pl-9 pr-4 py-2 bg-[#f0f0f0] hover:bg-[#eaeaea] focus:bg-white border-transparent focus:border-black/15 focus:ring-0 rounded-full text-xs font-medium placeholder-brand-charcoal/45 text-brand-charcoal transition duration-150">
                         </form>
                     </div>
 
