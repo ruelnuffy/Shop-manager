@@ -423,7 +423,11 @@
 
                                     @php
                                         $productUrl = route('products.show', $prod->slug);
-                                        $whatsappShareText = $prod->name.' — ₦'.number_format($prod->base_price, 0)."\n".$productUrl;
+                                        $productPriceLabel = '₦'.number_format($prod->base_price, 0);
+                                        $productImageUrl = $prod->featured_image
+                                            ? (str_starts_with($prod->featured_image, 'http') ? $prod->featured_image : asset($prod->featured_image))
+                                            : '';
+                                        $whatsappShareText = $prod->name.' — '.$productPriceLabel."\nCheck website for more details:\n".$productUrl;
                                     @endphp
                                     <div class="pt-4 border-t border-black/[0.06] space-y-3">
                                         <div class="flex items-center justify-between gap-2">
@@ -438,6 +442,7 @@
                                                 href="https://wa.me/?text={{ rawurlencode($whatsappShareText) }}"
                                                 target="_blank"
                                                 rel="noopener"
+                                                onclick="if (window.shareProductToWhatsApp) { event.preventDefault(); window.shareProductToWhatsApp({{ \Illuminate\Support\Js::from($prod->name) }}, {{ \Illuminate\Support\Js::from($productPriceLabel) }}, {{ \Illuminate\Support\Js::from($productUrl) }}, {{ \Illuminate\Support\Js::from($productImageUrl) }}); }"
                                                 class="px-3 py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[11px] font-bold transition inline-flex items-center gap-1"
                                             >
                                                 <span>Post to WhatsApp</span>

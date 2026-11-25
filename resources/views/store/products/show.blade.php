@@ -4,7 +4,19 @@
         $tenantWhatsapp = $tenant ? $tenant->whatsappNumber() : '';
         $tenantPhone = $tenant ? $tenant->customerCarePhone() : '+234 906 949 8376';
         $tenantBrand = $tenant ? $tenant->setting('branding.name', $tenant->name) : 'Shop';
+        $ogImage = $product->featured_image
+            ? (str_starts_with($product->featured_image, 'http') ? $product->featured_image : asset($product->featured_image))
+            : '';
     @endphp
+    @push('meta')
+        <meta property="og:type" content="product">
+        <meta property="og:title" content="{{ $product->name }} — ₦{{ number_format($product->base_price, 0) }}">
+        <meta property="og:description" content="Check website for more details: {{ \Illuminate\Support\Str::limit(strip_tags((string) $product->description), 140) }}">
+        <meta property="og:url" content="{{ route('products.show', $product->slug) }}">
+        @if ($ogImage !== '')
+            <meta property="og:image" content="{{ $ogImage }}">
+        @endif
+    @endpush
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <nav class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-charcoal/50">
@@ -254,7 +266,7 @@
 
                                 @php
                                     $shareUrl = route('products.show', $product->slug);
-                                    $whatsappStatusText = $product->name.' — ₦'.number_format($product->base_price, 0)."\n".$shareUrl;
+                                    $whatsappStatusText = $product->name.' — ₦'.number_format($product->base_price, 0)."\nCheck website for more details:\n".$shareUrl;
                                 @endphp
                                 <div class="grid grid-cols-2 gap-2.5 pt-1">
                                     <button
@@ -268,6 +280,7 @@
                                         href="https://wa.me/?text={{ rawurlencode($whatsappStatusText) }}"
                                         target="_blank"
                                         rel="noopener"
+                                        @click.prevent="window.shareProductToWhatsApp({{ \Illuminate\Support\Js::from($product->name) }}, '₦' + Number(selectedPrice).toLocaleString('en-US', { maximumFractionDigits: 0 }), {{ \Illuminate\Support\Js::from($shareUrl) }}, selectedImage)"
                                         class="py-2.5 px-4 rounded-full bg-[#25D366]/15 hover:bg-[#25D366]/25 text-emerald-800 border border-[#25D366]/30 text-[11px] font-bold uppercase tracking-wider transition flex items-center justify-center text-center"
                                     >
                                         Share to WhatsApp Status

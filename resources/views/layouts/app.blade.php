@@ -15,6 +15,7 @@
         @endphp
 
         <title>{{ $pageBrandTitle }}</title>
+        @stack('meta')
 
         <!-- Fonts: Plus Jakarta Sans & Poppins (Sans-serif) -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,5 +72,37 @@
                 {{ $slot }}
             </main>
         </div>
+
+        <script>
+            window.shareProductToWhatsApp = async function (productName, priceLabel, productUrl, imageUrl) {
+                var caption = productName + ' — ' + priceLabel + '\nCheck website for more details:\n' + productUrl;
+                var fallbackUrl = 'https://wa.me/?text=' + encodeURIComponent(caption);
+
+                if (imageUrl && navigator.share && navigator.canShare) {
+                    try {
+                        var response = await fetch(imageUrl, { mode: 'cors' });
+                        if (response.ok) {
+                            var blob = await response.blob();
+                            var ext = (blob.type && blob.type.split('/')[1]) ? blob.type.split('/')[1].split(';')[0] : 'jpg';
+                            var file = new File([blob], 'product.' + ext, { type: blob.type || 'image/jpeg' });
+                            if (navigator.canShare({ files: [file] })) {
+                                await navigator.share({
+                                    title: productName,
+                                    text: caption,
+                                    files: [file]
+                                });
+                                return;
+                            }
+                        }
+                    } catch (err) {
+                        if (err && err.name === 'AbortError') {
+                            return;
+                        }
+                    }
+                }
+
+                window.open(fallbackUrl, '_blank', 'noopener');
+            };
+        </script>
     </body>
 </html>
