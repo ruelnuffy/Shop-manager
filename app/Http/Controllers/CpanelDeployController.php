@@ -205,13 +205,13 @@ class CpanelDeployController extends Controller
                     break;
 
                 case 'provision_store_admin':
-                    $email = strtolower(trim((string) $request->input('email', '')));
-                    $name = trim((string) $request->input('name', 'Store Owner'));
-                    $storeName = trim((string) $request->input('store_name', $name));
-                    $slug = Str::slug((string) $request->input('slug', $storeName));
-                    $plan = (string) $request->input('plan', 'starter');
-                    $password = (string) $request->input('password', 'shopmanager2026');
-                    $tagline = trim((string) $request->input('tagline', 'Style for everyone'));
+                    $email = strtolower(trim((string) request()->input('email', '')));
+                    $name = trim((string) request()->input('name', 'Store Owner'));
+                    $storeName = trim((string) request()->input('store_name', $name));
+                    $slug = Str::slug((string) request()->input('slug', $storeName));
+                    $plan = (string) request()->input('plan', 'starter');
+                    $password = (string) request()->input('password', 'shopmanager2026');
+                    $tagline = trim((string) request()->input('tagline', 'Style for everyone'));
 
                     if ($email === '' || $slug === '') {
                         throw new \InvalidArgumentException('Email and slug are required.');
