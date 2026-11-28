@@ -89,10 +89,28 @@ class TenantController extends Controller
     }
 
     /**
+     * Normalize slug and subdomain inputs before uniqueness validation.
+     */
+    protected function normalizeSlugInputs(Request $request): void
+    {
+        $normalizedSlug = Str::slug((string) $request->input('slug'));
+        $normalizedSubdomain = $request->filled('subdomain')
+            ? Str::slug((string) $request->input('subdomain'))
+            : $normalizedSlug;
+
+        $request->merge([
+            'slug' => $normalizedSlug,
+            'subdomain' => $normalizedSubdomain,
+        ]);
+    }
+
+    /**
      * Store a newly created tenant and provision its initial store admin user.
      */
     public function store(Request $request): RedirectResponse
     {
+        $this->normalizeSlugInputs($request);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:100|alpha_dash|unique:tenants,slug',
@@ -331,6 +349,8 @@ class TenantController extends Controller
      */
     public function update(Request $request, Tenant $tenant): RedirectResponse
     {
+        $this->normalizeSlugInputs($request);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:100|alpha_dash|unique:tenants,slug,'.$tenant->id,
