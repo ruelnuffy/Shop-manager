@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -199,6 +200,77 @@ class CpanelDeployController extends Controller
                             'name' => $superAdmin->name,
                             'email' => $superAdmin->email,
                             'role' => $superAdmin->role,
+                        ],
+                    ], JSON_PRETTY_PRINT);
+                    break;
+
+                case 'provision_store_admin':
+                    $email = strtolower(trim((string) $request->input('email', '')));
+                    $name = trim((string) $request->input('name', 'Store Owner'));
+                    $storeName = trim((string) $request->input('store_name', $name));
+                    $slug = Str::slug((string) $request->input('slug', $storeName));
+                    $plan = (string) $request->input('plan', 'starter');
+                    $password = (string) $request->input('password', 'shopmanager2026');
+                    $tagline = trim((string) $request->input('tagline', 'Style for everyone'));
+
+                    if ($email === '' || $slug === '') {
+                        throw new \InvalidArgumentException('Email and slug are required.');
+                    }
+
+                    $tenant = Tenant::firstOrCreate(
+                        ['slug' => $slug],
+                        [
+                            'name' => $storeName,
+                            'subdomain' => $slug,
+                            'plan' => $plan,
+                            'status' => 'active',
+                            'subscription_started_at' => now(),
+                            'subscription_expires_at' => now()->addMonth(),
+                            'settings' => [
+                                'currency' => 'NGN',
+                                'currency_symbol' => '₦',
+                                'features' => [
+                                    'storefront' => true,
+                                    'payroll' => true,
+                                    'ocr' => true,
+                                    'custom_domain' => false,
+                                ],
+                                'branding' => [
+                                    'name' => $storeName,
+                                    'tagline' => $tagline,
+                                    'logo_url' => null,
+                                    'palette' => [
+                                        'primary' => '#4f46e5',
+                                        'secondary' => '#0f172a',
+                                        'accent' => '#e0e7ff',
+                                    ],
+                                ],
+                            ],
+                        ]
+                    );
+
+                    $user = User::firstOrNew(['email' => $email]);
+                    $user->forceFill([
+                        'tenant_id' => $tenant->id,
+                        'name' => $name,
+                        'password' => Hash::make($password),
+                        'role' => 'admin',
+                        'email_verified_at' => now(),
+                    ])->save();
+
+                    $output = json_encode([
+                        'tenant' => [
+                            'id' => $tenant->id,
+                            'name' => $tenant->name,
+                            'slug' => $tenant->slug,
+                            'plan' => $tenant->plan,
+                            'status' => $tenant->status,
+                        ],
+                        'user' => [
+                            'id' => $user->id,
+                            'name' => $user->name,
+                            'email' => $user->email,
+                            'role' => $user->role,
                         ],
                     ], JSON_PRETTY_PRINT);
                     break;
